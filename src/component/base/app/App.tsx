@@ -1,6 +1,6 @@
 import './App.sass'
 import { useEffect } from 'react';
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest, setUser } from '../../../lib/redux/slice/user';
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
@@ -8,6 +8,7 @@ import type { User } from '../../../lib/definition/user';
 
 function App() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -27,12 +28,14 @@ function App() {
       // if (pathIncludedInRedirectListUser) {
       //   navigate('/');
       // }
+      navigate('/storage');
     } else {
       dispatch(setGuest());
       // const pathIncludedInRedirectListGuest = /^\/profile|\/orders|\/add-product|\/edit-product\/.+|\/tickets|\/shopping-cart$/.test(window.location.pathname);
       // if (!isComponentFirstMount.current && pathIncludedInRedirectListGuest) {
       //   navigate('/');
       // }
+      navigate('/account/login');
     }
   }
 
