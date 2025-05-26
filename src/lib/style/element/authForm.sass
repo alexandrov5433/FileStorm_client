@@ -1,0 +1,69 @@
+@import 'bootstrap/scss/bootstrap';
+
+#auth-form
+    background: var(--neutralPrimarySurface)
+    padding: 2rem 1rem
+    flex: 1 0 auto
+    height: 100vh
+    overflow-y: auto
+    display: flex
+    flex-direction: column
+
+    .auth-form-content
+        margin-top: auto
+        margin-bottom: auto
+    
+    section
+        display: flex
+        flex-direction: column
+        align-items: center
+    
+    hr
+        width: 85%
+        height: 2px
+        border-color: var(--neutralLight)
+        background-color: var(--neutralLight)
+
+.custom-input-group
+    border: 1px solid var(--neutralSecondary)
+
+    span,
+    input
+        border-radius: 0px !important
+        border: none
+    
+    span,
+    input,
+    input:focus
+        box-shadow: none //removes glow on input focus
+        background-color: var(--white)
+        color: var(--black)
+
+    .password-view-toggle
+        display: flex
+        align-items: center
+        justify-content: center
+        padding: 0 0.3rem
+        cursor: pointer
+    
+    input::placeholder
+        color: var(--black)
+        opacity: 70%
+    
+    &.error
+        border: 1px solid var(--color-error) !important
+        box-shadow: 0 0 10px 2px var(--color-error)
+    
+.auth-error-message
+    color: var(--color-error)
+    display: none
+    font-weight: 300 !important
+
+.custom-input-group.error + .auth-error-message,
+.error .auth-error-message
+    display: block
+        
+@include media-breakpoint-up(lg)
+    #auth-form
+        flex: 0 0 50%;
+        

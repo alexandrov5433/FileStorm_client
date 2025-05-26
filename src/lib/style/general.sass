@@ -1,0 +1,21 @@
+@import './theme'
+
+.flex-center
+    display: flex
+    justify-content: center
+    align-items: center
+
+.flex-dir-col
+    flex-direction: column
+
+.flex-grow
+    flex: 1 0 auto
+
+.add-box-shadow-border-radius
+        box-shadow: none
+        border-radius: 0px
+    
+@include media-breakpoint-up(sm)
+    .add-box-shadow-border-radius
+        box-shadow: 0px 0px 5px 2px var(--neutralPrimaryAlt)
+        border-radius: 6px

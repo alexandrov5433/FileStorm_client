@@ -1,0 +1,36 @@
+@import '../../lib/style/styleExporter'
+
+.wrapper
+    flex: 1 0 auto
+
+#storageSideOptions,
+#storageFileOverview
+    outline: 1px solid red
+
+#storageSideOptions
+    display: flex
+    justify-content: space-evenly
+    padding: 0.5rem 0.4rem
+
+    #storageAddNewBtn
+        display: flex
+        justify-content: center
+        align-items: center
+        gap: 0.4rem
+        text-transform: capitalize
+        width: 50%
+        border-radius: 0px
+        border: none
+        background: linear-gradient(to right, $teal-500, $teal-600, $teal-700, $blue-600, $blue-600);
+        color: var(--white)
+        font-weight: 700 !important
+
+        i
+            font-weight: 900 !important
+            font-size: 1.4rem
+
+    #storageSideOptionsBtn
+        width: 20%
+        
+
+#storageFileOverview

@@ -1,0 +1,46 @@
+@import '../theme'
+
+.custom-btn
+    background-color: var(--color-prime)
+    border: none
+    border-radius: 0px
+    text-transform: uppercase
+    padding: 0.8rem 1rem
+    text-align: center
+    width: 100%
+    text-decoration: none
+    color: var(--black)
+
+    &.btn-secondary
+        background-color: transparent
+        color: var(--neutralSecondary)
+        border: 1px solid var(--neutralSecondaryAlt)
+
+        &:hover:not(:disabled)
+            color: var(--neutralDark)
+            border: 1px solid var(--neutralDark)
+
+    &:disabled
+        animation: none
+        opacity: 40%
+        cursor: not-allowed
+
+    &:active:not(:disabled)
+        animation: click-custom-btn 0.1s ease normal
+
+    &:hover:not(:disabled)
+        background-color: $teal-600
+    
+
+
+
+
+@keyframes click-custom-btn
+    0%
+        transform: scale(1)
+    100%
+        transform: scale(0.95)
+        
+@include media-breakpoint-up(sm)
+    .custom-btn
+        width: 75%
