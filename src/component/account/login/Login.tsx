@@ -84,7 +84,6 @@ export default function Login() {
                                 <i className="bi bi-person-fill"></i>
                             </span>
                             <input onChange={checkLoginFields} ref={usernameRef} type="text" name="username" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
-
                         </div>
                         <p className="auth-error-message">{loginState.username.message}</p>
                     </div>

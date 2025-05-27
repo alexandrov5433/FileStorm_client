@@ -1,4 +1,6 @@
 import './register.sass';
+// @ts-ignore
+import Tooltip from 'bootstrap/js/dist/tooltip';
 
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
@@ -84,6 +86,15 @@ export default function Register() {
         formState.email.isValid
     ]);
 
+    useEffect(() => {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
+        return () => {
+            tooltipList.map(t => t.dispose());
+        }
+    }, []);
+
+
     function usernameValidator(e: React.ChangeEvent<HTMLInputElement>) {
         const val = e.currentTarget.value;
         const isValid = /^[A-Za-z0-9_]{1,30}$/.test(val);
@@ -142,11 +153,14 @@ export default function Register() {
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${formState.username.isTouched ?
                             (formState.username.isValid ? '' : 'error') : ''
-                            }`}>
+                            }`} data-bs-toggle="tooltip"
+                                data-bs-title="Length: 1 to 30 characters. Allowed characters: A-z 0-9 and _"
+                                data-bs-trigger="hover focus"
+                                data-bs-custom-class="custom-tooltip">
                             <span className="input-group-text" id="basic-addon1">
                                 <i className="bi bi-person-fill"></i>
                             </span>
-                            <input onChange={usernameValidator} type="text" name="username" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+                            <input onChange={usernameValidator} type="text" name="username" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
                         </div>
                         <p className="auth-error-message">{formState.username.message}</p>
                     </div>
@@ -154,7 +168,10 @@ export default function Register() {
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${formState.password.isTouched ?
                             (formState.password.isValid ? '' : 'error') : ''
-                            }`}>
+                            }`} data-bs-toggle="tooltip"
+                                data-bs-title="Length: 5 to 50 characters. Allowed characters: A-z 0-9 @ _ + ? ! -"
+                                data-bs-trigger="hover focus"
+                                data-bs-custom-class="custom-tooltip">
                             <span className="input-group-text" id="basic-addon1">
                                 <i className="bi bi-key-fill"></i>
                             </span>
@@ -173,7 +190,10 @@ export default function Register() {
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${formState.repassword.isTouched ?
                             (formState.repassword.isValid ? '' : 'error') : ''
-                            }`}>
+                            }`} data-bs-toggle="tooltip"
+                                data-bs-title="Please, repeat the password."
+                                data-bs-trigger="hover focus"
+                                data-bs-custom-class="custom-tooltip">
                             <span className="input-group-text" id="basic-addon1">
                                 <i className="bi bi-key-fill"></i>
                             </span>
@@ -185,7 +205,10 @@ export default function Register() {
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${formState.email.isTouched ?
                             (formState.email.isValid ? '' : 'error') : ''
-                            }`}>
+                            }`} data-bs-toggle="tooltip"
+                                data-bs-title="Please, enter a valid email. E.g. my.name@website.com"
+                                data-bs-trigger="hover focus"
+                                data-bs-custom-class="custom-tooltip">
                             <span className="input-group-text" id="basic-addon1">
                                 <i className="bi bi-at"></i>
                             </span>
