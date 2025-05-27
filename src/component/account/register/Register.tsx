@@ -94,7 +94,6 @@ export default function Register() {
         }
     }, []);
 
-
     function usernameValidator(e: React.ChangeEvent<HTMLInputElement>) {
         const val = e.currentTarget.value;
         const isValid = /^[A-Za-z0-9_]{1,30}$/.test(val);
