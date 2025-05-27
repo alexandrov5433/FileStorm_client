@@ -18,10 +18,8 @@ export default function Login() {
     const [isLoginBtnDisabled, setLoginBtnDisabled] = useState(true);
     const [isFormTouched, setFormTouched] = useState(false);
     const [isPasswordVisible, setPasswordVisisble] = useState(false);
-    // const [generalLoginErrorMsg, setGeneralLoginErrorMsg] = useState('');
 
     const loginStateInit = {
-        // generalError: false,
         username: {
             isValid: true,
             message: ''
@@ -43,26 +41,17 @@ export default function Login() {
         );
         if (res.status === 200) {
             dispatch(setUser(res.payload as User))
-            return navigate('/');
+            return navigate('/storage');
         } else if (res.status === 400) {
             const authRes: AuthValidationResult[] = res.payload;
-            // setGeneralLoginErrorMsg(res.msg || '');
-            setLoginState(() => {
-                const newState = loginStateInit;
-                // newState.generalError = true;
+            setLoginState(oldState => {
+                const newState = oldState;
                 authRes.forEach(auth => {
                     (newState as any)[auth.fieldName].isValid = auth.isValid;
                     (newState as any)[auth.fieldName].message = auth.message;
                 });
                 return newState;
             });
-        } else {
-            setLoginState(state => {
-                const newState = { ...state };
-                // newState.generalError = true;
-                return newState;
-            });
-            // setGeneralLoginErrorMsg(res.msg || '');
         }
         setFormTouched(true);
         setLoginBtnDisabled(false);
@@ -82,6 +71,7 @@ export default function Login() {
         <form ref={formRef} id="auth-form">
             <div className="auth-form-content">
                 <section className="mb-4">
+                    <h6 id="filestorm-name">FileStorm</h6>
                     <h2>Log In</h2>
                 </section>
                 <section className="mb-4">
@@ -117,19 +107,12 @@ export default function Login() {
                         </div>
                         <p className="auth-error-message">{loginState.password.message}</p>
                     </div>
-                    {/* {
-                    <div className={`input-group mb-4 ${isFormTouched ?
-                            (loginState.generalError ? 'error' : '') : ''
-                        }`}>
-                        <p className="auth-error-message">{generalLoginErrorMsg}</p>
-                    </div>  
-                    } */}
 
-                    <button type="button" className="custom-btn" onClick={login} disabled={isLoginBtnDisabled}>Log in</button>
+                    <button type="button" className="custom-btn main-btn" onClick={login} disabled={isLoginBtnDisabled}>Log in</button>
                 </section>
                 <section>
                     <hr />
-                    <NavLink to="/account/register" className="custom-btn btn-secondary">Register</NavLink>
+                    <NavLink to="/account/register" className="custom-btn secondary-btn">Register</NavLink>
                 </section>
             </div>
         </form>
