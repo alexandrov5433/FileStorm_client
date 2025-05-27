@@ -69,7 +69,7 @@ export default function Login() {
 
     return (
         <form ref={formRef} id="auth-form">
-            <div className="auth-form-content">
+            <div className="auth-form-content anime-fade-in">
                 <section className="mb-4">
                     <h6 id="filestorm-name">FileStorm</h6>
                     <h2>Log In</h2>

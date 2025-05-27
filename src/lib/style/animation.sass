@@ -1,10 +1,27 @@
-.anime-hover-forwards-infinite:hover
-    animation: forwards-once-in 0.5s ease 0s infinite alternate none
+.anime-fade-in
+    animation: 0.5s ease 0s forwards fade-in
 
-@keyframes forwards-once-in
+@keyframes fade-in
     0%
-        transform: scale(1)
-
+        opacity: 0
+    10%
+        opacity: 0.1
+    20%
+        opacity: 0.2
+    30%
+        opacity: 0.3
+    40%
+        opacity: 0.4
+    50%
+        opacity: 0.5
+    60%
+        opacity: 0.6
+    70%
+        opacity: 0.7
+    80%
+        opacity: 0.8
+    90%
+        opacity: 0.9
     100%
-        transform: scale(1.03)
+        opacity: 1
         

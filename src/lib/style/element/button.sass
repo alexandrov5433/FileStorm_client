@@ -15,14 +15,14 @@
         width: fit-content
 
     &:disabled
-        animation: none
+
         opacity: 60%
         cursor: not-allowed
         box-shadow: none !important
 
     &:active:not(:disabled)
         opacity: 60%
-        animation: click 0.15s ease-in-out alternate
+        animation: 0.15s ease-in-out alternate click
 
     // button types
     &.main-btn
@@ -34,7 +34,6 @@
             background-color: $teal-400
 
     &.secondary-btn
-
         background-color: transparent
         color: var(--neutralSecondary)
         border: 1px solid var(--neutralSecondaryAlt)
