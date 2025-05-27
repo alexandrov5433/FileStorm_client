@@ -24,17 +24,9 @@ function App() {
     );
     if (res.status === 200) {
       dispatch(setUser(res.payload as User));
-      // const pathIncludedInRedirectListUser = /^\/login|\/register$/.test(window.location.pathname);
-      // if (pathIncludedInRedirectListUser) {
-      //   navigate('/');
-      // }
       navigate('/storage');
     } else {
       dispatch(setGuest());
-      // const pathIncludedInRedirectListGuest = /^\/profile|\/orders|\/add-product|\/edit-product\/.+|\/tickets|\/shopping-cart$/.test(window.location.pathname);
-      // if (!isComponentFirstMount.current && pathIncludedInRedirectListGuest) {
-      //   navigate('/');
-      // }
       navigate('/account/login');
     }
   }
