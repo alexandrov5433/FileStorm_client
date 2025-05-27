@@ -52,10 +52,10 @@ export default function Register() {
         );
         if (res.status === 200) {
             dispatch(setUser(res.payload as User));
-            navigate('/');
+            navigate('/storage');
         } else if (res.status === 400) {
-            setFormState(() => {
-                const newState = formStateInit;
+            setFormState(oldState => {
+                const newState = oldState;
                 const authResult = res.payload as AuthValidationResult[];
                 for (let i = 0; i < authResult.length; i++) {
                     const field = authResult[i];
@@ -65,8 +65,6 @@ export default function Register() {
                 }
                 return newState;
             });
-        } else {
-            console.log('TODO Register page');
         }
         setRegisterBtnDisabled(false);
     }
@@ -79,7 +77,12 @@ export default function Register() {
             formState.email.isValid
         ].includes(false);
         setRegisterBtnDisabled(isError);
-    }, [formState]);
+    }, [
+        formState.username.isValid,
+        formState.password.isValid,
+        formState.repassword.isValid,
+        formState.email.isValid
+    ]);
 
     function usernameValidator(e: React.ChangeEvent<HTMLInputElement>) {
         const val = e.currentTarget.value;
@@ -128,9 +131,10 @@ export default function Register() {
     }
 
     return (
-            <form ref={formRef} id="auth-form">
-                <div className="auth-form-content">
+        <form ref={formRef} id="auth-form">
+            <div className="auth-form-content">
                 <section className="mb-4">
+                    <h6 id="filestorm-name">FileStorm</h6>
                     <h2>Register</h2>
                 </section>
                 <section className="mb-4">
@@ -158,8 +162,8 @@ export default function Register() {
                             <span onClick={togglePasswordVisibility} className="password-view-toggle">
                                 {
                                     isPasswordVisible ?
-                                    <i className="bi bi-eye-fill"></i>
-                                    : <i className="bi bi-eye-slash-fill"></i>
+                                        <i className="bi bi-eye-fill"></i>
+                                        : <i className="bi bi-eye-slash-fill"></i>
                                 }
                             </span>
                         </div>
@@ -190,17 +194,13 @@ export default function Register() {
                         <p className="auth-error-message">{formState.email.message}</p>
                     </div>
 
-                    {/* <div className="input-group mb-4">
-                        <p className="auth-error-message">Error message! Error message! Error message! Error message!</p>
-                    </div> */}
-
-                    <button type="button" onClick={register} disabled={isRegisterBtnDisabled} className="custom-btn">Register</button>
+                    <button type="button" onClick={register} disabled={isRegisterBtnDisabled} className="custom-btn main-btn">Register</button>
                 </section>
                 <section>
                     <hr />
-                    <NavLink to="/account/login" className="custom-btn btn-secondary">Log In</NavLink>
+                    <NavLink to="/account/login" className="custom-btn secondary-btn">Log In</NavLink>
                 </section>
-                </div>
-            </form>
+            </div>
+        </form>
     );
 }
