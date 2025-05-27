@@ -9,13 +9,18 @@ import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
 import type { AuthValidationResult } from '../../../lib/definition/authValidationResult';
+import enterKeyBind from '../../../lib/hook/enterKeyBind';
 
 export default function Register() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const registerBtnRef = useRef(null);
     const formRef = useRef(null);
     const passwordRef = useRef(null);
     const repasswordRef = useRef(null);
+
+    enterKeyBind(registerBtnRef.current! as HTMLButtonElement);
 
     const [isRegisterBtnDisabled, setRegisterBtnDisabled] = useState(true);
     const [isPasswordVisible, setPasswordVisisble] = useState(false);
@@ -216,7 +221,7 @@ export default function Register() {
                         <p className="auth-error-message">{formState.email.message}</p>
                     </div>
 
-                    <button type="button" onClick={register} disabled={isRegisterBtnDisabled} className="custom-btn main-btn">Register</button>
+                    <button ref={registerBtnRef} type="button" onClick={register} disabled={isRegisterBtnDisabled} className="custom-btn main-btn">Register</button>
                 </section>
                 <section>
                     <hr />

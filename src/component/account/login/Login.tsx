@@ -7,13 +7,18 @@ import type { AuthValidationResult } from '../../../lib/definition/authValidatio
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
+import enterKeyBind from '../../../lib/hook/enterKeyBind';
 
 export default function Login() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const loginBtnRef = useRef(null);
     const formRef = useRef(null);
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
+
+    enterKeyBind(loginBtnRef.current! as HTMLButtonElement);
 
     const [isLoginBtnDisabled, setLoginBtnDisabled] = useState(true);
     const [isFormTouched, setFormTouched] = useState(false);
@@ -44,8 +49,8 @@ export default function Login() {
             return navigate('/storage');
         } else if (res.status === 400) {
             const authRes: AuthValidationResult[] = res.payload;
-            setLoginState(oldState => {
-                const newState = oldState;
+            setLoginState(() => {
+                const newState = loginStateInit;
                 authRes.forEach(auth => {
                     (newState as any)[auth.fieldName].isValid = auth.isValid;
                     (newState as any)[auth.fieldName].message = auth.message;
@@ -107,7 +112,7 @@ export default function Login() {
                         <p className="auth-error-message">{loginState.password.message}</p>
                     </div>
 
-                    <button type="button" className="custom-btn main-btn" onClick={login} disabled={isLoginBtnDisabled}>Log in</button>
+                    <button ref={loginBtnRef} onClick={login} type="button" className="custom-btn main-btn"  disabled={isLoginBtnDisabled}>Log in</button>
                 </section>
                 <section>
                     <hr />
