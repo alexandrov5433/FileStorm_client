@@ -1,17 +1,40 @@
 @import '../theme'
 
 .custom-btn
-    background-color: var(--color-prime)
     border: none
     border-radius: 0px
-    text-transform: uppercase
-    padding: 0.8rem 1rem
+    text-transform: capitalize
+    padding: 0.6rem 1rem
     text-align: center
     width: 100%
     text-decoration: none
-    color: var(--black)
 
-    &.btn-secondary
+
+    // general customization
+    &.w-fit-cont
+        width: fit-content
+
+    &:disabled
+        animation: none
+        opacity: 60%
+        cursor: not-allowed
+        box-shadow: none !important
+
+    &:active:not(:disabled)
+        opacity: 60%
+        animation: click 0.15s ease-in-out alternate
+
+    // button types
+    &.main-btn
+        background-color: var(--color-prime)
+        color: var(--black)
+        box-shadow: 0px 0px 10px 1px var(--neutralTertiaryAlt)
+        
+        &:hover:not(:disabled)
+            background-color: $teal-400
+
+    &.secondary-btn
+
         background-color: transparent
         color: var(--neutralSecondary)
         border: 1px solid var(--neutralSecondaryAlt)
@@ -20,26 +43,15 @@
             color: var(--neutralDark)
             border: 1px solid var(--neutralDark)
 
-    &:disabled
-        animation: none
-        opacity: 40%
-        cursor: not-allowed
-
-    &:active:not(:disabled)
-        animation: click-custom-btn 0.1s ease normal
-
-    &:hover:not(:disabled)
-        background-color: $teal-600
-    
 
 
-
-
-@keyframes click-custom-btn
+@keyframes click
     0%
         transform: scale(1)
     100%
-        transform: scale(0.95)
+        transform: scale(0.98)
+
+
         
 @include media-breakpoint-up(sm)
     .custom-btn
