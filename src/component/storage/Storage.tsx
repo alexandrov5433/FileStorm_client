@@ -4,6 +4,7 @@ import SideOptions from './sideOptions/SideOptions';
 
 import { useState } from 'react';
 import NavBar from '../base/navBar/NavBar';
+import { Outlet } from 'react-router';
 
 
 export default function Storage() {
@@ -17,19 +18,27 @@ export default function Storage() {
     return (
         <>
             <NavBar />
-            <div className="wrapper">
+            <div className="wrapper anime-fade-in">
                 <section id="storageSideOptionsContainer">
-                    <button id="storageAddNewBtn" className="btn" type="button">
-                        <i className="bi bi-plus-lg"></i>
-                        Add New
-                    </button>
+                    <div className="dropdown">
+                        <button id="storageAddNewBtn" className="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i className="bi bi-plus-lg"></i>
+                            Add New
+                        </button>
+
+                        <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" href="#">Action</a></li>
+                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                            <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
                     <button id="storageSideOptionsBtn" onClick={toggleSideOptionsDisplay} className="custom-btn secondary-btn" type="button">More</button>
                     <SideOptions
                         sideOptionsDisplay={sideOptionsDisplay}
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer">
-                    storageFileOverview Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic aperiam magni natus delectus earum enim quis nemo repellendus dolore placeat eveniet omnis, beatae soluta temporibus ea eos at. Recusandae, magnam aliquam ab facere explicabo quo, enim eaque quas eligendi accusamus voluptatum totam assumenda ut in! Sint, quos laborum? Doloribus quas accusamus eum aspernatur non voluptates fuga ipsam dolorem, et eveniet error laboriosam recusandae in cumque provident soluta iusto! Commodi recusandae perspiciatis blanditiis laboriosam consequatur voluptate, quis, dicta culpa reiciendis quo perferendis deserunt, suscipit eius voluptatem possimus mollitia repellat dolor eum error quibusdam. Culpa, quam ut fugiat ipsa voluptatem esse ullam?
+                    <Outlet/>
                 </section>
             </div>
         </>

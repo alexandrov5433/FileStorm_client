@@ -13,13 +13,16 @@
     justify-content: space-evenly
     padding: 0.5rem
 
+    .dropdown
+        width: 50%
+
 #storageAddNewBtn
     display: flex
     justify-content: center
     align-items: center
     gap: 0.4rem
     text-transform: capitalize
-    width: 50%
+    width: 100%
     height: fit-content
     border-radius: 0px
     border: none
@@ -43,14 +46,20 @@
     .wrapper
         display: flex
 
+    #storageAddNewBtn
+        width: fit-content
+
     #storageSideOptionsBtn
         display: none
     
     #storageSideOptionsContainer
-        flex: 30%
+        flex: 20%
         display: flex
         flex-direction: column
         gap: 0.5rem
 
+        .dropdown
+            width: 100%
+
     #storageFileOverviewContainer
-        flex: 70%
+        flex: 80%
