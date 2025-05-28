@@ -7,12 +7,105 @@
     left: 0
     width: 100%
     height: 100%
-    background-color: gray
-
+    background-color: var(--neutralSecondarySurface)
+    padding: 1rem
     &.show
         display: block
+    & > *
+        margin-bottom: 0.5rem
+
+#side-options-username-container
+    display: flex
+    align-items: center
+    & > *
+        margin-bottom: 0
+    h6
+        overflow: hidden
+        flex: 80%
+        font-weight: 100
+        color: var(--neutralDark)
+    button
+        flex: 20%
+
+#side-options-location-container
+    ul
+        list-style: none inside
+        padding-left: 0
+        // outline: 1px solid red
+        li
+            // outline: 1px solid red
+            width: 100%
+            max-width: 100%
+            overflow: hidden
+            &:not(:last-child)
+                margin-bottom: 0.5rem
+            a
+                display: flex
+                text-decoration: none
+                color: var(--neutralPrimaryAlt)
+                padding: 0.5rem 0.2rem
+                word-spacing: normal
+                font-weight: 300 !important
+
+                &.active
+                    color: var(--neutralPrimary)
+                    font-weight: 400 !important
+                    span
+                        background-color: $teal-500 !important
+                    div
+                        color: $teal-500
+
+                &:hover
+                    color: var(--neutralDark)
+                    font-weight: 500 !important
+                    animation: 0.2s linear 0s forwards bg-color-fade-in
+                    span
+                        background-color: var(--neutralDark)
+                &.mouseout
+                    animation: 0.3s linear 0s forwards bg-color-fade-out
+
+
+                span
+                    width: 0.28rem
+                    overflow: hidden
+                    border-radius: 6px
+                div
+                    margin-left: 1.5rem
+                    margin-right: 0.8rem
 
 @include media-breakpoint-up(lg)
     #side-options-main-container
         display: block
         position: relative
+        padding: 0
+
+    #side-options-username-container
+        h6
+            width: 100%
+        button
+            display: none
+
+@keyframes bg-color-fade-in
+    0%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 0%, rgb(0, 0, 0) 0%)
+    25%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 25%, rgb(0, 0, 0) 0%)
+    50%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 50%, rgb(0, 0, 0) 0%)
+    75%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 75%, rgb(0, 0, 0) 0%)
+    100%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 100%, rgb(0, 0, 0) 0%)
+        
+@keyframes bg-color-fade-out
+    0%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 100%, rgb(0, 0, 0) 0%)
+    25%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 75%, rgb(0, 0, 0) 0%)
+    50%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 50%, rgb(0, 0, 0) 0%)
+    75%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 25%, rgb(0, 0, 0) 0%)
+    100%
+        background-color: color-mix(in oklab, var(--neutralTertiarySurface) 0%, rgb(0, 0, 0) 0%)
+        
