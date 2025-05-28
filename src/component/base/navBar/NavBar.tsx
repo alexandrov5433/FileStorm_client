@@ -72,16 +72,9 @@ export default function NavBar() {
                 </button>
                 <div className="collapse navbar-collapse d-felx" id="navbarNav">
                     <ul className="navbar-nav pagesNav">
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
-                        </li>
-                        {
-                            user.id ?
-                                <li className="nav-item">
-                                    <NavLink className="nav-link" aria-current="page" to="/storage">My Storage</NavLink>
-                                </li>
-                                : ''
-                        }
+                        </li> */}
                         <li className="nav-item">
                             <NavLink onClick={toggleTheme} className="nav-link" to="#">Temp_Theme_Toggle</NavLink>
                         </li>
