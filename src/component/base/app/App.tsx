@@ -28,7 +28,7 @@ function App() {
     );
     if (res.status === 200) {
       dispatch(setUser(res.payload as User));
-      navigate(targetPath);
+      navigate(targetPath == '/' ? '/storage' : targetPath);
     } else {
       dispatch(setGuest());
       navigate('/account/login');
