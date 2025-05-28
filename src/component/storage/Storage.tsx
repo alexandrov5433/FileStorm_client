@@ -37,7 +37,7 @@ export default function Storage() {
                         sideOptionsDisplay={sideOptionsDisplay}
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
-                <section id="storageFileOverviewContainer">
+                <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
                     <Outlet/>
                 </section>
             </div>
