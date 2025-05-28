@@ -7,6 +7,10 @@ import PageNotFound from "../component/error/pageNotFound/PageNotFound";
 import Register from "../component/account/register/Register";
 import Storage from "../component/storage/Storage";
 import Account from "../component/account/Account";
+import MyStorage from "../component/storage/view/myStorage/MyStorage";
+import Favorite from "../component/storage/view/favorite/Favorite";
+import MySharedFiles from "../component/storage/view/mySharedFiles/MySharedFiles";
+import SharedWithMe from "../component/storage/view/sharedWithMe/SharedWithMe";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +24,14 @@ const router = createBrowserRouter([
                     { path: 'register', Component: Register }
                 ]
             },
-            { path: 'storage', Component: Storage },
+            {
+                Component: Storage, children: [
+                    { index: true, path: 'my-storage', Component: MyStorage },
+                    { path: 'favorite', Component: Favorite },
+                    { path: 'my-shared-files', Component: MySharedFiles },
+                    { path: 'shared-with-me', Component: SharedWithMe }
+                ]
+            },
 
 
             { path: '*', Component: PageNotFound }
