@@ -6,8 +6,16 @@
     align-items: center
 
     .cloud-container
+        position: relative
         width: 5rem
-        height: auto
+        height: 5rem
+        i
+            font-size: 4.5rem
+            position: absolute
+            top: 12%
+            left: 5%
+            color: $teal-500
+
 
     .numbers-container
         position: relative
@@ -33,8 +41,8 @@
         align-items: center
         i
             font-size: 2rem
-            width: fit-content
-            height: fit-content
+            // width: fit-content
+            // height: fit-content
             animation: 1s linear 4s forwards infinite pulse
 
 @keyframes waterfall
