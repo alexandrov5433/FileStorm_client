@@ -50,7 +50,7 @@ export default function MyStorage() {
 
     function breadcrumbMapper(part: string | number, index: number) {
         return (
-            <li className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page">
+            <li key={part + index.toString()} className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page">
                 {index == 0 ? 'My Storage' : part}
             </li>
         );
