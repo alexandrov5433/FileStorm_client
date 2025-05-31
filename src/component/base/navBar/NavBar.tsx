@@ -56,7 +56,7 @@ export default function NavBar() {
         )
         if (res.status === 200) {
             dispatch(setGuest());
-            navigate('/');
+            navigate('/account/login');
         }
         setLogoutBtnDisabled(false);
     }
@@ -67,6 +67,7 @@ export default function NavBar() {
                 <NavLink className="navbar-brand" to="/">
                     <img id="fileStormLogo" src={fileFtormLogo} alt="FileStorm, files everywhere!" />
                 </NavLink>
+
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -76,36 +77,19 @@ export default function NavBar() {
                             <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
                         </li> */}
                         <li className="nav-item">
-                            <NavLink onClick={toggleTheme} className="nav-link" to="#">Temp_Theme_Toggle</NavLink>
+                            <NavLink onClick={toggleTheme} className="nav-link" to="#">
+                                {currentTheme == 'light' ? <i className="bi bi-sun-fill"></i> : <i className="bi bi-moon-stars-fill"></i>}
+                            </NavLink>
                         </li>
                     </ul>
-                    <section className="userControlls">
-                        {
-                            user.id ?
-                                <div className="dropdown-center">
-                                    <button className="btn dropdown-toggle" id="userNameBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {user.username || ''}
-                                    </button>
-                                    <ul className="dropdown-menu add-box-shadow-border-radius">
-                                        <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                                        <button id="logoutBtn" onClick={logout} disabled={isLogoutBtnDisabled} className="nav-link">Log Out</button>
-                                    </ul>
-                                </div>
-                                :
-                                <div className="nav-auth">
-                                    <NavLink className="nav-link" to="/login">Log In</NavLink>
-                                    <NavLink className="nav-link" to="/register">Register</NavLink>
-                                </div>
-                        }
-                        {/* <button onClick={toggleTheme} type="button" className="btn">
-                            {
-                                currentTheme === 'dark' ?
-                                    <i className="bi bi-sun-fill"></i>
-                                    : <i className="bi bi-moon-stars-fill"></i>
-                            }
-                        </button> */}
-                    </section>
+
+                    <div id="navbar-user-container">
+                            <p>{user.username}</p>
+                            <span className="pipe">|</span>
+                            <button id="logoutBtn" onClick={logout} disabled={isLogoutBtnDisabled} className="nav-link">Log Out</button>
+                    </div>
                 </div>
+
             </div>
         </nav>
     );

@@ -26,7 +26,7 @@ export default function Storage() {
                             Add New
                         </button>
 
-                        <ul id="side-options-add-new-dropdown" className="dropdown-menu">
+                        <ul className="dropdown-menu custom-dropdown">
                             <li>
                                 <span className="dropdown-item">
                                     <i className="bi bi-folder2"></i>

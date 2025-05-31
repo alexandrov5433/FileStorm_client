@@ -2,7 +2,7 @@
 
 nav.navbar
     background-color: var(--black) !important
-    // box-shadow: 0px 0px 10px 8px var(--nav-under-shadow)
+    padding: 0
 
     li a,
     a,
@@ -14,42 +14,47 @@ nav.navbar
     a.active
         color: var(--color-prime) !important
 
-    .userControlls
-        display: flex
-        flex-direction: column
-        align-items: left
+    // .userControlls
+    //     display: flex
+    //     flex-direction: column
+    //     align-items: left
 
-        .dropdown-center
-            #userNameBtn
-                padding-top: 2rem
-                padding-left: 0
-                border: none
-                color: var(--white)
-            
-            .dropdown-menu
-                background: var(--neutralPrimarySurface);
-                width: 100% !important
-                min-width: fit-content !important
+    //     .dropdown-center
+    //         #userNameBtn
+    //             padding-top: 2rem
+    //             padding-left: 0
+    //             border: none
+    //             color: var(--white)
 
-                .nav-link
-                    padding: 0.8rem 0.8rem
-                    width: fit-content
-                    color: var(--neutralDark) !important
-                    &:hover
-                        color: var(--color-prime) !important
+    //         .dropdown-menu
+    //             background: var(--neutralPrimarySurface);
+    //             width: 100% !important
+    //             min-width: fit-content !important
 
-                #logoutBtn
-                    color: var(--color-error) !important
-
-        .nav-auth
-            padding-top: 2rem
-            display: flex
-            flex-direction: column
-            gap: 1rem
+    //     .nav-auth
+    //         padding-top: 2rem
+    //         display: flex
+    //         flex-direction: column
+    //         gap: 1rem
+.nav-link
+    padding: 0.8rem 0.8rem
+    width: fit-content
+    color: var(--neutralDark) !important
+    &:hover
+        color: var(--color-prime) !important
 
 #fileStormLogo
     width: 10rem
     height: auto
+
+#navbar-user-container
+    #logoutBtn
+        padding: 1rem 0
+        color: var(--color-error) !important
+    .pipe
+        display: none
+    p
+        margin: 0
 
 @include media-breakpoint-up(lg)
     #navbarNav
@@ -59,21 +64,31 @@ nav.navbar
             padding-left: 1.2rem
             padding-right: 1.2rem
 
-        .userControlls
-            flex-direction: row
-            align-items: center
-            justify-content: center
+        // .userControlls
+        //     flex-direction: row
+        //     align-items: center
+        //     justify-content: center
 
-            .dropdown-center
-                #userNameBtn
-                    padding: 0.5rem
+        //     .dropdown-center
+        //         #userNameBtn
+        //             padding: 0.5rem
 
-                .dropdown-menu
-                    .nav-link
-                        padding: 0.4rem 0.8rem
-               
-            .nav-auth
-                padding: 0
-                flex-direction: row
+        //         .dropdown-menu
+        //             .nav-link
+        //                 padding: 0.4rem 0.8rem
 
-        
+        //     .nav-auth
+        //         padding: 0
+        //         flex-direction: row
+
+    #navbar-user-container
+        display: flex
+        align-items: center
+        #logoutBtn
+            padding: 0
+        .pipe
+            display: block
+            padding: 0 0.5rem
+            color: $teal-500
+        p
+            margin: 0
