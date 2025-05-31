@@ -1,0 +1,23 @@
+@import '../animation'
+
+.custom-dropdown
+    --bs-dropdown-border-color: var(--neutralTertiary)
+    --bs-dropdown-border-radius: 0px
+    --bs-dropdown-border-width: 1px
+    --bs-dropdown-bg: var(--neutralTertiarySurface)
+    --bs-dropdown-link-active-bg: var(--neutralSecondary)
+    width: fit-content
+    height: fit-content
+    box-shadow: 0 0 12px 6px color-mix(in oklab, var(--neutralSecondary) 20%, #000 0%)
+    animation: 0.2s linear 0s forwards fade-in
+
+    li
+        &:hover
+            cursor: pointer
+        i
+            margin-right: 0.5rem
+        .red-item
+            color: var(--color-error)
+
+@include media-breakpoint-up(sm)
+    .custom-dropdown
