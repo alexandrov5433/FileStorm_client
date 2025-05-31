@@ -14,18 +14,17 @@
         width: fit-content
 
     &:disabled
-
-        opacity: 60%
+        opacity: 0.6
         cursor: not-allowed
         box-shadow: none !important
 
     &:active:not(:disabled)
-        opacity: 60%
+        opacity: 0.6
         animation: 0.15s ease-in-out alternate click
 
     // button types
     &.main-btn
-        background-color: var(--color-prime)
+        background-color: $teal-500
         color: var(--black)
         box-shadow: 0px 0px 10px 1px var(--neutralTertiaryAlt)
 
