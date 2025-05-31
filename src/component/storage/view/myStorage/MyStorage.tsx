@@ -8,19 +8,6 @@ import fetcher from '../../../../lib/action/fetcher';
 import directoryRequest from '../../../../lib/action/fileSystem/directoryRequest';
 import { buildDirectoryPath } from '../../../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../../../lib/definition/hydratedDirectoryReference';
-import ExcelIcon from '../../../../lib/svgComponent/ExcelIcon';
-import PDFIcon from '../../../../lib/svgComponent/PDFIcon';
-import WordIcon from '../../../../lib/svgComponent/WordIcon';
-import PowerPointIcon from '../../../../lib/svgComponent/PowerPointIcon';
-import VideoIcon from '../../../../lib/svgComponent/VideoIcon';
-import PictureIcon from '../../../../lib/svgComponent/PictureIcon';
-import DirectoryIcon from '../../../../lib/svgComponent/DirectoryIcon';
-import AudioIcon from '../../../../lib/svgComponent/AudioIcon';
-import ArchiveIcon from '../../../../lib/svgComponent/ArchiveIcon';
-import ZipIcon from '../../../../lib/svgComponent/ZipIcon';
-import TextIcon from '../../../../lib/svgComponent/TextIcon';
-import UnknownFileIcon from '../../../../lib/svgComponent/UnknownFileIcon';
-import ExeIcon from '../../../../lib/svgComponent/ExeIcon';
 
 export default function MyStorage() {
     const user = useAppSelector(state => state.user);
