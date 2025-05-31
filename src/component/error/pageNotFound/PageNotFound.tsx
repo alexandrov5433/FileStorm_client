@@ -4,7 +4,7 @@ export default function PageNotFound() {
     return (
         <div className="wrapper">
             <h1>404 Page not found...</h1>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/my-storage">My Storage</NavLink>
         </div>
     );
 }
