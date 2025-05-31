@@ -1,8 +1,10 @@
 import FileOptionsDropdown from '../../../lib/component/fileOptionsDropdown/FileOptionsDropdown';
 import SelectRing from '../../../lib/component/selectRing/SelectRing';
+import type { Chunk } from '../../../lib/definition/chunk';
 import type { HydratedDirectoryReference } from '../../../lib/definition/hydratedDirectoryReference';
 import DirectoryIcon from '../../../lib/svgComponent/DirectoryIcon';
 import PDFIcon from '../../../lib/svgComponent/PDFIcon';
+import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
 import './fileOverview.sass';
 
 export default function FileOverview({
@@ -10,6 +12,66 @@ export default function FileOverview({
 }: {
     hydratedDirectoryReference: HydratedDirectoryReference | null
 }) {
+
+    function fileMapper(chunk: Chunk) {
+        return (
+            <div className="file-row" key={chunk.id}>
+                <div className="file-col selector">
+                    <SelectRing entityMarker={chunk.id.toString()} />
+                </div>
+                <div className="file-col type">
+                    {getIconElement(chunk.mime_type)}
+                </div>
+                <div className="file-col name">
+                    <p className="text-content">
+                        {chunk.name}
+                    </p>
+                    {/* TODO: dropdown functionality */}
+                    <FileOptionsDropdown />
+                </div>
+                <div className="file-col size">
+                    <p className="text-content">
+                        {getFormatedFileSize(chunk.size_bytes)}
+                    </p>
+                </div>
+                <div className="file-col created">
+                    <p className="text-content">
+                        {getFormatedDate(chunk.created_on)}
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    function directoryMapper(entry: [string, number]) {
+        return (
+            <div className="file-row" key={entry[0]}>
+                <div className="file-col selector">
+                    <SelectRing entityMarker={entry[0]} />
+                </div>
+                <div className="file-col type">
+                    {getIconElement('directory')}
+                </div>
+                <div className="file-col name">
+                    <p className="text-content">
+                        {entry[0]}
+                    </p>
+                    {/* TODO: dropdown functionality */}
+                    <FileOptionsDropdown />
+                </div>
+                <div className="file-col size">
+                    <p className="text-content">
+                        {entry[1]} Elements
+                    </p>
+                </div>
+                <div className="file-col created">
+                    <p className="text-content">
+                        -
+                    </p>
+                </div>
+            </div>
+        );
+    }
     return (
         <div id="file-overview-main-container">
 
@@ -28,584 +90,12 @@ export default function FileOverview({
                     </div>
 
                     <div className="file-table-body">
-
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                        <div className="file-row">
-                            <div className="file-col selector">
-                                <SelectRing entityMarker="test" />
-                            </div>
-                            <div className="file-col type">
-                                <PDFIcon></PDFIcon>
-                            </div>
-                            <div className="file-col name">
-                                <p className="text-content">Some file</p>
-                                <FileOptionsDropdown />
-                            </div>
-                            <div className="file-col size">
-                                <p className="text-content">500 MB</p>
-                            </div>
-                            <div className="file-col created">
-                                <p className="text-content">May 29, 2025; 20:30</p>
-                            </div>
-                        </div>
-                   
+                        {
+                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).map(fileMapper)
+                        }
+                        {
+                            Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).map(directoryMapper)
+                        }
 
                     </div>
                 </div>
