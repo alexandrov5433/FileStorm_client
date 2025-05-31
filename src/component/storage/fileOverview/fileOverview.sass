@@ -2,3 +2,101 @@
 
 #file-overview-main-container
     background-color: var(--neutralPrimarySurface)
+    flex: 0 1 100%
+    overflow-y: auto
+    scrollbar-color: $teal-500 transparent;
+
+.file-table-wrapper
+    height: 100%
+
+.file-table
+    overflow-y: auto
+    max-height: 100%
+    display: flex
+    flex-direction: column
+    min-width: 100%
+
+.file-table-header
+    display: flex
+    font-weight: bold
+    position: sticky
+    top: 0
+    z-index: 10
+    border-bottom: 1px solid var(--neutralPrimary)
+    background-color: var(--neutralPrimarySurface)
+
+.file-table-body
+    display: flex
+    flex-direction: column
+
+.file-row
+    display: flex
+    transition: background 0.2s
+    height: 4rem
+    border-bottom: 1px solid var(--neutralSecondary)
+    &:has(.select-ring-main-container input:checked)
+        animation: 0.2s linear 0s forwards checked-bg-color-shift
+
+.file-col
+    // outline: 1px solid yellow
+    padding: 0.5rem 0.4rem
+    display: flex
+    align-items: center
+    position: relative
+    &.selector
+        justify-content: center
+        width: fit-content
+        padding-left: 0.8rem
+        padding-right: 0.8rem
+
+    .text-content
+        padding: 0
+        margin: 0
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+.type
+    justify-content: center
+    width: 3rem
+    max-width: 3rem
+    min-width: 3rem
+
+
+.size
+    display: none
+    border-left: 1px solid var(--neutralSecondary) 
+
+.created
+    display: none
+    border-left: 1px solid var(--neutralSecondary) 
+
+.name
+    flex: 1 1 80%
+    .file-options
+        margin-left: auto
+
+@keyframes hover-bg-color-shift
+    0%
+        background-color: transparent
+    100%
+        background-color: var(--neutralTertiaryAlt)
+
+@keyframes checked-bg-color-shift
+    0%
+        background-color: var(--neutralTertiaryAlt)
+    100%
+        background-color: $teal-700
+
+@include media-breakpoint-up(lg)
+    .file-row
+        height: 3rem
+        &:hover
+            animation: 0.2s linear 0s forwards hover-bg-color-shift
+    .name
+        flex: 1 1 50%
+    .size
+        display: flex
+        flex: 1 0 10%
+    .created
+        display: flex
+        flex: 1 0 20%
