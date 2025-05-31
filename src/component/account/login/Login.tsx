@@ -46,7 +46,7 @@ export default function Login() {
         );
         if (res.status === 200) {
             dispatch(setUser(res.payload as User))
-            return navigate('/storage');
+            return navigate('/my-storage');
         } else if (res.status === 400) {
             const authRes: AuthValidationResult[] = res.payload;
             setLoginState(() => {

@@ -59,7 +59,7 @@ export default function Register() {
         );
         if (res.status === 200) {
             dispatch(setUser(res.payload as User));
-            navigate('/storage');
+            navigate('/my-storage');
         } else if (res.status === 400) {
             setFormState(oldState => {
                 const newState = oldState;
