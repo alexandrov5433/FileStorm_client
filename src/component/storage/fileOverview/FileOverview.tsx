@@ -2,8 +2,6 @@ import FileOptionsDropdown from '../../../lib/component/fileOptionsDropdown/File
 import SelectRing from '../../../lib/component/selectRing/SelectRing';
 import type { Chunk } from '../../../lib/definition/chunk';
 import type { HydratedDirectoryReference } from '../../../lib/definition/hydratedDirectoryReference';
-import DirectoryIcon from '../../../lib/svgComponent/DirectoryIcon';
-import PDFIcon from '../../../lib/svgComponent/PDFIcon';
 import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
 import './fileOverview.sass';
 
