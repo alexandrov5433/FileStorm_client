@@ -6,9 +6,11 @@ import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../l
 import './fileOverview.sass';
 
 export default function FileOverview({
-    hydratedDirectoryReference
+    hydratedDirectoryReference,
+    goToNextDir
 }: {
-    hydratedDirectoryReference: HydratedDirectoryReference | null
+    hydratedDirectoryReference: HydratedDirectoryReference | null,
+    goToNextDir: (nextDir: string) => void
 }) {
 
     function fileMapper(chunk: Chunk) {
@@ -51,7 +53,7 @@ export default function FileOverview({
                     {getIconElement('directory')}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content">
+                    <p className="text-content" onClick={() => goToNextDir(entry[0])}>
                         {entry[0]}
                     </p>
                     {/* TODO: dropdown functionality */}
@@ -70,10 +72,11 @@ export default function FileOverview({
             </div>
         );
     }
+
     return (
         <div id="file-overview-main-container">
 
-            <div className="file-table-wrapper">
+            <div className="file-table-wrapper anime-fade-in">
                 <div className="file-table">
                     <div className="file-table-header">
                         <div className="file-col selector">
