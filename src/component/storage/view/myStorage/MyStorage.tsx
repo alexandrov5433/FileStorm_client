@@ -1,6 +1,6 @@
 import './myStorage.sass';
 
-import StorageViewLoader from '../../../skeleton/storageViewLoader/StorageViewLoader';
+import StorageViewLoader from '../../../loader/storageViewLoader/StorageViewLoader';
 import FileOverview from '../../fileOverview/FileOverview';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
@@ -17,10 +17,8 @@ export default function MyStorage() {
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
     useEffect(() => {
-        if (user.id <= 0) return;
-        setDirPath([user.id]);
-        getDirectoryData()
-    }, [user.id]);
+        getDirectoryData();
+    }, [dirPath]);
 
     async function getDirectoryData() {
         setDirRefLoading(true);
@@ -37,10 +35,24 @@ export default function MyStorage() {
 
     function breadcrumbMapper(part: string | number, index: number) {
         return (
-            <li key={part + index.toString()} className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page">
+            <li key={part + index.toString()} className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page" onClick={() => { goToTargetDir(index) }}>
                 {index == 0 ? 'My Storage' : part}
             </li>
         );
+    }
+
+    function goToNextDir(nextDir: string) {
+        setDirPath(state => {
+            const newState = [...state];
+            newState.push(nextDir);
+            return newState;
+        });
+    }
+
+    function goToTargetDir(dirIndexInDirPath: number) {
+        setDirPath(state => {
+            return [...state].slice(0, dirIndexInDirPath + 1);
+        });
     }
 
     // add "active" class to active crumb
@@ -55,7 +67,10 @@ export default function MyStorage() {
             </section>
             {
                 isDirRefLoading ? <StorageViewLoader /> :
-                    <FileOverview hydratedDirectoryReference={hydratedDirRef} />
+                    <FileOverview
+                        hydratedDirectoryReference={hydratedDirRef}
+                        goToNextDir={goToNextDir}
+                    />
             }
         </div>
     );
