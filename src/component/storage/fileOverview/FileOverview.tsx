@@ -5,8 +5,8 @@ import type { HydratedDirectoryReference } from '../../../lib/definition/hydrate
 
 import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
 
-import FileOptionsDropdown from '../../../lib/component/fileOptionsDropdown/FileOptionsDropdown';
-import SelectRing from '../../../lib/component/selectRing/SelectRing';
+import FileOptionsDropdown from './fileOptionsDropdown/FileOptionsDropdown';
+import SelectRing from './selectRing/SelectRing';
 import EmptyDirectory from './emptyDirectory/EmptyDirectory';
 
 export default function FileOverview({
