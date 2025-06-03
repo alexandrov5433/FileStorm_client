@@ -1,9 +1,13 @@
-import FileOptionsDropdown from '../../../lib/component/fileOptionsDropdown/FileOptionsDropdown';
-import SelectRing from '../../../lib/component/selectRing/SelectRing';
+import './fileOverview.sass';
+
 import type { Chunk } from '../../../lib/definition/chunk';
 import type { HydratedDirectoryReference } from '../../../lib/definition/hydratedDirectoryReference';
+
 import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
-import './fileOverview.sass';
+
+import FileOptionsDropdown from '../../../lib/component/fileOptionsDropdown/FileOptionsDropdown';
+import SelectRing from '../../../lib/component/selectRing/SelectRing';
+import EmptyDirectory from './emptyDirectory/EmptyDirectory';
 
 export default function FileOverview({
     hydratedDirectoryReference,
@@ -92,10 +96,15 @@ export default function FileOverview({
 
                     <div className="file-table-body">
                         {
-                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).map(fileMapper)
-                        }
-                        {
-                            Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).map(directoryMapper)
+                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).length == 0 && Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory/> :
+                                <>
+                                    {
+                                        Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).map(directoryMapper)
+                                    }
+                                    {
+                                        Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).map(fileMapper)
+                                    }
+                                </>
                         }
 
                     </div>
