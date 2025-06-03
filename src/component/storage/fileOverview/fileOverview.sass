@@ -30,10 +30,13 @@
     display: flex
     flex-direction: column
     height: 100%
-    .file-col.name .text-content:hover
-        cursor: pointer
-        text-decoration: underline
-        color: var(--neutralDark)
+    .file-col.name .text-content
+        text-decoration: none
+        color: var(--bs-secondary-color)
+        &:hover
+            cursor: pointer
+            text-decoration: underline
+            color: var(--neutralDark)
 
 .file-row
     display: flex
