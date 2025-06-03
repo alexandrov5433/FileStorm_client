@@ -4,15 +4,44 @@ import SideOptions from './sideOptions/SideOptions';
 
 import { useState } from 'react';
 import NavBar from '../base/navBar/NavBar';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
+import { useAppSelector } from '../../lib/redux/reduxTypedHooks';
+import TextInputBox from '../global/textInputBox/TextInputBox';
+import { validateFileAndDirName } from '../../lib/util/validator';
+import fetcher from '../../lib/action/fetcher';
+import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
+import { buildDirectoryPath } from '../../lib/util/directory';
 
 
 export default function Storage() {
+    const user = useAppSelector(state => state.user);
 
+    const [dirPath, setDirPath] = useState<Array<string | number>>([user.id]);
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
+    const [isDirectoryDialog, setDirectoryDialog] = useState(false);
 
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
+    }
+
+    // new directory addition
+    function openAddDirectoryDialog() {
+        setDirectoryDialog(true);
+    }
+    function closeAddDirectoryDialog() {
+        setDirectoryDialog(false);
+    }
+    async function addNewDirectory(newDirName: string) {
+        const res = await fetcher(
+            createDirectoryRequest(
+                buildDirectoryPath(dirPath),
+                newDirName
+            )
+        );
+        if (res.status == 200) {
+            // trigger refresh in my-storage
+            setDirPath(state => [...state]);
+        }
     }
 
     return (
@@ -28,7 +57,7 @@ export default function Storage() {
 
                         <ul className="dropdown-menu custom-dropdown">
                             <li>
-                                <span className="dropdown-item">
+                                <span className="dropdown-item" onClick={openAddDirectoryDialog}>
                                     <i className="bi bi-folder2"></i>
                                     Directory
                                 </span>
@@ -48,8 +77,17 @@ export default function Storage() {
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet />
+                    <Outlet context={{ user, dirPath, setDirPath }} />
                 </section>
+                {
+                    isDirectoryDialog ? <TextInputBox
+                        funcToRunOnInputDone={addNewDirectory}
+                        funcToClose={closeAddDirectoryDialog}
+                        funcInputValueValidator={validateFileAndDirName}
+                        textContent='New Directory Name'
+                        textExtraNote='Can not contain: < > : " / \ | ? *'
+                        btnText='Add Directory'/> : ''
+                }
             </div>
         </>
     );

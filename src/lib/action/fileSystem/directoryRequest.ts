@@ -1,13 +1,29 @@
 import { addRequestParams } from "../../util/request";
 
-export default function directoryRequest(
-    url: string,
-    method: 'GET',
+function getDirectoryRequest(
     requestParams: { [key: string]: string }
 ): Request {
-    const urlWithParams = addRequestParams(url, requestParams);
+    const urlWithParams = addRequestParams('/api/directory', requestParams);
     return new Request(urlWithParams, {
-        method,
+        method: 'GET',
     });
 }
+
+function createDirectoryRequest(
+    targetDirectoryPath: string,
+    newDirectoryName: string
+): Request {
+    const formData = new FormData();
+    formData.append('targetDirectoryPath', targetDirectoryPath);
+    formData.append('newDirectoryName', newDirectoryName);
+    return new Request('/api/directory', {
+        method: 'POST',
+        body: formData
+    });
+}
+
+export {
+    getDirectoryRequest,
+    createDirectoryRequest
+};
 
