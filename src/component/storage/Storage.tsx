@@ -4,7 +4,7 @@ import SideOptions from './sideOptions/SideOptions';
 
 import { useState } from 'react';
 import NavBar from '../base/navBar/NavBar';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet } from 'react-router';
 import { useAppSelector } from '../../lib/redux/reduxTypedHooks';
 import TextInputBox from '../global/textInputBox/TextInputBox';
 import { validateFileAndDirName } from '../../lib/util/validator';
