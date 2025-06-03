@@ -1,0 +1,42 @@
+@import '../../../lib/style/styleExporter'
+
+#text-input-box-main-container
+    position: absolute
+    width: 100%
+    height: 100%
+    z-index: 3
+    backdrop-filter: blur(2.5px)
+    display: flex
+    section
+        width: 100%
+        display: flex
+        flex-direction: column
+        padding: 0.5rem
+        padding-top: 0.2rem
+        margin: auto
+        background-color: var(--neutralTertiarySurface)
+        border: 1px solid var(--neutralTertiary)
+        p.textContent
+            text-align: center
+        p.textExtraNote
+            text-align: center
+            color: var(--neutralPrimaryAlt)
+        input
+            margin-bottom: 1rem
+            background-color: var(--neutralSecondarySurface)
+            border: 1px solid var(--neutralSecondary)
+            width: 100%
+            text-align: center
+            padding: 0.2rem
+        button#close-btn
+            align-self: flex-end
+            
+@include media-breakpoint-up(sm)
+    #text-input-box-main-container
+        section
+            width: 70%
+
+@include media-breakpoint-up(lg)
+    #text-input-box-main-container
+        section
+            width: 40%
