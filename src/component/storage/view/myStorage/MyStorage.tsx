@@ -2,17 +2,21 @@ import './myStorage.sass';
 
 import StorageViewLoader from '../../../loader/storageViewLoader/StorageViewLoader';
 import FileOverview from '../../fileOverview/FileOverview';
+
 import { useEffect, useState } from 'react';
-import { useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import fetcher from '../../../../lib/action/fetcher';
-import directoryRequest from '../../../../lib/action/fileSystem/directoryRequest';
+import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directoryRequest';
 import { buildDirectoryPath } from '../../../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../../../lib/definition/hydratedDirectoryReference';
+import { useOutletContext } from 'react-router';
 
 export default function MyStorage() {
-    const user = useAppSelector(state => state.user);
+    const { dirPath, setDirPath }: {
+        dirPath: Array<string | number>
+        setDirPath: React.Dispatch<React.SetStateAction<(string | number)[]>>
+    } = useOutletContext();
 
-    const [dirPath, setDirPath] = useState<Array<string | number>>([user.id]);
+
     const [hydratedDirRef, setHydratedDirRef] = useState<HydratedDirectoryReference | null>(null);
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
@@ -23,7 +27,7 @@ export default function MyStorage() {
     async function getDirectoryData() {
         setDirRefLoading(true);
         const res = await fetcher(
-            directoryRequest('/api/directory', 'GET', { 'targetDirectoryPath': buildDirectoryPath(dirPath) })
+            getDirectoryRequest({ 'targetDirectoryPath': buildDirectoryPath(dirPath) })
         );
         if (res.status == 200) {
             setHydratedDirRef(res.payload);
