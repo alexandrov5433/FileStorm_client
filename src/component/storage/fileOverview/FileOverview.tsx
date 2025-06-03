@@ -27,11 +27,11 @@ export default function FileOverview({
                     {getIconElement(chunk.mime_type)}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content">
+                    <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.name}>
                         {chunk.name}
-                    </p>
+                    </a>
                     {/* TODO: dropdown functionality */}
-                    <FileOptionsDropdown />
+                    <FileOptionsDropdown chunk={chunk}/>
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
@@ -61,7 +61,7 @@ export default function FileOverview({
                         {entry[0]}
                     </p>
                     {/* TODO: dropdown functionality */}
-                    <FileOptionsDropdown />
+                    {/* <FileOptionsDropdown /> */}
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
@@ -96,7 +96,7 @@ export default function FileOverview({
 
                     <div className="file-table-body">
                         {
-                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).length == 0 && Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory/> :
+                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).length == 0 && Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
                                 <>
                                     {
                                         Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).map(directoryMapper)
