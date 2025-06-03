@@ -9,20 +9,33 @@ import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directory
 import { buildDirectoryPath } from '../../../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../../../lib/definition/hydratedDirectoryReference';
 import { useOutletContext } from 'react-router';
+import type { Chunk } from '../../../../lib/definition/chunk';
 
 export default function MyStorage() {
-    const { dirPath, setDirPath }: {
-        dirPath: Array<string | number>
-        setDirPath: React.Dispatch<React.SetStateAction<(string | number)[]>>
+    const { dirPath, setDirPath, newlyAddedDirRef }: {
+        dirPath: Array<string | number>,
+        setDirPath: React.Dispatch<React.SetStateAction<(string | number)[]>>,
+        newlyAddedDirRef: HydratedDirectoryReference | null
     } = useOutletContext();
 
+    const [simpleDirectoryRefs, setSimpleDirectoryRefs] = useState<{ [key: string]: number } | null>(null);
+    const [hydratedChunkRefs, setHydratedChunkRefs] = useState<{ [key: string]: Chunk } | null>(null);
 
-    const [hydratedDirRef, setHydratedDirRef] = useState<HydratedDirectoryReference | null>(null);
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
     useEffect(() => {
         getDirectoryData();
     }, [dirPath]);
+
+    useEffect(() => {
+        const newDirName = newlyAddedDirRef?.name || '';
+        const elementsCount = Object.values(newlyAddedDirRef?.hydratedChunkRefs || {}).length + Object.values(newlyAddedDirRef?.simpleDirectoryRefs || {}).length;
+        setSimpleDirectoryRefs(state => {
+            const newState = { ...state };
+            Object.assign(newState, { [newDirName]: elementsCount });
+            return newState;
+        });
+    }, [newlyAddedDirRef]);
 
     async function getDirectoryData() {
         setDirRefLoading(true);
@@ -30,7 +43,8 @@ export default function MyStorage() {
             getDirectoryRequest({ 'targetDirectoryPath': buildDirectoryPath(dirPath) })
         );
         if (res.status == 200) {
-            setHydratedDirRef(res.payload);
+            setSimpleDirectoryRefs((res.payload as HydratedDirectoryReference).simpleDirectoryRefs);
+            setHydratedChunkRefs((res.payload as HydratedDirectoryReference).hydratedChunkRefs);
         } else if (res.status == 400) {
 
         }
@@ -72,7 +86,8 @@ export default function MyStorage() {
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview
-                        hydratedDirectoryReference={hydratedDirRef}
+                        simpleDirectoryRefs={simpleDirectoryRefs}
+                        hydratedChunkRefs={hydratedChunkRefs}
                         goToNextDir={goToNextDir}
                     />
             }

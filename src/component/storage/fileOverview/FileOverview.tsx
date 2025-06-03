@@ -1,7 +1,6 @@
 import './fileOverview.sass';
 
 import type { Chunk } from '../../../lib/definition/chunk';
-import type { HydratedDirectoryReference } from '../../../lib/definition/hydratedDirectoryReference';
 
 import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
 
@@ -10,10 +9,12 @@ import SelectRing from './selectRing/SelectRing';
 import EmptyDirectory from './emptyDirectory/EmptyDirectory';
 
 export default function FileOverview({
-    hydratedDirectoryReference,
+    simpleDirectoryRefs,
+    hydratedChunkRefs,
     goToNextDir
 }: {
-    hydratedDirectoryReference: HydratedDirectoryReference | null,
+    simpleDirectoryRefs: { [key: string]: number } | null,
+    hydratedChunkRefs: { [key: string]: Chunk } | null,
     goToNextDir: (nextDir: string) => void
 }) {
 
@@ -31,7 +32,7 @@ export default function FileOverview({
                         {chunk.name}
                     </a>
                     {/* TODO: dropdown functionality */}
-                    <FileOptionsDropdown chunk={chunk}/>
+                    <FileOptionsDropdown chunk={chunk} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
@@ -96,13 +97,13 @@ export default function FileOverview({
 
                     <div className="file-table-body">
                         {
-                            Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).length == 0 && Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
+                            Object.values(hydratedChunkRefs || {}).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
                                 <>
                                     {
-                                        Object.entries(hydratedDirectoryReference?.simpleDirectoryRefs || {}).map(directoryMapper)
+                                        Object.entries(simpleDirectoryRefs || {}).map(directoryMapper)
                                     }
                                     {
-                                        Object.values(hydratedDirectoryReference?.hydratedChunkRefs || {}).map(fileMapper)
+                                        Object.values(hydratedChunkRefs || {}).map(fileMapper)
                                     }
                                 </>
                         }

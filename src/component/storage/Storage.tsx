@@ -11,6 +11,7 @@ import { validateFileAndDirName } from '../../lib/util/validator';
 import fetcher from '../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
 import { buildDirectoryPath } from '../../lib/util/directory';
+import type { HydratedDirectoryReference } from '../../lib/definition/hydratedDirectoryReference';
 
 
 export default function Storage() {
@@ -19,6 +20,7 @@ export default function Storage() {
     const [dirPath, setDirPath] = useState<Array<string | number>>([user.id]);
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
     const [isDirectoryDialog, setDirectoryDialog] = useState(false);
+    const [newlyAddedDirRef, setNewlyAddedDirRef] = useState<HydratedDirectoryReference | null>(null);
 
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
@@ -40,7 +42,7 @@ export default function Storage() {
         );
         if (res.status == 200) {
             // trigger refresh in my-storage
-            setDirPath(state => [...state]);
+            setNewlyAddedDirRef(res.payload as HydratedDirectoryReference);
         }
     }
 
@@ -77,7 +79,7 @@ export default function Storage() {
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet context={{ user, dirPath, setDirPath }} />
+                    <Outlet context={{ user, dirPath, setDirPath, newlyAddedDirRef }} />
                 </section>
                 {
                     isDirectoryDialog ? <TextInputBox
