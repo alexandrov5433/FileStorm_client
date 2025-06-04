@@ -46,6 +46,11 @@ export default function Storage() {
         }
     }
 
+    // dirPath management
+    function goingToOtherThanMyStorage() {
+        setDirPath([user.id]);
+    }
+
     return (
         <>
             <NavBar />
@@ -76,7 +81,8 @@ export default function Storage() {
                     <button id="storageSideOptionsBtn" onClick={toggleSideOptionsDisplay} className="custom-btn secondary-btn" type="button">More</button>
                     <SideOptions
                         sideOptionsDisplay={sideOptionsDisplay}
-                        sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
+                        sideOptionsDisplayToggler={toggleSideOptionsDisplay}
+                        goingToOtherThanMyStorage={goingToOtherThanMyStorage} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
                     <Outlet context={{ user, dirPath, setDirPath, newlyAddedDirRef }} />

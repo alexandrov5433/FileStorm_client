@@ -6,10 +6,12 @@ import mouseOutClassUpdate from '../../../lib/hook/mouseOutClassUpdate';
 
 export default function SideOptions({
     sideOptionsDisplay,
-    sideOptionsDisplayToggler
+    sideOptionsDisplayToggler,
+    goingToOtherThanMyStorage
 }: {
     sideOptionsDisplay: boolean,
-    sideOptionsDisplayToggler: () => void
+    sideOptionsDisplayToggler: () => void,
+    goingToOtherThanMyStorage: () => void
 }) {
     const user = useAppSelector(state => state.user);
 
@@ -44,7 +46,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="favorite" ref={favoriteRef}>
+                        <NavLink to="favorite" ref={favoriteRef} onClick={goingToOtherThanMyStorage}>
                             <span></span>
                             <div>
                                 <i className="bi bi-heart"></i>
@@ -53,7 +55,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-shared-files" ref={mySharedFilesRef}>
+                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={goingToOtherThanMyStorage}>
                             <span></span>
                             <div>
                                 <i className="bi bi-share"></i>
@@ -62,7 +64,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="shared-with-me" ref={sharedWithMeRef} className="">
+                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={goingToOtherThanMyStorage}>
                             <span></span>
                             <div>
                                 <i className="bi bi-people"></i>
