@@ -1,1 +1,18 @@
 @import '../../../../lib/style/styleExporter'
+
+#file-options-main-container
+    margin-left: auto
+    & > *:not(:last-child)
+        margin-right: 0.5rem
+
+    #file-options-favorite-container
+        .is_favorite
+            color: $yellow-500
+    
+@include media-breakpoint-up(lg)
+    #file-options-main-container
+        #file-options-favorite-container:not(:has(.is_favorite))
+            display: none
+        &:hover
+            #file-options-favorite-container
+                display: inline

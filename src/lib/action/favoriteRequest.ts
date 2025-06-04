@@ -4,6 +4,20 @@ function getFavoriteRequest(): Request {
     });
 }
 
+function markFileAsFavorite(fileId: number): Request {
+    return new Request(`/api/favorite/${fileId}`, {
+        method: 'POST'
+    });
+}
+
+function removeFileFromFavorite(fileId: number): Request {
+    return new Request(`/api/favorite/${fileId}`, {
+        method: 'DELETE'
+    });
+}
+
 export {
-    getFavoriteRequest
+    getFavoriteRequest,
+    markFileAsFavorite,
+    removeFileFromFavorite
 };
