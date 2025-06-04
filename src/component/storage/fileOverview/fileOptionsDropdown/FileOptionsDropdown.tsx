@@ -11,6 +11,7 @@ export default function FileOptionsDropdown({
     chunk: Chunk
 }) {
     const [isFavorite, setIsFavorite] = useState(chunk.is_favorite);
+    const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
 
     function download() {
         const anchor = document.createElement('a');
@@ -20,17 +21,21 @@ export default function FileOptionsDropdown({
     }
 
     async function addToFavorite() {
+        setFavoriteRequestLoading(true);
         const res = await fetcher(markFileAsFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(true);
         }
+        setFavoriteRequestLoading(false);
     }
-
+    
     async function removeFromFavorite() {
+        setFavoriteRequestLoading(true);
         const res = await fetcher(removeFileFromFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(false)
         }
+        setFavoriteRequestLoading(false);
     }
 
 
@@ -38,7 +43,8 @@ export default function FileOptionsDropdown({
     return (
         <div id="file-options-main-container">
             <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
-                isFavorite ? removeFromFavorite : addToFavorite
+                isFavoriteRequestLoading ? () => null :
+                (isFavorite ? removeFromFavorite : addToFavorite)
             }>
                 {
                     isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
