@@ -12,12 +12,14 @@ export default function FileOverview({
     simpleDirectoryRefs,
     hydratedChunkRefs,
     goToNextDir,
-    displayEntities
+    displayEntities,
+    emptyDirectoryTextContent = 'Empty Directory.'
 }: {
     simpleDirectoryRefs?: { [key: string]: number } | null,
-    hydratedChunkRefs: { [key: string]: Chunk } | null,
+    hydratedChunkRefs: Chunk[],
     goToNextDir: (nextDir: string) => void,
-    displayEntities: 'all' | 'filesOnly'
+    displayEntities: 'all' | 'filesOnly',
+    emptyDirectoryTextContent?: string
 }) {
 
     function fileMapper(chunk: Chunk) {
@@ -102,13 +104,13 @@ export default function FileOverview({
                             displayEntities == 'all' ?
 
                                 (
-                                    Object.values(hydratedChunkRefs || {}).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
+                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
                                         <>
                                             {
                                                 Object.entries(simpleDirectoryRefs || {}).map(directoryMapper)
                                             }
                                             {
-                                                Object.values(hydratedChunkRefs || {}).map(fileMapper)
+                                                (hydratedChunkRefs || []).map(fileMapper)
                                             }
                                         </>
                                 )
@@ -116,7 +118,7 @@ export default function FileOverview({
                                 :
 
                                 (
-                                    Object.values(hydratedChunkRefs || {}).length == 0 ? <EmptyDirectory /> : Object.values(hydratedChunkRefs || {}).map(fileMapper)
+                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory /> : (hydratedChunkRefs || []).map(fileMapper)
                                 )
 
                         }
