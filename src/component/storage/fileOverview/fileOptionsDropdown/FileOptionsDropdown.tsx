@@ -4,12 +4,16 @@ import type { Chunk } from '../../../../lib/definition/chunk';
 import fetcher from '../../../../lib/action/fetcher';
 import { markFileAsFavorite, removeFileFromFavorite } from '../../../../lib/action/favoriteRequest';
 import { useState } from 'react';
+import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
+import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 
 export default function FileOptionsDropdown({
     chunk
 }: {
     chunk: Chunk
 }) {
+    const dispatch = useAppDispatch();
+
     const [isFavorite, setIsFavorite] = useState(chunk.is_favorite);
     const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
 
@@ -25,6 +29,7 @@ export default function FileOptionsDropdown({
         const res = await fetcher(markFileAsFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(true);
+            dispatch(chunkAddedToFav(chunk));
         }
         setFavoriteRequestLoading(false);
     }
@@ -34,6 +39,7 @@ export default function FileOptionsDropdown({
         const res = await fetcher(removeFileFromFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(false)
+            dispatch(chunkRemovedFromFav(chunk));
         }
         setFavoriteRequestLoading(false);
     }

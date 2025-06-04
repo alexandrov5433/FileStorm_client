@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
-import { getFavoriteRequest } from '../../../../lib/action/favoriteRequest';
-import fetcher from '../../../../lib/action/fetcher';
 import './favorite.sass';
-import type { Chunk } from '../../../../lib/definition/chunk';
+
 import StorageViewLoader from '../../../loader/storageViewLoader/StorageViewLoader';
 import FileOverview from '../../fileOverview/FileOverview';
 
+import { useEffect, useState } from 'react';
+import { getFavoriteRequest } from '../../../../lib/action/favoriteRequest';
+import fetcher from '../../../../lib/action/fetcher';
+import type { Chunk } from '../../../../lib/definition/chunk';
+import { useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
+
 export default function Favorite() {
+    const favoriteUpdate = useAppSelector(state => state.favoriteUpdate);
 
     const [favorite, setFavorite] = useState<Chunk[]>([]);
     const [isFavoriteLoading, setFavoriteLoading] = useState(true);
@@ -14,6 +18,13 @@ export default function Favorite() {
     useEffect(() => {
         getFavorite();
     }, []);
+
+    useEffect(() => {
+        if (favoriteUpdate.updateType == 'remove') {
+            const removedChunkId = favoriteUpdate.chunk?.id || 0;
+            setFavorite(state => state.filter(c => c.id != removedChunkId));
+        }
+    }, [favoriteUpdate]);
 
     async function getFavorite() {
         setFavoriteLoading(true);

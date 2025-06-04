@@ -23,7 +23,7 @@ export default function FileOverview({
     emptyDirectoryTextContent?: string,
     emptyDirectoryIcon?: 'directory' | 'file'
 }) {
-
+    
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return chunkRefs.sort((a, b) => a.name.localeCompare(b.name));
     }
