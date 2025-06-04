@@ -19,7 +19,7 @@ export default function MyStorage() {
     } = useOutletContext();
 
     const [simpleDirectoryRefs, setSimpleDirectoryRefs] = useState<{ [key: string]: number } | null>(null);
-    const [hydratedChunkRefs, setHydratedChunkRefs] = useState<{ [key: string]: Chunk } | null>(null);
+    const [hydratedChunkRefs, setHydratedChunkRefs] = useState<Chunk[] | null>(null);
 
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
@@ -29,7 +29,7 @@ export default function MyStorage() {
 
     useEffect(() => {
         const newDirName = newlyAddedDirRef?.name || '';
-        const elementsCount = Object.values(newlyAddedDirRef?.hydratedChunkRefs || {}).length + Object.values(newlyAddedDirRef?.simpleDirectoryRefs || {}).length;
+        const elementsCount = (hydratedChunkRefs || []).length + Object.values(newlyAddedDirRef?.simpleDirectoryRefs || {}).length;
         setSimpleDirectoryRefs(state => {
             const newState = { ...state };
             Object.assign(newState, { [newDirName]: elementsCount });
@@ -43,8 +43,8 @@ export default function MyStorage() {
             getDirectoryRequest({ 'targetDirectoryPath': buildDirectoryPath(dirPath) })
         );
         if (res.status == 200) {
-            setSimpleDirectoryRefs((res.payload as HydratedDirectoryReference).simpleDirectoryRefs);
-            setHydratedChunkRefs((res.payload as HydratedDirectoryReference).hydratedChunkRefs);
+            setSimpleDirectoryRefs((res.payload as HydratedDirectoryReference).simpleDirectoryRefs || {});
+            setHydratedChunkRefs((res.payload as HydratedDirectoryReference).hydratedChunkRefs || []);
         } else if (res.status == 400) {
 
         }
@@ -86,8 +86,8 @@ export default function MyStorage() {
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview
-                        simpleDirectoryRefs={simpleDirectoryRefs}
-                        hydratedChunkRefs={hydratedChunkRefs}
+                        simpleDirectoryRefs={simpleDirectoryRefs || {}}
+                        hydratedChunkRefs={hydratedChunkRefs || []}
                         goToNextDir={goToNextDir}
                         displayEntities='all'
                     />
