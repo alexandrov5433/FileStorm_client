@@ -89,6 +89,7 @@ export default function MyStorage() {
                         simpleDirectoryRefs={simpleDirectoryRefs}
                         hydratedChunkRefs={hydratedChunkRefs}
                         goToNextDir={goToNextDir}
+                        displayEntities='all'
                     />
             }
         </div>
