@@ -1,5 +1,6 @@
-import type { Chunk } from '../../definition/chunk';
 import './fileOptionsDropdown.sass';
+
+import type { Chunk } from '../../../../lib/definition/chunk';
 
 export default function FileOptionsDropdown({
     chunk
