@@ -13,13 +13,15 @@ export default function FileOverview({
     hydratedChunkRefs,
     goToNextDir,
     displayEntities,
-    emptyDirectoryTextContent = 'Empty Directory.'
+    emptyDirectoryTextContent = 'Empty Directory.',
+    emptyDirectoryIcon = 'directory'
 }: {
     simpleDirectoryRefs?: { [key: string]: number } | null,
     hydratedChunkRefs: Chunk[],
     goToNextDir?: (nextDir: string) => void,
     displayEntities: 'all' | 'filesOnly',
-    emptyDirectoryTextContent?: string
+    emptyDirectoryTextContent?: string,
+    emptyDirectoryIcon?: 'directory' | 'file'
 }) {
 
     function fileMapper(chunk: Chunk) {
@@ -104,7 +106,9 @@ export default function FileOverview({
                             displayEntities == 'all' ?
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory textContent={emptyDirectoryTextContent} /> :
+                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory
+                                        textContent={emptyDirectoryTextContent}
+                                        icon={emptyDirectoryIcon} /> :
                                         <>
                                             {
                                                 Object.entries(simpleDirectoryRefs || {}).map(directoryMapper)
@@ -118,7 +122,9 @@ export default function FileOverview({
                                 :
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory textContent={emptyDirectoryTextContent} /> : (hydratedChunkRefs || []).map(fileMapper)
+                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory
+                                        textContent={emptyDirectoryTextContent}
+                                        icon={emptyDirectoryIcon} /> : (hydratedChunkRefs || []).map(fileMapper)
                                 )
                         }
 
