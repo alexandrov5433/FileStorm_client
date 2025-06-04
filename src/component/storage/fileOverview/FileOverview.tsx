@@ -24,6 +24,14 @@ export default function FileOverview({
     emptyDirectoryIcon?: 'directory' | 'file'
 }) {
 
+    function fileSort(chunkRefs: Chunk[]): Chunk[] {
+        return chunkRefs.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function dirSort(dirRefs: { [key: string]: number }): [string, number][] {
+        return Object.entries(dirRefs).sort((a, b) => a[0].localeCompare(b[0]));
+    }
+
     function fileMapper(chunk: Chunk) {
         return (
             <div className="file-row" key={chunk.id}>
@@ -111,10 +119,10 @@ export default function FileOverview({
                                         icon={emptyDirectoryIcon} /> :
                                         <>
                                             {
-                                                Object.entries(simpleDirectoryRefs || {}).map(directoryMapper)
+                                                dirSort(simpleDirectoryRefs || {}).map(directoryMapper)
                                             }
                                             {
-                                                (hydratedChunkRefs || []).map(fileMapper)
+                                                fileSort(hydratedChunkRefs || []).map(fileMapper)
                                             }
                                         </>
                                 )
@@ -124,7 +132,7 @@ export default function FileOverview({
                                 (
                                     (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory
                                         textContent={emptyDirectoryTextContent}
-                                        icon={emptyDirectoryIcon} /> : (hydratedChunkRefs || []).map(fileMapper)
+                                        icon={emptyDirectoryIcon} /> : fileSort(hydratedChunkRefs || []).map(fileMapper)
                                 )
                         }
 
