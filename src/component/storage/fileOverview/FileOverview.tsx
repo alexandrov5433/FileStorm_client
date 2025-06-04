@@ -17,7 +17,7 @@ export default function FileOverview({
 }: {
     simpleDirectoryRefs?: { [key: string]: number } | null,
     hydratedChunkRefs: Chunk[],
-    goToNextDir: (nextDir: string) => void,
+    goToNextDir?: (nextDir: string) => void,
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string
 }) {
@@ -62,7 +62,7 @@ export default function FileOverview({
                     {getIconElement('directory')}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content" onClick={() => goToNextDir(entry[0])}>
+                    <p className="text-content" onClick={() => goToNextDir?.(entry[0])}>
                         {entry[0]}
                     </p>
                     {/* TODO: dropdown functionality */}
@@ -104,7 +104,7 @@ export default function FileOverview({
                             displayEntities == 'all' ?
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory /> :
+                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory textContent={emptyDirectoryTextContent} /> :
                                         <>
                                             {
                                                 Object.entries(simpleDirectoryRefs || {}).map(directoryMapper)
@@ -118,9 +118,8 @@ export default function FileOverview({
                                 :
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory /> : (hydratedChunkRefs || []).map(fileMapper)
+                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory textContent={emptyDirectoryTextContent} /> : (hydratedChunkRefs || []).map(fileMapper)
                                 )
-
                         }
 
                     </div>
