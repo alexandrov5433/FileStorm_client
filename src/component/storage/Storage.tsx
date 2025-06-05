@@ -2,25 +2,30 @@ import './storage.sass';
 
 import SideOptions from './sideOptions/SideOptions';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavBar from '../base/navBar/NavBar';
 import { Outlet } from 'react-router';
-import { useAppSelector } from '../../lib/redux/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../lib/redux/reduxTypedHooks';
 import TextInputBox from '../global/textInputBox/TextInputBox';
 import { validateFileAndDirName } from '../../lib/util/validator';
 import fetcher from '../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
 import { buildDirectoryPath } from '../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../lib/definition/hydratedDirectoryReference';
+import { setDirPath, setNewlyAddedDirRef } from '../../lib/redux/slice/directory';
 
 
 export default function Storage() {
+    const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
+    const { dirPath } = useAppSelector(state => state.directory);
 
-    const [dirPath, setDirPath] = useState<Array<string | number>>([user.id]);
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
     const [isDirectoryDialog, setDirectoryDialog] = useState(false);
-    const [newlyAddedDirRef, setNewlyAddedDirRef] = useState<HydratedDirectoryReference | null>(null);
+
+    useEffect(() => {
+        dispatch(setDirPath([user.id]));
+    }, []);
 
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
@@ -42,13 +47,8 @@ export default function Storage() {
         );
         if (res.status == 200) {
             // trigger refresh in my-storage
-            setNewlyAddedDirRef(res.payload as HydratedDirectoryReference);
+            dispatch(setNewlyAddedDirRef(res.payload as HydratedDirectoryReference));
         }
-    }
-
-    // dirPath management
-    function goingToOtherThanMyStorage() {
-        setDirPath([user.id]);
     }
 
     return (
@@ -81,11 +81,10 @@ export default function Storage() {
                     <button id="storageSideOptionsBtn" onClick={toggleSideOptionsDisplay} className="custom-btn secondary-btn" type="button">More</button>
                     <SideOptions
                         sideOptionsDisplay={sideOptionsDisplay}
-                        sideOptionsDisplayToggler={toggleSideOptionsDisplay}
-                        goingToOtherThanMyStorage={goingToOtherThanMyStorage} />
+                        sideOptionsDisplayToggler={toggleSideOptionsDisplay}/>
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet context={{ user, dirPath, setDirPath, newlyAddedDirRef }} />
+                    <Outlet/>
                 </section>
                 {
                     isDirectoryDialog ? <TextInputBox

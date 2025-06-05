@@ -4,26 +4,30 @@ import type { Chunk } from '../../../lib/definition/chunk';
 
 import { getFormatedDate, getFormatedFileSize, getIconElement } from '../../../lib/util/file';
 
-import FileOptionsDropdown from './fileOptionsDropdown/FileOptionsDropdown';
+import FileOptionsDropdown from './optionsDropdown/FileOptionsDropdown';
 import SelectRing from './selectRing/SelectRing';
 import EmptyDirectory from './emptyDirectory/EmptyDirectory';
+import DirectoryOptionsDropdown from './optionsDropdown/DirectoryOptionsDropdown';
+
+import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
+import { setDirPath } from '../../../lib/redux/slice/directory';
 
 export default function FileOverview({
     simpleDirectoryRefs,
     hydratedChunkRefs,
-    goToNextDir,
     displayEntities,
     emptyDirectoryTextContent = 'Empty Directory.',
     emptyDirectoryIcon = 'directory'
 }: {
     simpleDirectoryRefs?: { [key: string]: number } | null,
     hydratedChunkRefs: Chunk[],
-    goToNextDir?: (nextDir: string) => void,
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string,
     emptyDirectoryIcon?: 'directory' | 'file'
 }) {
-    
+    const dispatch = useAppDispatch();
+    const { dirPath } = useAppSelector(state => state.directory);
+
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return chunkRefs.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -62,6 +66,12 @@ export default function FileOverview({
         );
     }
 
+    function goToNextDir(nextDir: string) {
+        const newDirPath = [...dirPath];
+        newDirPath.push(nextDir);
+        dispatch(setDirPath(newDirPath));
+    }
+
     function directoryMapper(entry: [string, number]) {
         return (
             <div className="file-row" key={entry[0]}>
@@ -72,11 +82,10 @@ export default function FileOverview({
                     {getIconElement('directory')}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content" onClick={() => goToNextDir?.(entry[0])}>
+                    <p className="text-content" onClick={() => goToNextDir(entry[0])}>
                         {entry[0]}
                     </p>
-                    {/* TODO: dropdown functionality */}
-                    {/* <FileOptionsDropdown /> */}
+                    <DirectoryOptionsDropdown dirName={entry[0]} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">

@@ -6,27 +6,25 @@ import FileOverview from '../../fileOverview/FileOverview';
 import { useEffect, useState } from 'react';
 import fetcher from '../../../../lib/action/fetcher';
 import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directoryRequest';
-import { buildDirectoryPath } from '../../../../lib/util/directory';
+import { buildDirectoryPath, compareArrays } from '../../../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../../../lib/definition/hydratedDirectoryReference';
-import { useOutletContext } from 'react-router';
 import type { Chunk } from '../../../../lib/definition/chunk';
+import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
+import { setDirPath } from '../../../../lib/redux/slice/directory';
 
 export default function MyStorage() {
-    const { dirPath, setDirPath, newlyAddedDirRef }: {
-        dirPath: Array<string | number>,
-        setDirPath: React.Dispatch<React.SetStateAction<(string | number)[]>>,
-        newlyAddedDirRef: HydratedDirectoryReference | null
-    } = useOutletContext();
-
+    const dispatch = useAppDispatch();
+    const { dirPath, newlyDeletedDir, newlyAddedDirRef } = useAppSelector(state => state.directory);
+    
     const [simpleDirectoryRefs, setSimpleDirectoryRefs] = useState<{ [key: string]: number } | null>(null);
     const [hydratedChunkRefs, setHydratedChunkRefs] = useState<Chunk[] | null>(null);
-
+    
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
     useEffect(() => {
         getDirectoryData();
     }, [dirPath]);
-
+    
     useEffect(() => {
         const newDirName = newlyAddedDirRef?.name || '';
         const elementsCount = (hydratedChunkRefs || []).length + Object.values(newlyAddedDirRef?.simpleDirectoryRefs || {}).length;
@@ -36,6 +34,20 @@ export default function MyStorage() {
             return newState;
         });
     }, [newlyAddedDirRef]);
+
+    useEffect(() => {
+        const { dirPath: dirPathOfDeletedDir, dirName } = newlyDeletedDir;
+        if (compareArrays(dirPath, dirPathOfDeletedDir)) {
+            setSimpleDirectoryRefs(state => {
+                return Object.entries(state! || {}).reduce((acc, cur) => {
+                    if (cur[0] != dirName) {
+                        (acc as any)[cur[0]] = cur[1];
+                    }
+                    return acc;
+                }, {});
+            });
+        }
+    }, [newlyDeletedDir]);
 
     async function getDirectoryData() {
         setDirRefLoading(true);
@@ -59,18 +71,9 @@ export default function MyStorage() {
         );
     }
 
-    function goToNextDir(nextDir: string) {
-        setDirPath(state => {
-            const newState = [...state];
-            newState.push(nextDir);
-            return newState;
-        });
-    }
-
     function goToTargetDir(dirIndexInDirPath: number) {
-        setDirPath(state => {
-            return [...state].slice(0, dirIndexInDirPath + 1);
-        });
+        const targetDir = dirPath.slice(0, dirIndexInDirPath + 1);
+        dispatch(setDirPath(targetDir));
     }
 
     // add "active" class to active crumb
@@ -88,7 +91,6 @@ export default function MyStorage() {
                     <FileOverview
                         simpleDirectoryRefs={simpleDirectoryRefs || {}}
                         hydratedChunkRefs={hydratedChunkRefs || []}
-                        goToNextDir={goToNextDir}
                         displayEntities='all'
                     />
             }

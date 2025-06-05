@@ -1,18 +1,18 @@
 import { NavLink } from 'react-router';
-import { useAppSelector } from '../../../lib/redux/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import './sideOptions.sass';
 import { useRef } from 'react';
 import mouseOutClassUpdate from '../../../lib/hook/mouseOutClassUpdate';
+import { setDirPath } from '../../../lib/redux/slice/directory';
 
 export default function SideOptions({
     sideOptionsDisplay,
-    sideOptionsDisplayToggler,
-    goingToOtherThanMyStorage
+    sideOptionsDisplayToggler
 }: {
     sideOptionsDisplay: boolean,
-    sideOptionsDisplayToggler: () => void,
-    goingToOtherThanMyStorage: () => void
+    sideOptionsDisplayToggler: () => void
 }) {
+    const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
 
     const myStorageRef = useRef<HTMLAnchorElement>(null);
@@ -46,7 +46,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="favorite" ref={favoriteRef} onClick={goingToOtherThanMyStorage}>
+                        <NavLink to="favorite" ref={favoriteRef} onClick={() => dispatch(setDirPath([user.id]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-heart"></i>
@@ -55,7 +55,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={goingToOtherThanMyStorage}>
+                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={() => dispatch(setDirPath([user.id]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-share"></i>
@@ -64,7 +64,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={goingToOtherThanMyStorage}>
+                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={() => dispatch(setDirPath([user.id]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-people"></i>
