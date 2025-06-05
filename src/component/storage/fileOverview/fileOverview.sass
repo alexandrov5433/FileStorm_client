@@ -101,6 +101,12 @@
             animation: 0.2s linear 0s forwards hover-bg-color-shift
     .name
         flex: 1 1 50%
+        // styles for optionsDropdown.sass
+        #file-options-favorite-container:not(:has(.is_favorite))
+            display: none
+        &:hover
+            #file-options-favorite-container
+                display: inline
     .size
         display: flex
         flex: 1 0 10%
