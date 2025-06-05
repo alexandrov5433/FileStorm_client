@@ -1,0 +1,12 @@
+@import '../../../../lib/style/styleExporter'
+
+#options-dropdown-main-container
+    margin-left: auto
+    & > *:not(:last-child)
+        margin-right: 0.5rem
+
+    #file-options-favorite-container
+        .is_favorite
+            color: $yellow-500
+    
+// @include media-breakpoint-up(lg) styles for this component are present in fileOverview.sass

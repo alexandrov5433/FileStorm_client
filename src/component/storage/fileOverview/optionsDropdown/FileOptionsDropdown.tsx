@@ -1,4 +1,4 @@
-import './fileOptionsDropdown.sass';
+import './optionsDropdown.sass';
 
 import type { Chunk } from '../../../../lib/definition/chunk';
 import fetcher from '../../../../lib/action/fetcher';
@@ -44,10 +44,8 @@ export default function FileOptionsDropdown({
         setFavoriteRequestLoading(false);
     }
 
-
-
     return (
-        <div id="file-options-main-container">
+        <div id="options-dropdown-main-container">
             <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
                 isFavoriteRequestLoading ? () => null :
                 (isFavorite ? removeFromFavorite : addToFavorite)
