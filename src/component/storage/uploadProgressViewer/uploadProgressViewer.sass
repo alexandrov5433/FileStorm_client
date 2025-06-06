@@ -1,0 +1,83 @@
+@import '../../../lib/style/styleExporter'
+
+#upload-progress-viewer-main-container
+    position: absolute
+    top: 100%
+    left: 0%
+    transform: translate(0, -100%)
+    width: 100%
+    max-height: 18%
+    z-index: 35
+    background-color: transparent
+    backdrop-filter: blur(3px)
+    overflow-y: auto
+    &.expand
+        max-height: 100%
+    &::-webkit-scrollbar
+        display: none
+
+    p
+        margin: 0
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+    
+    .expand-btn-container
+        margin-bottom: 0.5rem
+        position: sticky
+        top: 0%
+        button
+            background-color: var(--neutralTertiary)
+
+    .upload-container
+        background-color: var(--neutralTertiary)
+        &:not(:last-child)
+            margin-bottom: 0.5rem
+        .top
+            display: flex
+            padding: 0.5rem
+            align-items: center
+            gap: 1rem
+            .spinner-container .spinner-border
+                display: flex
+                align-items: center
+                width: 1.8rem
+                height: 1.8rem
+            .status
+                flex: 0 1 100%
+                overflow: hidden
+        .middle
+            padding: 0 0.5rem
+            margin-bottom: 0.5rem
+            overflow: hidden
+        .bottom
+            .progress-bar
+                background-color: $teal-500
+                height: 1rem
+                width: 100%
+            
+
+
+@include media-breakpoint-up(lg)
+    #upload-progress-viewer-main-container
+        top: 99%
+        left: 99%
+        transform: translate(-100%, -100%)
+        width: 20%
+        max-height: 95%
+
+        .expand-btn-container
+            display: none
+
+        .upload-container
+            .top
+                gap: 0.5rem
+                .spinner-container .spinner-border
+                    width: 1.2rem
+                    height: 1.2rem
+                    font-size: 0.8rem
+            .middle
+                margin-bottom: 0.2rem
+            .bottom
+                .progress-bar
+                    height: 0.5rem
