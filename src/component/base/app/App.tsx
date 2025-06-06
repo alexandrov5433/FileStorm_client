@@ -1,6 +1,6 @@
 import './App.sass'
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router'
+import { useEffect, useRef } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router'
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest, setUser } from '../../../lib/redux/slice/user';
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
@@ -8,18 +8,28 @@ import type { User } from '../../../lib/definition/user';
 
 function App() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const landing = useAppSelector(state => state.landing);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const componentFirstMount = useRef(true);
 
   useEffect(() => {
-    const targetPath = window.location.pathname;
+    const targetPath = location.pathname;
     navigate('/');
 
     (async () => {
       await checkCookieAndSessionData(targetPath);
-      // isComponentFirstMount.current = false;
+      componentFirstMount.current = false;
     })();
   }, []);
+
+  useEffect(() => {
+    if (componentFirstMount.current) return;
+    if (location.pathname == '/') {
+      navigate('/my-storage');
+    }
+  }, [location.pathname]);
 
   async function checkCookieAndSessionData(targetPath: string) {
     const res = await accountRequest(
