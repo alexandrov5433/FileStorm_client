@@ -5,7 +5,7 @@ import SideOptions from './sideOptions/SideOptions';
 import UploadProgressViewer from './uploadProgressViewer/UploadProgressViewer';
 import TextInputBox from '../global/textInputBox/TextInputBox';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { Outlet } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../lib/redux/reduxTypedHooks';
 import { validateFileAndDirName } from '../../lib/util/validator';
@@ -13,16 +13,25 @@ import fetcher from '../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
 import { buildDirectoryPath } from '../../lib/util/directory';
 import type { HydratedDirectoryReference } from '../../lib/definition/hydratedDirectoryReference';
-import { setDirPath, setNewlyAddedDirRef } from '../../lib/redux/slice/directory';
+import { setDirPath, setNewAddedFile, setNewlyAddedDirRef } from '../../lib/redux/slice/directory';
+import type { UploadProgressEntity } from '../../lib/definition/redux';
+import fileUpload from '../../lib/action/fileUpload';
+import { addUploadEntity, removeUploadEntityById, updateUploadEntityById } from '../../lib/redux/slice/uploadProgress';
+import type { FetcherReturn } from '../../lib/definition/fetcherReturn';
+import type { Chunk } from '../../lib/definition/chunk';
 
 
 export default function Storage() {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
     const { dirPath } = useAppSelector(state => state.directory);
+    const uploadProgress = useAppSelector(state => state.uploadProgress);
 
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
     const [isDirectoryDialog, setDirectoryDialog] = useState(false);
+
+    const storageFileUploadRef = useRef(null);
+    const fileUploadIdRef = useRef(0);
 
     useEffect(() => {
         dispatch(setDirPath([user.id]));
@@ -31,6 +40,7 @@ export default function Storage() {
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
     }
+
 
     // new directory addition
     function openAddDirectoryDialog() {
@@ -50,6 +60,65 @@ export default function Storage() {
             // trigger refresh in my-storage
             dispatch(setNewlyAddedDirRef(res.payload as HydratedDirectoryReference));
         }
+    }
+
+
+    // strorage file upload
+    function triggerStorageFileUploadDialog() {
+        (storageFileUploadRef.current! as HTMLInputElement)?.click();
+    }
+    function storageFileUpload(e: ChangeEvent) {
+        const input = (e.currentTarget as HTMLInputElement);
+        const fileList = Object.values(input.files || {});
+        for (let i = 0; i < fileList.length; i++) {
+            const file: File = fileList[i];
+            const fileUploadData = new FormData();
+            fileUploadData.append('file', file);
+            fileUploadData.append('relativePath', buildDirectoryPath(dirPath));
+
+            const uploadProgressEntity: UploadProgressEntity = {
+                id: getFileUploadId(),
+                fileName: file.name,
+                actionInProgress: 'Uploading...',
+                progress: 0
+            };
+            const progressTracker = uploadProgressTrackerFactory(uploadProgressEntity);
+
+            dispatch(addUploadEntity(uploadProgressEntity));
+
+            fileUpload(fileUploadData, progressTracker)
+                .then(res => {
+                    dispatch(removeUploadEntityById(uploadProgressEntity.id));
+                    dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));
+                    console.log('Uploaded!', res);
+
+                });
+        }
+        input.value = '';
+    }
+    function getFileUploadId() {
+        const id = fileUploadIdRef.current;
+        fileUploadIdRef.current += 1;
+        return id;
+    }
+    function uploadProgressTrackerFactory(uploadProgressEntity: UploadProgressEntity) {
+        return (progress: number) => {
+            uploadProgressTracker(uploadProgressEntity.id, progress);
+        }
+    }
+    function uploadProgressTracker(
+        id: number,
+        progress: number
+    ) {
+        dispatch(updateUploadEntityById({
+            id,
+            progress,
+            actionInProgress: progress >= 100 ? 'Confirming...' : 'Uploading...'
+        }));
+    }
+    function testUploadStateView() {
+        console.log('uploadProgress', uploadProgress);
+
     }
 
     return (
@@ -72,9 +141,16 @@ export default function Storage() {
                             </li>
                             <div className="custom-horizontal-divider"></div>
                             <li>
-                                <span className="dropdown-item">
+                                <span className="dropdown-item" onClick={triggerStorageFileUploadDialog}>
+                                    <input ref={storageFileUploadRef} multiple onChange={storageFileUpload} type="file" name="storage-file-upload" id="storage-file-upload" />
                                     <i className="bi bi-file-earmark-arrow-up"></i>
                                     Upload File
+                                </span>
+                            </li>
+                            <li>
+                                <span className="dropdown-item" onClick={() => testUploadStateView()}>
+                                    <i className="bi bi-file-earmark-arrow-up"></i>
+                                    Test update upload
                                 </span>
                             </li>
                         </ul>
@@ -82,10 +158,10 @@ export default function Storage() {
                     <button id="storageSideOptionsBtn" onClick={toggleSideOptionsDisplay} className="custom-btn secondary-btn" type="button">More</button>
                     <SideOptions
                         sideOptionsDisplay={sideOptionsDisplay}
-                        sideOptionsDisplayToggler={toggleSideOptionsDisplay}/>
+                        sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet/>
+                    <Outlet />
                 </section>
                 {
                     isDirectoryDialog ? <TextInputBox
@@ -94,9 +170,9 @@ export default function Storage() {
                         funcInputValueValidator={validateFileAndDirName}
                         textContent='New Directory Name'
                         textExtraNote='Can not contain: < > : " / \ | ? *'
-                        btnText='Add Directory'/> : ''
+                        btnText='Add Directory' /> : ''
                 }
-                <UploadProgressViewer/>
+                <UploadProgressViewer />
             </div>
         </>
     );

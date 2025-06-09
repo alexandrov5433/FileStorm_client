@@ -1,12 +1,9 @@
+import type { ApiResponse } from "../definition/apiResponse";
 import type { FetcherReturn } from "../definition/fetcherReturn";
 
-export default async function postRequest(
-    url: string,
+export default async function fileUpload(
     body: FormData,
-    progressTracker: (progress: number) => void,
-    headersObj?: { //TODO: remove headersObj?
-        [key: string]: string
-    }
+    progressTracker: (progress: number) => void
 ) {
     return new Promise((resolve, reject) => {
         const ret: FetcherReturn = {
@@ -14,12 +11,15 @@ export default async function postRequest(
         }
         try {
             const xml = new XMLHttpRequest();
-            xml.open('POST', url);
+            xml.open('POST', '/api/file');
             xml.upload.onprogress = e => {
-                progressTracker((e.loaded / e.total) * 100);
+                progressTracker(Number(((e.loaded / e.total) * 100).toFixed(0)));
             };
-            xml.onload = e => {
+            xml.onload = () => {
                 ret.status = xml.status;
+                const response = JSON.parse(xml.response) as ApiResponse;
+                ret.msg = response?.message || '';
+                ret.payload = response?.payload || {};
                 resolve(ret);
             };
             xml.send(body);

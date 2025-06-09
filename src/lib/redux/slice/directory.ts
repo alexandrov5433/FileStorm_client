@@ -11,7 +11,8 @@ export const directorySlice = createSlice({
             dirName: ''
         },
         newlyAddedDirRef: null,
-        newlyDeletedFile: null
+        newlyDeletedFile: null,
+        newlyAddedFile: null
     } as {
         dirPath: Array<number | string>,
         newlyDeletedDir: {
@@ -19,7 +20,8 @@ export const directorySlice = createSlice({
             dirName: string
         },
         newlyAddedDirRef: HydratedDirectoryReference | null,
-        newlyDeletedFile: Chunk | null
+        newlyDeletedFile: Chunk | null,
+        newlyAddedFile: Chunk | null
     },
     reducers: {
         setDirPath: (state, action: { payload: Array<number | string>, type: string }) => {
@@ -38,9 +40,18 @@ export const directorySlice = createSlice({
         },
         setNewlyDeletedFile: (state, action: { payload: Chunk, type: string }) => {
             state.newlyDeletedFile = action.payload;
+        },
+        setNewAddedFile: (state, action: { payload: Chunk, type: string }) => {
+            state.newlyAddedFile = action.payload;
         }
     }
 });
 
-export const { setDirPath, setNewlyDeleteDir, setNewlyAddedDirRef, setNewlyDeletedFile } = directorySlice.actions;
+export const {
+    setDirPath,
+    setNewlyDeleteDir,
+    setNewlyAddedDirRef,
+    setNewlyDeletedFile,
+    setNewAddedFile
+} = directorySlice.actions;
 export default directorySlice.reducer;
