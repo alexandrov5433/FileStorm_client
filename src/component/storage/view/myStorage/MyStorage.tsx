@@ -14,7 +14,7 @@ import { setDirPath } from '../../../../lib/redux/slice/directory';
 
 export default function MyStorage() {
     const dispatch = useAppDispatch();
-    const { dirPath, newlyDeletedDir, newlyAddedDirRef } = useAppSelector(state => state.directory);
+    const { dirPath, newlyDeletedDir, newlyAddedDirRef, newlyDeletedFile } = useAppSelector(state => state.directory);
     
     const [simpleDirectoryRefs, setSimpleDirectoryRefs] = useState<{ [key: string]: number } | null>(null);
     const [hydratedChunkRefs, setHydratedChunkRefs] = useState<Chunk[] | null>(null);
@@ -48,6 +48,12 @@ export default function MyStorage() {
             });
         }
     }, [newlyDeletedDir]);
+
+    useEffect(() => {
+        setHydratedChunkRefs(state => {
+            return (state || []).filter(c => c.id != newlyDeletedFile?.id);
+        });
+    }, [newlyDeletedFile]);
 
     async function getDirectoryData() {
         setDirRefLoading(true);
