@@ -33,7 +33,8 @@ export default function FileOptionsDropdown({
         setDeleteFileInProgress(true);
         const res = await fetcher(deleteFileRequest(
             buildDirectoryPath(dirPath),
-            chunk.name
+            chunk.name,
+            chunk.id
         ));
         if (res.status == 200) {
             dispatch(setNewlyDeletedFile(chunk));

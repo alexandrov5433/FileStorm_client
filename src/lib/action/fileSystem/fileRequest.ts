@@ -11,10 +11,11 @@ function fileDownloadRequest(
 
 function deleteFileRequest(
     targetDirectoryPath: string,
-    targetFileName: string
+    targetFileName: string,
+    targetFileId: number
 ) {
     return new Request(addRequestParams('/api/file', {
-        targetDirectoryPath, targetFileName
+        targetDirectoryPath, targetFileName, targetFileId
     }), {
         method: 'DELETE'
     });
