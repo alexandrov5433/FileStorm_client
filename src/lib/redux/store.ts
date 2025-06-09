@@ -3,14 +3,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from './slice/user';
 import landingReducer from './slice/landing';
 import favoriteUpdateReducer from './slice/favoriteUpdate';
-import directorySlice from "./slice/directory";
+import directorySlice from './slice/directory';
+import uploadProgressReducer from './slice/uploadProgress';
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         landing: landingReducer,
         favoriteUpdate: favoriteUpdateReducer,
-        directory: directorySlice
+        directory: directorySlice,
+        uploadProgress: uploadProgressReducer
     }
 });
 

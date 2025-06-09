@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { HydratedDirectoryReference } from "../../definition/hydratedDirectoryReference";
+import type { Chunk } from "../../definition/chunk";
 
 export const directorySlice = createSlice({
     name: 'directory',
@@ -9,14 +10,16 @@ export const directorySlice = createSlice({
             dirPath: [],
             dirName: ''
         },
-        newlyAddedDirRef: null
+        newlyAddedDirRef: null,
+        newlyDeletedFile: null
     } as {
         dirPath: Array<number | string>,
         newlyDeletedDir: {
             dirPath: Array<number | string>,
             dirName: string
         },
-        newlyAddedDirRef: HydratedDirectoryReference | null
+        newlyAddedDirRef: HydratedDirectoryReference | null,
+        newlyDeletedFile: Chunk | null
     },
     reducers: {
         setDirPath: (state, action: { payload: Array<number | string>, type: string }) => {
@@ -30,11 +33,14 @@ export const directorySlice = createSlice({
         }) => {
             state.newlyDeletedDir = action.payload;
         },
-        setNewlyAddedDirRef: (state, action: {payload: HydratedDirectoryReference, type: string}) => {
+        setNewlyAddedDirRef: (state, action: { payload: HydratedDirectoryReference, type: string }) => {
             state.newlyAddedDirRef = action.payload;
+        },
+        setNewlyDeletedFile: (state, action: { payload: Chunk, type: string }) => {
+            state.newlyDeletedFile = action.payload;
         }
     }
 });
 
-export const { setDirPath, setNewlyDeleteDir, setNewlyAddedDirRef } = directorySlice.actions;
+export const { setDirPath, setNewlyDeleteDir, setNewlyAddedDirRef, setNewlyDeletedFile } = directorySlice.actions;
 export default directorySlice.reducer;
