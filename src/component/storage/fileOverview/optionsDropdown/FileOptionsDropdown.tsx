@@ -4,8 +4,11 @@ import type { Chunk } from '../../../../lib/definition/chunk';
 import fetcher from '../../../../lib/action/fetcher';
 import { markFileAsFavorite, removeFileFromFavorite } from '../../../../lib/action/favoriteRequest';
 import { useState } from 'react';
-import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
+import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
+import { buildDirectoryPath } from '../../../../lib/util/directory';
+import { setNewlyDeletedFile } from '../../../../lib/redux/slice/directory';
 
 export default function FileOptionsDropdown({
     chunk
@@ -13,15 +16,29 @@ export default function FileOptionsDropdown({
     chunk: Chunk
 }) {
     const dispatch = useAppDispatch();
+    const { dirPath } = useAppSelector(state => state.directory);
 
     const [isFavorite, setIsFavorite] = useState(chunk.is_favorite);
     const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
+    const [isDeleteFileInProgress, setDeleteFileInProgress] = useState(false);
 
     function download() {
         const anchor = document.createElement('a');
         anchor.href = `/api/file?fileId=${chunk.id}`;
         anchor.download = chunk.name;
         anchor.click();
+    }
+
+    async function deleteFile() {
+        setDeleteFileInProgress(true);
+        const res = await fetcher(deleteFileRequest(
+            buildDirectoryPath(dirPath),
+            chunk.name
+        ));
+        if (res.status == 200) {
+            dispatch(setNewlyDeletedFile(chunk));
+        }
+        setDeleteFileInProgress(false);
     }
 
     async function addToFavorite() {
@@ -65,7 +82,9 @@ export default function FileOptionsDropdown({
                         </span>
                     </li>
                     <li>
-                        <span className="dropdown-item red-item">
+                        <span className="dropdown-item red-item" onClick={
+                            isDeleteFileInProgress ? () => null : deleteFile
+                        }>
                             <i className="bi bi-trash3"></i>
                             Delete
                         </span>
