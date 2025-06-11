@@ -9,14 +9,8 @@ function fileDownloadRequest(
     });
 }
 
-function deleteFileRequest(
-    targetDirectoryPath: string,
-    targetFileName: string,
-    targetFileId: number
-) {
-    return new Request(addRequestParams('/api/file', {
-        targetDirectoryPath, targetFileName, targetFileId
-    }), {
+function deleteFileRequest(fileId: number) {
+    return new Request(`/api/file/${fileId}`, {
         method: 'DELETE'
     });
 }

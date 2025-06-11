@@ -7,6 +7,6 @@ import type { User } from "./user";
 export type FetcherReturn = {
     status: number,
     msg?: string,
-    payload?: any | AuthValidationResult[] | User | HydratedDirectory | Chunk | Directory,
+    payload?: AuthValidationResult[] | User | HydratedDirectory | Chunk | Chunk[] | Directory | number,
     error?: Error 
 };

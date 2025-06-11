@@ -46,7 +46,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="favorite" ref={favoriteRef} onClick={() => dispatch(setDirPath([user.id]))}>
+                        <NavLink to="favorite" ref={favoriteRef} onClick={() => dispatch(setDirPath([[user.id, 'My Storage']]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-heart"></i>
@@ -55,7 +55,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={() => dispatch(setDirPath([user.id]))}>
+                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={() => dispatch(setDirPath([[user.id, 'My Storage']]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-share"></i>
@@ -64,7 +64,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={() => dispatch(setDirPath([user.id]))}>
+                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={() => dispatch(setDirPath([[user.id, 'My Storage']]))}>
                             <span></span>
                             <div>
                                 <i className="bi bi-people"></i>

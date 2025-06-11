@@ -44,7 +44,7 @@ export default function Favorite() {
                 isFavoriteLoading ? <StorageViewLoader /> :
                     <FileOverview
                         displayEntities='filesOnly'
-                        hydratedChunkRefs={favorite}
+                        hydratedChunks={favorite}
                         emptyDirectoryTextContent='No Favorites.'
                         emptyDirectoryIcon='file'
                     />

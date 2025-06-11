@@ -1,26 +1,25 @@
 import './optionsDropdown.sass';
 
-import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
+import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
 import { useState } from 'react';
 import { deleteDirectory } from '../../../../lib/action/fileSystem/directoryRequest';
-import { setNewlyDeleteDir } from '../../../../lib/redux/slice/directory';
+import { setNewlyDeleteDirId } from '../../../../lib/redux/slice/directory';
+import fetcher from '../../../../lib/action/fetcher';
 
 export default function DirectoryOptionsDropdown({
-    dirName
+    directoryId
 } : {
-    dirName: string
+    directoryId: number
 }) {
     const dispatch = useAppDispatch();
-    const { dirPath } = useAppSelector(state => state.directory);
 
     const [isDeletionInProgress, setDeletionInProgress] = useState(false);
 
     async function deleteDir() {
         setDeletionInProgress(true);
-        const curDirPath = [...dirPath];
-        const res = await fetch(deleteDirectory(curDirPath, dirName));
+        const res = await fetcher(deleteDirectory(directoryId));
         if (res.status == 200) {
-            dispatch(setNewlyDeleteDir({dirPath: curDirPath, dirName}));
+            dispatch(setNewlyDeleteDirId(res.payload as number));
         }
         setDeletionInProgress(false);
     }
@@ -30,12 +29,12 @@ export default function DirectoryOptionsDropdown({
             <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown">
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul className="dropdown-menu custom-dropdown">
-                    <li>
+                    {/* <li>
                         <span className="dropdown-item">
                             <i className="bi bi-download"></i>
                             Download
                         </span>
-                    </li>
+                    </li> */}
                     <li>
                         <span className="dropdown-item red-item" onClick={
                             isDeletionInProgress ? () => null : deleteDir

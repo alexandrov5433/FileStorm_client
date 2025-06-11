@@ -11,14 +11,13 @@ import { useAppDispatch, useAppSelector } from '../../lib/redux/reduxTypedHooks'
 import { validateFileAndDirName } from '../../lib/util/validator';
 import fetcher from '../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
-import { buildDirectoryPath } from '../../lib/util/directory';
-import type { HydratedDirectoryReference } from '../../lib/definition/hydratedDirectoryReference';
-import { setDirPath, setNewAddedFile, setNewlyAddedDirRef } from '../../lib/redux/slice/directory';
+import { setDirPath, setNewAddedFile, setNewlyAddedDir } from '../../lib/redux/slice/directory';
 import type { UploadProgressEntity } from '../../lib/definition/redux';
 import fileUpload from '../../lib/action/fileUpload';
 import { addUploadEntity, removeUploadEntityById, updateUploadEntityById } from '../../lib/redux/slice/uploadProgress';
 import type { FetcherReturn } from '../../lib/definition/fetcherReturn';
 import type { Chunk } from '../../lib/definition/chunk';
+import type { Directory } from '../../lib/definition/directory';
 
 
 export default function Storage() {
@@ -34,7 +33,7 @@ export default function Storage() {
     const fileUploadIdRef = useRef(0);
 
     useEffect(() => {
-        dispatch(setDirPath([user.id]));
+        dispatch(setDirPath([[user.id, 'My Storage']]));
     }, []);
 
     function toggleSideOptionsDisplay() {
@@ -52,13 +51,13 @@ export default function Storage() {
     async function addNewDirectory(newDirName: string) {
         const res = await fetcher(
             createDirectoryRequest(
-                buildDirectoryPath(dirPath),
+                dirPath[dirPath.length - 1][0],
                 newDirName
             )
         );
         if (res.status == 200) {
             // trigger refresh in my-storage
-            dispatch(setNewlyAddedDirRef(res.payload as HydratedDirectoryReference));
+            dispatch(setNewlyAddedDir(res.payload as Directory));
         }
     }
 
@@ -74,7 +73,7 @@ export default function Storage() {
             const file: File = fileList[i];
             const fileUploadData = new FormData();
             fileUploadData.append('file', file);
-            fileUploadData.append('relativePath', buildDirectoryPath(dirPath));
+            fileUploadData.append('targetDirectoryId', dirPath[dirPath.length - 1][0].toString());
 
             const uploadProgressEntity: UploadProgressEntity = {
                 id: getFileUploadId(),
@@ -90,8 +89,6 @@ export default function Storage() {
                 .then(res => {
                     dispatch(removeUploadEntityById(uploadProgressEntity.id));
                     dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));
-                    console.log('Uploaded!', res);
-
                 });
         }
         input.value = '';

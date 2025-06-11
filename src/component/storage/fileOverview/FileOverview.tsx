@@ -11,16 +11,17 @@ import DirectoryOptionsDropdown from './optionsDropdown/DirectoryOptionsDropdown
 
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../lib/redux/slice/directory';
+import type { Directory } from '../../../lib/definition/directory';
 
 export default function FileOverview({
-    simpleDirectoryRefs,
-    hydratedChunkRefs,
+    subdirectories,
+    hydratedChunks,
     displayEntities,
     emptyDirectoryTextContent = 'Empty Directory.',
     emptyDirectoryIcon = 'directory'
 }: {
-    simpleDirectoryRefs?: { [key: string]: number } | null,
-    hydratedChunkRefs: Chunk[],
+    subdirectories?: Directory[] | null,
+    hydratedChunks: Chunk[] | null,
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string,
     emptyDirectoryIcon?: 'directory' | 'file'
@@ -29,11 +30,11 @@ export default function FileOverview({
     const { dirPath } = useAppSelector(state => state.directory);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
-        return chunkRefs.sort((a, b) => a.name.localeCompare(b.name));
+        return chunkRefs.sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
     }
 
-    function dirSort(dirRefs: { [key: string]: number }): [string, number][] {
-        return Object.entries(dirRefs).sort((a, b) => a[0].localeCompare(b[0]));
+    function dirSort(subdirectories: Directory[]): Directory[] {
+        return subdirectories.sort((a, b) => (a.name).localeCompare(b.name));
     }
 
     function fileMapper(chunk: Chunk) {
@@ -66,35 +67,33 @@ export default function FileOverview({
         );
     }
 
-    function goToNextDir(nextDir: string) {
-        const newDirPath = [...dirPath];
-        newDirPath.push(nextDir);
-        dispatch(setDirPath(newDirPath));
+    function goToNextDir(dirPathEntry: [number, string]) {
+        dispatch(setDirPath([...dirPath, dirPathEntry]));
     }
 
-    function directoryMapper(entry: [string, number]) {
+    function directoryMapper(dir: Directory) {
         return (
-            <div className="file-row" key={entry[0]}>
+            <div className="file-row" key={dir.id}>
                 <div className="file-col selector">
-                    <SelectRing entityMarker={entry[0]} />
+                    <SelectRing entityMarker={dir.id.toString()} />
                 </div>
                 <div className="file-col type">
                     {getIconElement('directory')}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content" onClick={() => goToNextDir(entry[0])}>
-                        {entry[0]}
+                    <p className="text-content" onClick={() => goToNextDir([dir.id, dir.name])}>
+                        {dir.name}
                     </p>
-                    <DirectoryOptionsDropdown dirName={entry[0]} />
+                    <DirectoryOptionsDropdown directoryId={dir.id} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
-                        {entry[1]} Elements
+                        {dir.elementsCount} Elements
                     </p>
                 </div>
                 <div className="file-col created">
                     <p className="text-content">
-                        -
+                        {dir.createdOn}
                     </p>
                 </div>
             </div>
@@ -123,15 +122,15 @@ export default function FileOverview({
                             displayEntities == 'all' ?
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 && Object.entries(simpleDirectoryRefs || {}).length == 0 ? <EmptyDirectory
+                                    (hydratedChunks || []).length == 0 && Object.entries(subdirectories || []).length == 0 ? <EmptyDirectory
                                         textContent={emptyDirectoryTextContent}
                                         icon={emptyDirectoryIcon} /> :
                                         <>
                                             {
-                                                dirSort(simpleDirectoryRefs || {}).map(directoryMapper)
+                                                dirSort(subdirectories || []).map(directoryMapper)
                                             }
                                             {
-                                                fileSort(hydratedChunkRefs || []).map(fileMapper)
+                                                fileSort(hydratedChunks || []).map(fileMapper)
                                             }
                                         </>
                                 )
@@ -139,9 +138,9 @@ export default function FileOverview({
                                 :
 
                                 (
-                                    (hydratedChunkRefs || []).length == 0 ? <EmptyDirectory
+                                    (hydratedChunks || []).length == 0 ? <EmptyDirectory
                                         textContent={emptyDirectoryTextContent}
-                                        icon={emptyDirectoryIcon} /> : fileSort(hydratedChunkRefs || []).map(fileMapper)
+                                        icon={emptyDirectoryIcon} /> : fileSort(hydratedChunks || []).map(fileMapper)
                                 )
                         }
 
