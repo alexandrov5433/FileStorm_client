@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { HydratedDirectoryReference } from "../../definition/hydratedDirectoryReference";
+import type { HydratedDirectoryReference } from "../../definition/hydratedDirectory";
 import type { Chunk } from "../../definition/chunk";
 
 export const directorySlice = createSlice({
