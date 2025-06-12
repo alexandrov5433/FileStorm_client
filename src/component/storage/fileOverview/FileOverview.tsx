@@ -44,23 +44,22 @@ export default function FileOverview({
                     <SelectRing entityMarker={chunk.id.toString()} />
                 </div>
                 <div className="file-col type">
-                    {getIconElement(chunk.mime_type)}
+                    {getIconElement(chunk.mimeType)}
                 </div>
                 <div className="file-col name">
-                    <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.name}>
-                        {chunk.name}
+                    <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.originalFileName}>
+                        {chunk.originalFileName}
                     </a>
-                    {/* TODO: dropdown functionality */}
                     <FileOptionsDropdown chunk={chunk} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
-                        {getFormatedFileSize(chunk.size_bytes)}
+                        {getFormatedFileSize(chunk.sizeBytes)}
                     </p>
                 </div>
                 <div className="file-col created">
                     <p className="text-content">
-                        {getFormatedDate(chunk.created_on)}
+                        {getFormatedDate(chunk.createdOn)}
                     </p>
                 </div>
             </div>
@@ -93,7 +92,7 @@ export default function FileOverview({
                 </div>
                 <div className="file-col created">
                     <p className="text-content">
-                        {dir.createdOn}
+                        {getFormatedDate(dir.createdOn)}
                     </p>
                 </div>
             </div>

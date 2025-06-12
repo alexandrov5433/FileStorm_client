@@ -88,7 +88,7 @@ export default function Storage() {
             fileUpload(fileUploadData, progressTracker)
                 .then(res => {
                     dispatch(removeUploadEntityById(uploadProgressEntity.id));
-                    dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));
+                    dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));   
                 });
         }
         input.value = '';
