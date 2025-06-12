@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import './account.sass';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
+import { useAppSelector } from '../../lib/redux/reduxTypedHooks';
 
 export default function Account() {
+    const user = useAppSelector(state => state.user);
+    const navigate = useNavigate();
     const emphasysWordRef = useRef(null);
     const [emphasysWord, setEmphasysWord] = useState("easy");
+    
     useEffect(() => {
         const interval  = setInterval(() => {
             (emphasysWordRef.current! as HTMLHeadingElement).classList.remove("account-emphasys-word-animation");
@@ -26,6 +30,12 @@ export default function Account() {
 
         return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        if (user.id && user.id > 0) {
+            navigate('/my-storage');
+        }
+    }, [user]);
 
     return (
         <div id="account-main-container">
