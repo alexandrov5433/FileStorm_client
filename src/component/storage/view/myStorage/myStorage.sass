@@ -15,12 +15,22 @@
         padding-left: 0.8rem
         height: 10%
         display: flex
+        
         .active
             color: $teal-500
+
         nav
             margin: auto 0
+            overflow-x: auto
+            scrollbar-width: thin
+
         ol
+            flex-wrap: nowrap
             margin: 0
+            li
+                display: flex
+                white-space: nowrap
+
         li:hover
             cursor: pointer
             text-decoration: underline
@@ -37,9 +47,6 @@
                 left: 0%
                 backdrop-filter: blur(2px)
                 
-
                 h3
                     margin: auto
                     color: $teal-500
-       
-           
