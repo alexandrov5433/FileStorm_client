@@ -71,6 +71,10 @@ export default function Storage() {
         const fileList = Object.values(input.files || {});
         for (let i = 0; i < fileList.length; i++) {
             const file: File = fileList[i];
+            if (file.type == "") {
+                console.log(`This file is not valid. File type/extention is missing: ${file.name}`);
+                continue;
+            }
             const fileUploadData = new FormData();
             fileUploadData.append('file', file);
             fileUploadData.append('targetDirectoryId', dirPath[dirPath.length - 1][0].toString());
@@ -87,8 +91,13 @@ export default function Storage() {
 
             fileUpload(fileUploadData, progressTracker)
                 .then(res => {
-                    dispatch(removeUploadEntityById(uploadProgressEntity.id));
-                    dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));   
+                    if ((res as FetcherReturn).status === 200) {
+                        dispatch(removeUploadEntityById(uploadProgressEntity.id));
+                        dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));
+                    } else {
+                        dispatch(removeUploadEntityById(uploadProgressEntity.id));
+                        console.log((res as FetcherReturn).msg || 'A problem occured.');
+                    }
                 });
         }
         input.value = '';
@@ -112,10 +121,6 @@ export default function Storage() {
             progress,
             actionInProgress: progress >= 100 ? 'Confirming...' : 'Uploading...'
         }));
-    }
-    function testUploadStateView() {
-        console.log('uploadProgress', uploadProgress);
-
     }
 
     return (
@@ -144,12 +149,6 @@ export default function Storage() {
                                     Upload File
                                 </span>
                             </li>
-                            <li>
-                                <span className="dropdown-item" onClick={() => testUploadStateView()}>
-                                    <i className="bi bi-file-earmark-arrow-up"></i>
-                                    Test update upload
-                                </span>
-                            </li>
                         </ul>
                     </div>
                     <button id="storageSideOptionsBtn" onClick={toggleSideOptionsDisplay} className="custom-btn secondary-btn" type="button">More</button>
@@ -158,7 +157,7 @@ export default function Storage() {
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet />
+                    <Outlet context={storageFileUploadRef}/>
                 </section>
                 {
                     isDirectoryDialog ? <TextInputBox

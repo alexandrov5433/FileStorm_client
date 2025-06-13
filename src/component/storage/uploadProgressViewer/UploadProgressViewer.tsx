@@ -9,11 +9,6 @@ export default function UploadProgressViewer() {
 
     const [isMainContainerExpanded, setMainContainerExpanded] = useState(false);
 
-    useEffect(() => {
-        console.log(uploadProgress);
-        
-    }, [uploadProgress]);
-
     function uploadProgressEntityMapper(entity: UploadProgressEntity) {
         return (
             <section className="upload-container anime-fade-in" key={entity.id}>
