@@ -18,6 +18,7 @@ import { addUploadEntity, removeUploadEntityById, updateUploadEntityById } from 
 import type { FetcherReturn } from '../../lib/definition/fetcherReturn';
 import type { Chunk } from '../../lib/definition/chunk';
 import type { Directory } from '../../lib/definition/directory';
+import { setMessage } from '../../lib/redux/slice/messenger';
 
 
 export default function Storage() {
@@ -71,7 +72,12 @@ export default function Storage() {
         for (let i = 0; i < fileList.length; i++) {
             const file: File = fileList[i];
             if (file.type == "") {
-                console.log(`This file is not valid. File type/extention is missing: ${file.name}`);
+                dispatch(setMessage({
+                    title: 'Invalid file',
+                    text: `File type/extention is invalid. File: ${file.name}`,
+                    type: 'negative',
+                    duration: 7000
+                }));
                 continue;
             }
             const fileUploadData = new FormData();
