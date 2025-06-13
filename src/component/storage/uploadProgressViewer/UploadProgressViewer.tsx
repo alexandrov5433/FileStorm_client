@@ -2,7 +2,7 @@ import type { UploadProgressEntity } from '../../../lib/definition/redux';
 import { useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import './uploadProgressViewer.sass';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function UploadProgressViewer() {
     const uploadProgress = useAppSelector(state => state.uploadProgress);
@@ -37,13 +37,16 @@ export default function UploadProgressViewer() {
 
     return (
         <div id="upload-progress-viewer-main-container" className={isMainContainerExpanded ? 'expand' : ''}>
-            <div className="expand-btn-container anime-fade-in">
-                <button className="custom-btn" onClick={() => setMainContainerExpanded(state => !state)}>
-                    {isMainContainerExpanded ? <i className="bi bi-arrow-down"></i> : <i className="bi bi-arrow-up"></i>}
+            {
+                uploadProgress.length <= 0 ? '' :
+                    <div className="expand-btn-container anime-fade-in">
+                        <button className="custom-btn" onClick={() => setMainContainerExpanded(state => !state)}>
+                            {isMainContainerExpanded ? <i className="bi bi-arrow-down"></i> : <i className="bi bi-arrow-up"></i>}
 
-                    {isMainContainerExpanded ? 'Collaps' : 'Expand'}
-                </button>
-            </div>
+                            {isMainContainerExpanded ? 'Collaps' : 'Expand'}
+                        </button>
+                    </div>
+            }
 
             {uploadProgress.map(uploadProgressEntityMapper)}
 
