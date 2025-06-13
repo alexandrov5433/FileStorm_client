@@ -5,6 +5,7 @@ import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest, setUser } from '../../../lib/redux/slice/user';
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import type { User } from '../../../lib/definition/user';
+import Messenger from '../../global/messenger/Messenger';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -48,6 +49,7 @@ function App() {
   return (
     <div id="app-main-container" className={landing.isMounted ? '' : 'hide-all-content'}>
       <Outlet />
+      <Messenger/>
     </div>
   )
 }

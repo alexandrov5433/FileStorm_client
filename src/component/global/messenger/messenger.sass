@@ -1,0 +1,44 @@
+@import '../../../lib/style/styleExporter'
+
+#messenger-main-container
+    position: absolute
+    z-index: 30
+    background-color: var(--neutralTertiarySurface)
+    width: 98%
+    max-width: 400px
+    top: 0%
+    left: 50%
+    transform: translate(-50%, 40%)
+    padding: 0 0.5rem
+    border: 1px solid var(--neutralTertiaryAlt)
+    &.display
+        display: block
+        animation: 0.5s linear 0s forwards displayMessage
+    &.hide
+        display: none
+    .top
+        display: flex
+        align-items: center
+        justify-content: space-between
+        .title-container
+            &.positive
+                color: $teal-500
+            &.negative
+                color: var(--color-error)
+            i
+                padding-right: 0.5rem
+    .bottom
+        p
+            margin-bottom: 0.5rem
+
+
+@include media-breakpoint-up(lg)
+    #messenger-main-container
+        top: 100%
+        transform: translate(-50%, calc(-100% - 0.5rem))
+
+@keyframes displayMessage
+    0%
+        opacity: 0
+    100%
+        opacity: 1
