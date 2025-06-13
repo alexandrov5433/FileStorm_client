@@ -34,7 +34,7 @@ export default function TextInputBox({
     return (
         <div id="text-input-box-main-container" className="anime-fade-in">
             <section>
-                <button id="close-btn" className="custom-icon-btn" onClick={() => { funcToClose() }}>
+                <button id="text-input-box-close-btn" className="custom-icon-btn" onClick={() => { funcToClose() }}>
                     <i className="bi bi-x-lg"></i>
                 </button>
                 <p className="textContent">{textContent}</p>
