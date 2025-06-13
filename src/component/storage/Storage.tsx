@@ -24,7 +24,6 @@ export default function Storage() {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
     const { dirPath } = useAppSelector(state => state.directory);
-    const uploadProgress = useAppSelector(state => state.uploadProgress);
 
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
     const [isDirectoryDialog, setDirectoryDialog] = useState(false);
