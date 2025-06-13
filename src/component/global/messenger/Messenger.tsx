@@ -21,7 +21,7 @@ export default function Messenger() {
         const timeoutId = setTimeout(() => {
             setDisplay(false);
             timeoutIdRef.current = null;
-        }, message.duration || 3000);
+        }, message.duration || 4000);
         timeoutIdRef.current = timeoutId;
     }, [message]);
 
