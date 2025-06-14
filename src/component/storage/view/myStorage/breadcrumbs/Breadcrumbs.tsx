@@ -76,7 +76,7 @@ export default function Breadcrumbs({
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     {hiddenItems.length > 0 && (
-                        <li ref={breadcrumbsDropdownRef}  className="breadcrumb-item dropdown">
+                        <li ref={breadcrumbsDropdownRef} className="breadcrumb-item dropdown">
                             <span
                                 className="dropdown-toggle"
                                 role="button"
@@ -99,7 +99,7 @@ export default function Breadcrumbs({
                     {visibleItems.map(([id, name], index) => (
                         <li
                             key={id}
-                            ref={(el) => (itemRefs.current[hiddenCount + index] = el)}
+                            ref={(el) => { itemRefs.current[hiddenCount + index] = el }}
                             className={`breadcrumb-item visible-item${index === visibleItems.length - 1 ? ' active' : ''
                                 }`}
                             aria-current={index === visibleItems.length - 1 ? 'page' : undefined}
