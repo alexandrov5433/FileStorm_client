@@ -8,14 +8,13 @@ import fetcher from '../../../../lib/action/fetcher';
 import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directoryRequest';
 import type { HydratedDirectory } from '../../../../lib/definition/hydratedDirectory';
 import type { Chunk } from '../../../../lib/definition/chunk';
-import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
-import { setDirPath } from '../../../../lib/redux/slice/directory';
+import { useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import type { Directory } from '../../../../lib/definition/directory';
 import dragAndDropListenerHook from '../../../../lib/hook/dragAndDrop';
 import { useOutletContext } from 'react-router';
+import Breadcrumbs from './breadcrumbs/Breadcrumbs';
 
 export default function MyStorage() {
-    const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedDirId, newlyAddedDir, newlyDeletedFileId, newlyAddedFile } = useAppSelector(state => state.directory);
 
     const outletContext = useOutletContext();
@@ -88,36 +87,9 @@ export default function MyStorage() {
         setDirRefLoading(false);
     }
 
-    function breadcrumbMapper(dirPathEntry: [number, string], index: number) {
-        return (
-            <li key={dirPathEntry[0]} className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page" onClick={() => { goToTargetDir(dirPathEntry[0]) }}>
-                {dirPathEntry[1]}
-            </li>
-        );
-    }
-
-    function goToTargetDir(directoryId: number) {
-        let dirIndexInDirPath = 0;
-        for (let i = 0; i < dirPath.length; i++) {
-            const cur = dirPath[i];
-            if (cur[0] == directoryId) {
-                dirIndexInDirPath = i;
-            }
-        }
-
-        const targetDirPath = dirPath.slice(0, dirIndexInDirPath + 1);
-        dispatch(setDirPath(targetDirPath));
-    }
-
     return (
         <div ref={myStorageMainContainerRef} id="my-storage-main-container" className={`flex-col-strech-wrapper${isDragover ? ' dragover' : ''}`}>
-            <section id="my-storage-breadcrumb-container">
-                <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb">
-                        {dirPath.map(breadcrumbMapper)}
-                    </ol>
-                </nav>
-            </section>
+            <Breadcrumbs/>
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview

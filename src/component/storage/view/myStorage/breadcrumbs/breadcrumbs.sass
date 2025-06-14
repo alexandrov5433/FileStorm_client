@@ -1,0 +1,54 @@
+@import '../../../../../lib/style/styleExporter'
+
+#breadcrumbs-main-container
+    padding-top: 0.2rem
+    padding-left: 0.8rem
+    height: 10%
+    display: flex
+
+    .active
+        color: $teal-500
+
+    nav
+        margin: auto 0
+
+    ol
+        margin: 0
+        li
+            display: flex
+            white-space: nowrap
+            &.visible-item
+                max-width: 50vw
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+
+
+    li:hover
+        cursor: pointer
+        text-decoration: underline
+
+
+    .breadcrumb
+        flex-wrap: nowrap
+
+    .dropdown-menu
+        max-height: 50vh
+        max-width: 90vw
+        overflow-y: auto
+        li
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+
+    .dropdown-toggle
+        cursor: pointer
+        &::after
+            display: none
+
+@include media-breakpoint-up(lg)
+    #breadcrumbs-main-container
+        padding-left: 0
+
+        .dropdown-menu
+            max-width: 40vw
