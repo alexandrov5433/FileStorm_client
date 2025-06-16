@@ -1,7 +1,8 @@
+import './breadcrumbs.sass';
+
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../../../lib/redux/slice/directory';
-import './breadcrumbs.sass';
 
 export default function Breadcrumbs({
 
@@ -18,17 +19,6 @@ export default function Breadcrumbs({
 
     const hiddenItems = dirPath.slice(0, hiddenCount);
     const visibleItems = dirPath.slice(hiddenCount);
-
-    // function breadcrumbMapper(dirPathEntry: [number, string], index: number) {
-    //     return (
-    //         <>
-
-    //             {/* <li key={dirPathEntry[0]} className={`breadcrumb-item${dirPath.length - 1 == index ? ' active' : ''}`} aria-current="page" onClick={() => { goToTargetDir(dirPathEntry[0]) }}>
-    //                 {dirPathEntry[1]}
-    //             </li> */}
-    //         </>
-    //     );
-    // }
 
     useEffect(() => {
         calculateVisibleItems();
