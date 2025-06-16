@@ -7,8 +7,6 @@ export default function dragAndDropListenerHook(
 ) {
     useEffect(() => {
         if (!element) return;
-        console.log('drag and drop listeners added.');
-        
         element.addEventListener('drop', dropListener);
         element.addEventListener('dragover', dragoverListener);
         element.addEventListener('dragleave', dragleaveListener);
