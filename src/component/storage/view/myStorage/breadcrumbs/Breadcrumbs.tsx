@@ -4,11 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../../../lib/redux/slice/directory';
 
-export default function Breadcrumbs({
-
-}: {
-
-    }) {
+export default function Breadcrumbs() {
     const dispatch = useAppDispatch();
     const { dirPath } = useAppSelector(state => state.directory);
 
