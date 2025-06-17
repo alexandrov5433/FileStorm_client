@@ -35,10 +35,7 @@ function App() {
   }, [location.pathname]);
 
   async function checkCookieAndSessionData(targetPath: string) {
-    const res = await accountRequest(
-      '/api/auth/validate-session',
-      'GET'
-    );
+    const res = await accountRequest('/api/auth/validate-session', 'GET');
     if (res.status === 200) {
       dispatch(setUser(res.payload as User));
       navigate(targetPath == '/' ? '/my-storage' : targetPath);
@@ -51,7 +48,7 @@ function App() {
   return (
     <div id="app-main-container" className={landing.isMounted ? '' : 'hide-all-content'}>
       <Outlet />
-      <Messenger/>
+      <Messenger />
     </div>
   )
 }
