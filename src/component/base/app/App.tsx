@@ -18,8 +18,6 @@ function App() {
 
   useEffect(() => {
     dispatch(setWindowHistoryLengthOnAppEntry(window.history.length));
-    console.log(window.history);
-    
     const targetPath = location.pathname;
     navigate('/');
 
