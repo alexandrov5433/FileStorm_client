@@ -10,6 +10,7 @@ import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
 import type { AuthValidationResult } from '../../../lib/definition/authValidationResult';
 import enterKeyBind from '../../../lib/hook/enterKeyBind';
+import tooltipInitializer from '../../../lib/hook/tooltipInitializer';
 
 export default function Register() {
     const dispatch = useAppDispatch();
@@ -91,13 +92,7 @@ export default function Register() {
         formState.email.isValid
     ]);
 
-    useEffect(() => {
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
-        return () => {
-            tooltipList.map(t => t.dispose());
-        }
-    }, []);
+    tooltipInitializer();
 
     function usernameValidator(e: React.ChangeEvent<HTMLInputElement>) {
         const val = e.currentTarget.value;
