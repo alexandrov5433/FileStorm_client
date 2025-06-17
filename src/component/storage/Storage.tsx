@@ -33,8 +33,9 @@ export default function Storage() {
     const fileUploadIdRef = useRef(0);
 
     useEffect(() => {
+        if (!user) return;
         dispatch(setDirPath([[user.id, 'My Storage']]));
-    }, []);
+    }, [user]);
 
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
