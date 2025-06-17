@@ -6,6 +6,7 @@ import favoriteUpdateReducer from './slice/favoriteUpdate';
 import directorySlice from './slice/directory';
 import uploadProgressReducer from './slice/uploadProgress';
 import messengerReducer from './slice/messenger';
+import breadcrunbsReducer from './slice/breadcrumbs';
 
 export const store = configureStore({
     reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
         favoriteUpdate: favoriteUpdateReducer,
         directory: directorySlice,
         uploadProgress: uploadProgressReducer,
-        messenger: messengerReducer
+        messenger: messengerReducer,
+        breadcrumbs: breadcrunbsReducer
     }
 });
 

@@ -6,6 +6,7 @@ import { setGuest, setUser } from '../../../lib/redux/slice/user';
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import type { User } from '../../../lib/definition/user';
 import Messenger from '../../global/messenger/Messenger';
+import { setWindowHistoryLengthOnAppEntry } from '../../../lib/redux/slice/breadcrumbs';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -16,6 +17,9 @@ function App() {
   const componentFirstMount = useRef(true);
 
   useEffect(() => {
+    dispatch(setWindowHistoryLengthOnAppEntry(window.history.length));
+    console.log(window.history);
+    
     const targetPath = location.pathname;
     navigate('/');
 

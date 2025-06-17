@@ -3,6 +3,7 @@ import './breadcrumbs.sass';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../../../lib/redux/slice/directory';
+import { pushToHistory } from '../../../../../lib/redux/slice/breadcrumbs';
 
 export default function Breadcrumbs() {
     const dispatch = useAppDispatch();
@@ -13,8 +14,8 @@ export default function Breadcrumbs() {
     const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
     const [hiddenCount, setHiddenCount] = useState(0);
 
-    const hiddenItems = dirPath.slice(0, hiddenCount);
-    const visibleItems = dirPath.slice(hiddenCount);
+    const hiddenItems = dirPath?.slice(0, hiddenCount) || [];
+    const visibleItems = dirPath?.slice(hiddenCount) || [];
 
     useEffect(() => {
         calculateVisibleItems();
@@ -32,6 +33,7 @@ export default function Breadcrumbs() {
         }
 
         const targetDirPath = dirPath.slice(0, dirIndexInDirPath + 1);
+        dispatch(pushToHistory(targetDirPath));
         dispatch(setDirPath(targetDirPath));
     }
 

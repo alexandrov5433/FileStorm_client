@@ -12,6 +12,7 @@ import DirectoryOptionsDropdown from './optionsDropdown/DirectoryOptionsDropdown
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../lib/redux/slice/directory';
 import type { Directory } from '../../../lib/definition/directory';
+import { pushToHistory } from '../../../lib/redux/slice/breadcrumbs';
 
 export default function FileOverview({
     subdirectories,
@@ -67,7 +68,9 @@ export default function FileOverview({
     }
 
     function goToNextDir(dirPathEntry: [number, string]) {
-        dispatch(setDirPath([...dirPath, dirPathEntry]));
+        const newDirPath = [...dirPath, dirPathEntry];
+        dispatch(pushToHistory(newDirPath));
+        dispatch(setDirPath(newDirPath));
     }
 
     function directoryMapper(dir: Directory) {

@@ -8,14 +8,19 @@ import fetcher from '../../../../lib/action/fetcher';
 import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directoryRequest';
 import type { HydratedDirectory } from '../../../../lib/definition/hydratedDirectory';
 import type { Chunk } from '../../../../lib/definition/chunk';
-import { useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import type { Directory } from '../../../../lib/definition/directory';
 import dragAndDropListenerHook from '../../../../lib/hook/dragAndDrop';
 import { useOutletContext } from 'react-router';
 import Breadcrumbs from './breadcrumbs/Breadcrumbs';
+import { setDirPath } from '../../../../lib/redux/slice/directory';
+import { goBackOne, goForwardOne, initHistory } from '../../../../lib/redux/slice/breadcrumbs';
 
 export default function MyStorage() {
     const { dirPath, newlyDeletedDirId, newlyAddedDir, newlyDeletedFileId, newlyAddedFile } = useAppSelector(state => state.directory);
+    const user = useAppSelector(state => state.user);
+    const breadcrumbsState = useAppSelector(state => state.breadcrumbs);
+    const dispatch = useAppDispatch();
 
     const outletContext = useOutletContext();
 
@@ -24,6 +29,8 @@ export default function MyStorage() {
 
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
+
+
     // drag and drop file upload functionality
     const myStorageMainContainerRef = useRef(null);
     const [isDragover, setDragover] = useState(false);
@@ -31,9 +38,9 @@ export default function MyStorage() {
         setDragover(arg);
     };
     function onDropInsertIntoInput(files: FileList) {
-        const input = (outletContext as any).current as HTMLInputElement;        
+        const input = (outletContext as any).current as HTMLInputElement;
         input.files = files;
-        input.dispatchEvent(new Event('change', {bubbles: true}));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
     }
     dragAndDropListenerHook(
         myStorageMainContainerRef.current!,
@@ -41,9 +48,55 @@ export default function MyStorage() {
         onDropInsertIntoInput
     );
 
+
+    
+    // breadcrumbs navigation with browser back/forward buttons functionality
+    const backButtonClickRef = useRef(false);
+    const historyInitDoneRef = useRef(false);
+    const breadcrumbsStateRef = useRef(breadcrumbsState);
     useEffect(() => {
+        window.addEventListener('popstate', testBackButton);
+        return () => window.removeEventListener('popstate', testBackButton);
+    }, []);
+
+    function testBackButton(e: PopStateEvent) {
+        backButtonClickRef.current = true;
+        const previousPosition = breadcrumbsStateRef.current.currentPosition;
+        const newPosition = typeof e.state === 'number' ? e.state : null;
+        
+        if (newPosition == null || !previousPosition) {
+            const historyTarget = breadcrumbsStateRef.current.windowHistoryLengthOnAppEntry! - window.history.length; 
+            history.go(historyTarget);
+            return;
+        }
+        e.preventDefault();
+        if (newPosition < previousPosition) {
+            dispatch(goBackOne());
+        } else if (newPosition > previousPosition) {
+            dispatch(goForwardOne());
+        }
+    }
+
+    useEffect(() => {
+        if (backButtonClickRef.current) {
+            backButtonClickRef.current = false;
+            dispatch(setDirPath(breadcrumbsState.history?.[breadcrumbsState.currentPosition || 0] || [[user?.id || 0, 'My Storage']]));
+        } else {
+            window.history.pushState(breadcrumbsState.currentPosition || 0, '', window.location.pathname);
+        }
+        breadcrumbsStateRef.current = breadcrumbsState;
+    }, [breadcrumbsState]);
+
+    useEffect(() => {
+        if (!historyInitDoneRef.current && dirPath.length) {
+            dispatch(initHistory(dirPath));
+            historyInitDoneRef.current = true;
+            window.history.pushState(0, '', window.location.pathname);
+        }
         getDirectoryData();
     }, [dirPath]);
+
+
 
     useEffect(() => {
         if (!newlyAddedDir) return;
@@ -89,7 +142,7 @@ export default function MyStorage() {
 
     return (
         <div ref={myStorageMainContainerRef} id="my-storage-main-container" className={`flex-col-strech-wrapper${isDragover ? ' dragover' : ''}`}>
-            <Breadcrumbs/>
+            <Breadcrumbs />
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview
