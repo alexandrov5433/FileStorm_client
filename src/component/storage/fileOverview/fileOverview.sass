@@ -81,7 +81,10 @@
 
 .name
     flex: 1 1 80%
-    overflow: hidden
+    // justify-content: space-between
+    .name-text-content-container
+        max-width: 60dvw
+        overflow: hidden
 
 @keyframes hover-bg-color-shift
     0%
@@ -95,19 +98,26 @@
     100%
         background-color: $teal-700
 
+@include media-breakpoint-up(md)
+    .name
+        .name-text-content-container
+            max-width: 65dvw
+
 @include media-breakpoint-up(lg)
     .file-row
         height: 3rem
         &:hover
             animation: 0.2s linear 0s forwards hover-bg-color-shift
     .name
-        flex: 1 1 50%
+        flex: 0 1 50%
         // styles for optionsDropdown.sass
         #file-options-favorite-container:not(:has(.is_favorite))
             display: none
         &:hover
             #file-options-favorite-container
                 display: inline
+        .name-text-content-container
+            max-width: 35dvw
     .size
         display: flex
         flex: 1 0 10%

@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { deleteDirectory } from '../../../../lib/action/fileSystem/directoryRequest';
 import { setNewlyDeleteDirId } from '../../../../lib/redux/slice/directory';
 import fetcher from '../../../../lib/action/fetcher';
+import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 
 export default function DirectoryOptionsDropdown({
     directoryId
-} : {
+}: {
     directoryId: number
 }) {
     const dispatch = useAppDispatch();
@@ -23,18 +24,20 @@ export default function DirectoryOptionsDropdown({
         }
         setDeletionInProgress(false);
     }
-    
+
+    tooltipInitializer('[data-bs-toggle-tooltip="tooltip"]');
+
     return (
         <div id="options-dropdown-main-container">
-            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown">
+
+            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
+                data-bs-toggle-tooltip="tooltip"
+                data-bs-title="Directory Options"
+                data-bs-trigger="hover focus"
+                data-bs-custom-class="custom-tooltip"
+            >
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul className="dropdown-menu custom-dropdown">
-                    {/* <li>
-                        <span className="dropdown-item">
-                            <i className="bi bi-download"></i>
-                            Download
-                        </span>
-                    </li> */}
                     <li>
                         <span className="dropdown-item red-item" onClick={
                             isDeletionInProgress ? () => null : deleteDir
@@ -45,6 +48,7 @@ export default function DirectoryOptionsDropdown({
                     </li>
                 </ul>
             </div>
+
         </div>
     );
 }

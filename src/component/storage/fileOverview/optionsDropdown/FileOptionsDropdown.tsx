@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
 import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
 import { setNewlyDeletedFileId } from '../../../../lib/redux/slice/directory';
+import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 
 export default function FileOptionsDropdown({
     chunk
@@ -19,6 +20,8 @@ export default function FileOptionsDropdown({
     const [isFavorite, setIsFavorite] = useState(chunk.isFavorite);
     const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
     const [isDeleteFileInProgress, setDeleteFileInProgress] = useState(false);
+
+    tooltipInitializer('[data-bs-toggle-tooltip="tooltip"]');
 
     function download() {
         const anchor = document.createElement('a');
@@ -45,7 +48,7 @@ export default function FileOptionsDropdown({
         }
         setFavoriteRequestLoading(false);
     }
-    
+
     async function removeFromFavorite() {
         setFavoriteRequestLoading(true);
         const res = await fetcher(removeFileFromFavorite(chunk.id));
@@ -60,14 +63,20 @@ export default function FileOptionsDropdown({
         <div id="options-dropdown-main-container">
             <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
                 isFavoriteRequestLoading ? () => null :
-                (isFavorite ? removeFromFavorite : addToFavorite)
+                    (isFavorite ? removeFromFavorite : addToFavorite)
             }>
                 {
                     isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
                         <i className="bi bi-star"></i>
                 }
             </div>
-            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown">
+          
+            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
+            data-bs-toggle-tooltip="tooltip"
+            data-bs-title="File Options"
+            data-bs-trigger="hover focus"
+            data-bs-custom-class="custom-tooltip"
+            >
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul className="dropdown-menu custom-dropdown">
                     <li>
@@ -86,6 +95,7 @@ export default function FileOptionsDropdown({
                     </li>
                 </ul>
             </div>
+           
         </div>
     );
 }

@@ -48,9 +48,11 @@ export default function FileOverview({
                     {getIconElement(chunk.mimeType)}
                 </div>
                 <div className="file-col name">
-                    <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.originalFileName}>
-                        {chunk.originalFileName}
-                    </a>
+                    <div className="name-text-content-container">
+                        <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.originalFileName}>
+                            {chunk.originalFileName}
+                        </a>
+                    </div>
                     <FileOptionsDropdown chunk={chunk} />
                 </div>
                 <div className="file-col size">
@@ -83,9 +85,11 @@ export default function FileOverview({
                     {getIconElement('directory')}
                 </div>
                 <div className="file-col name">
-                    <p className="text-content" onClick={() => goToNextDir([dir.id, dir.name])}>
-                        {dir.name}
-                    </p>
+                    <div className="name-text-content-container">
+                        <p className="text-content" onClick={() => goToNextDir([dir.id, dir.name])}>
+                            {dir.name}
+                        </p>
+                    </div>
                     <DirectoryOptionsDropdown directoryId={dir.id} />
                 </div>
                 <div className="file-col size">
