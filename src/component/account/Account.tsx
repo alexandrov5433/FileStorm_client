@@ -32,7 +32,7 @@ export default function Account() {
     }, []);
 
     useEffect(() => {
-        if (user.id && user.id > 0) {
+        if (user?.id && user?.id > 0) {
             navigate('/my-storage');
         }
     }, [user]);
