@@ -84,7 +84,7 @@ export default function NavBar() {
                     </ul>
 
                     <div id="navbar-user-container">
-                            <p>{user.username}</p>
+                            <p>{user?.username || ''}</p>
                             <span className="pipe">|</span>
                             <button id="logoutBtn" onClick={logout} disabled={isLogoutBtnDisabled} className="nav-link">Log Out</button>
                     </div>
