@@ -91,7 +91,7 @@ export default function Breadcrumbs() {
                             className={`breadcrumb-item visible-item${index === visibleItems.length - 1 ? ' active' : ''
                                 }`}
                             aria-current={index === visibleItems.length - 1 ? 'page' : undefined}
-                            onClick={() => goToTargetDir(id)}
+                            onClick={index === visibleItems.length - 1 ? () => null : () => goToTargetDir(id)}
                         >
                             {name}
                         </li>
