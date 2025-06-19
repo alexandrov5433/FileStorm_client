@@ -6,6 +6,7 @@ import { useEffect } from "react";
  */
 export default function enterKeyBind(element: HTMLElement) {
     useEffect(() => {
+        if (!element) return;
         const keyStrokeListener = (e: KeyboardEvent) => {
             if (e.key == 'Enter') {
                 element.click();
