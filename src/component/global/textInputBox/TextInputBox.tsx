@@ -1,5 +1,6 @@
-import { useState, type ChangeEvent } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import './textInputBox.sass';
+import enterKeyBind from '../../../lib/hook/enterKeyBind';
 
 export default function TextInputBox({
     funcToRunOnInputDone,
@@ -16,8 +17,12 @@ export default function TextInputBox({
     textExtraNote?: string,
     btnText: string
 }) {
+    const submitBtnRef = useRef(null);
+
     const [isInputValid, setInputValid] = useState(false);
     const [inputValue, setInputValue] = useState('');
+
+    enterKeyBind(submitBtnRef.current! as HTMLButtonElement);
 
     function validateInput(e: ChangeEvent) {
         const value = ((e.currentTarget as HTMLInputElement).value || '').trim();
@@ -38,9 +43,9 @@ export default function TextInputBox({
                     <i className="bi bi-x-lg"></i>
                 </button>
                 <p className="textContent">{textContent}</p>
-                <input type="text" onChange={validateInput}/>
+                <input type="text" onChange={validateInput} autoFocus/>
                 <p className="textExtraNote">{textExtraNote || ''}</p>
-                <button id="submit-btn" className="custom-btn main-btn w-100" disabled={!isInputValid} onClick={inputSubmission}>{btnText}</button>
+                <button ref={submitBtnRef} id="submit-btn" className="custom-btn main-btn w-100" disabled={!isInputValid} onClick={inputSubmission}>{btnText}</button>
             </section>
         </div>
     );
