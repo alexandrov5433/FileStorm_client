@@ -64,18 +64,24 @@ export default function FileOptionsDropdown({
             <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
                 isFavoriteRequestLoading ? () => null :
                     (isFavorite ? removeFromFavorite : addToFavorite)
-            }>
+            }
+                data-bs-toggle-tooltip="tooltip"
+                data-bs-title={
+                    isFavorite ? 'Remove from Favorite' : 'Add to Favorite'
+                }
+                data-bs-trigger="hover focus"
+                data-bs-custom-class="custom-tooltip">
                 {
                     isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
                         <i className="bi bi-star"></i>
                 }
             </div>
-          
+
             <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
-            data-bs-toggle-tooltip="tooltip"
-            data-bs-title="File Options"
-            data-bs-trigger="hover focus"
-            data-bs-custom-class="custom-tooltip"
+                data-bs-toggle-tooltip="tooltip"
+                data-bs-title="File Options"
+                data-bs-trigger="hover focus"
+                data-bs-custom-class="custom-tooltip"
             >
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul className="dropdown-menu custom-dropdown">
@@ -95,7 +101,7 @@ export default function FileOptionsDropdown({
                     </li>
                 </ul>
             </div>
-           
+
         </div>
     );
 }
