@@ -7,7 +7,7 @@ import type { AuthValidationResult } from '../../../lib/definition/authValidatio
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
-import enterKeyBind from '../../../lib/hook/enterKeyBind';
+import useEnterKeyBind from '../../../lib/hook/useEnterKeyBind';
 
 export default function Login() {
     const dispatch = useAppDispatch();
@@ -18,7 +18,7 @@ export default function Login() {
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
-    enterKeyBind(loginBtnRef.current! as HTMLButtonElement);
+    useEnterKeyBind(loginBtnRef.current! as HTMLButtonElement);
 
     const [isLoginBtnDisabled, setLoginBtnDisabled] = useState(true);
     const [isFormTouched, setFormTouched] = useState(false);

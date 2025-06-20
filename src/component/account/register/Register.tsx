@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
 import type { AuthValidationResult } from '../../../lib/definition/authValidationResult';
-import enterKeyBind from '../../../lib/hook/enterKeyBind';
+import useEnterKeyBind from '../../../lib/hook/useEnterKeyBind';
 import tooltipInitializer from '../../../lib/hook/tooltipInitializer';
 
 export default function Register() {
@@ -21,7 +21,7 @@ export default function Register() {
     const passwordRef = useRef(null);
     const repasswordRef = useRef(null);
 
-    enterKeyBind(registerBtnRef.current! as HTMLButtonElement);
+    useEnterKeyBind(registerBtnRef.current! as HTMLButtonElement);
 
     const [isRegisterBtnDisabled, setRegisterBtnDisabled] = useState(true);
     const [isPasswordVisible, setPasswordVisisble] = useState(false);
