@@ -1,6 +1,7 @@
-import { useRef, useState, type ChangeEvent } from 'react';
 import './textInputBox.sass';
-import enterKeyBind from '../../../lib/hook/enterKeyBind';
+
+import { useRef, useState, type ChangeEvent } from 'react';
+import useEnterKeyBind from '../../../lib/hook/useEnterKeyBind';
 
 export default function TextInputBox({
     funcToRunOnInputDone,
@@ -22,7 +23,7 @@ export default function TextInputBox({
     const [isInputValid, setInputValid] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    enterKeyBind(submitBtnRef.current! as HTMLButtonElement);
+    useEnterKeyBind(submitBtnRef.current! as HTMLButtonElement);
 
     function validateInput(e: ChangeEvent) {
         const value = ((e.currentTarget as HTMLInputElement).value || '').trim();
