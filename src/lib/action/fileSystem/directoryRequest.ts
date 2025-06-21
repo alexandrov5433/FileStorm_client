@@ -1,6 +1,3 @@
-import { buildDirectoryPath } from "../../util/directory";
-import { addRequestParams } from "../../util/request";
-
 function getDirectoryRequest(
     targetDirectoryId: number
 ): Request {
