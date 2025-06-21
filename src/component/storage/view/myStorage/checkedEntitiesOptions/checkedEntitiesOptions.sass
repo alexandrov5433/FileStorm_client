@@ -1,0 +1,17 @@
+@import '../../../../../lib/style/styleExporter'
+
+#check-ent-options-main-cantainer
+    flex: 0 1 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 0.5rem
+
+    .color-teal
+        color: $teal-500
+    .color-red
+        color: var(--color-error)
+
+@include media-breakpoint-up(sm)
+    #check-ent-options-main-cantainer
+        justify-content: flex-start
