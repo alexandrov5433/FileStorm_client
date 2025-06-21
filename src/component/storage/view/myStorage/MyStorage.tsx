@@ -10,7 +10,7 @@ import type { HydratedDirectory } from '../../../../lib/definition/hydratedDirec
 import type { Chunk } from '../../../../lib/definition/chunk';
 import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import type { Directory } from '../../../../lib/definition/directory';
-import dragAndDropListenerHook from '../../../../lib/hook/dragAndDrop';
+import useDragAndDropListenerHook from '../../../../lib/hook/useDragAndDrop';
 import { useOutletContext } from 'react-router';
 import Breadcrumbs from './breadcrumbs/Breadcrumbs';
 import { setDirPath } from '../../../../lib/redux/slice/directory';
@@ -42,7 +42,7 @@ export default function MyStorage() {
         input.files = files;
         input.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    dragAndDropListenerHook(
+    useDragAndDropListenerHook(
         myStorageMainContainerRef.current!,
         dragoverStylingToggler,
         onDropInsertIntoInput

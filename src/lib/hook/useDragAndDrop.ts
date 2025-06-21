@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function dragAndDropListenerHook(
+export default function useDragAndDropListenerHook(
     element: HTMLDivElement,
     dragoverStylingToggler: (arg: boolean) => void,
     onDropInsertIntoInput: (files: FileList) => void
