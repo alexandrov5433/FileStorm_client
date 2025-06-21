@@ -7,6 +7,7 @@ import directorySlice from './slice/directory';
 import uploadProgressReducer from './slice/uploadProgress';
 import messengerReducer from './slice/messenger';
 import breadcrunbsReducer from './slice/breadcrumbs';
+import checkedEntitiesReducer from './slice/checkedEntities';
 
 export const store = configureStore({
     reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
         directory: directorySlice,
         uploadProgress: uploadProgressReducer,
         messenger: messengerReducer,
-        breadcrumbs: breadcrunbsReducer
+        breadcrumbs: breadcrunbsReducer,
+        checkedEntities: checkedEntitiesReducer
     }
 });
 

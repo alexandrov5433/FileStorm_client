@@ -15,6 +15,7 @@ import type { Directory } from '../../../lib/definition/directory';
 import { pushToHistory } from '../../../lib/redux/slice/breadcrumbs';
 import { useEffect, useRef } from 'react';
 import type { SelectorManipulationObject } from '../../../lib/definition/selectRing';
+import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList } from '../../../lib/redux/slice/checkedEntities';
 
 export default function FileOverview({
     subdirectories,
@@ -31,6 +32,7 @@ export default function FileOverview({
 }) {
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedDirId, newlyDeletedFileId } = useAppSelector(state => state.directory);
+    const { checkedList } = useAppSelector(state => state.checkedEntities);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return chunkRefs.sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
@@ -43,17 +45,14 @@ export default function FileOverview({
 
 
     // selection functionality
-    const checkedList = useRef<Set<number>>(new Set());
     const checkboxManipulatorsList = useRef<SelectorManipulationObject[]>([]);
     const masterCheckboxManipulator = useRef<SelectorManipulationObject | null>(null);
     function addToCheckedList(id: number) {
         if (id <= 0) return;
-        checkedList.current.add(id);
-        areAllSelectorsChecked();
+        dispatch(addEntityToCheckedList(id));
     }
     function removeFromCheckedList(id: number) {
-        checkedList.current.delete(id);
-        areAllSelectorsChecked();
+        dispatch(deleteEntityFromCheckedList(id));
     }
     function addSelectorManipulationObjectList(selectorManipulationObject: SelectorManipulationObject) {
         if (!selectorManipulationObject) return;
@@ -71,7 +70,7 @@ export default function FileOverview({
     }
     function unselectAllInDirectory() {
         checkboxManipulatorsList.current.forEach(manipulator => manipulator.uncheck());
-        checkedList.current.clear();
+        dispatch(clearCheckedList());
     }
     function areAllSelectorsChecked() {
         const allIds = new Set([
@@ -82,10 +81,13 @@ export default function FileOverview({
             masterCheckboxManipulator.current?.uncheck();
             return;
         }
-        const notCheckedCount = allIds.difference(checkedList.current).size;
+        const notCheckedCount = allIds.difference(new Set(checkedList)).size;
         notCheckedCount == 0 ? masterCheckboxManipulator.current?.check() : masterCheckboxManipulator.current?.uncheck();
     }
 
+    useEffect(() => {
+        areAllSelectorsChecked();
+    }, [checkedList]);
     useEffect(() => {
         removeFromCheckedList(newlyDeletedDirId || 0);
     }, [newlyDeletedDirId]);
@@ -184,7 +186,7 @@ export default function FileOverview({
                                 inputElementId="select-ring-input-all-checkbox-elements"
                                 selectAllInDirectory={selectAllInDirectory}
                                 unselectAllInDirectory={unselectAllInDirectory}
-                                addMasterSelectorManipulationObject={addMasterSelectorManipulationObject}/>
+                                addMasterSelectorManipulationObject={addMasterSelectorManipulationObject} />
                         </div>
                         <div className="file-col type">
                             <i className="bi bi-file-earmark"></i>

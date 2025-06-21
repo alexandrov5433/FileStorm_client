@@ -31,7 +31,7 @@ export default function SelectRing({
         useEffect(() => {
             if (!checkboxRef.current) return;
             addMasterSelectorManipulationObject?.({
-                fileOrDirId: fileOrDirId || 0,
+                fileOrDirId: 0,
                 check: () => {
                     if (!checkboxRef.current) return;
                     checkboxRef.current!.checked = true;
