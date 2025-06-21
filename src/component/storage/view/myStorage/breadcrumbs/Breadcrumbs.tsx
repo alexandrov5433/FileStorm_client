@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
 import { setDirPath } from '../../../../../lib/redux/slice/directory';
 import { pushToHistory } from '../../../../../lib/redux/slice/breadcrumbs';
+import { clearCheckedList } from '../../../../../lib/redux/slice/checkedEntities';
 
 export default function Breadcrumbs() {
     const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ export default function Breadcrumbs() {
         const targetDirPath = dirPath.slice(0, dirIndexInDirPath + 1);
         dispatch(pushToHistory(targetDirPath));
         dispatch(setDirPath(targetDirPath));
+        dispatch(clearCheckedList());
     }
 
     function calculateVisibleItems() {

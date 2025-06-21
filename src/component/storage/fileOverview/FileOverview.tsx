@@ -137,6 +137,7 @@ export default function FileOverview({
         const newDirPath = [...dirPath, dirPathEntry];
         dispatch(pushToHistory(newDirPath));
         dispatch(setDirPath(newDirPath));
+        dispatch(clearCheckedList());
     }
 
     function directoryMapper(dir: Directory) {
