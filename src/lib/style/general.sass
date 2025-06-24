@@ -14,6 +14,13 @@
 .add-box-shadow-border-radius
         box-shadow: none
         border-radius: 0px
+
+@mixin general-input-text()
+    background-color: var(--neutralSecondarySurface)
+    border: 1px solid var(--neutralSecondary)
+    width: 100%
+    text-align: center
+    padding: 0.2rem
     
 @include media-breakpoint-up(sm)
     .add-box-shadow-border-radius
