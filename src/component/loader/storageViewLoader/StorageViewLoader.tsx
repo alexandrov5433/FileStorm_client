@@ -1,24 +1,41 @@
 import './storageViewLoader.sass';
 
+import { useEffect, useRef, useState } from 'react';
+
 export default function StorageViewLoader() {
+    const position = useRef(0);
+    const [pre, setPre] = useState('');
+    const [post, setPost] = useState('000000000');
+
+    useEffect(() => {
+        const intervalId = setInterval(() => numbersUpdater(), 100);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    function numbersUpdater() {
+        const preString = new Array(position.current).fill('0', 0).join('');
+        setPre(preString);
+        const postString = new Array(9 - position.current).fill('0', 0).join('');
+        setPost(postString);
+        // with 10 numbers
+        position.current = position.current <= 8 ? (position.current + 1) : 0;
+    }
+
     return (
         <div id="storage-view-loader-main-container" className="flex-col-strech-wrapper">
-            <section className="storage-view-loader-container">
-                <div className="cloud-container">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                    <i className="bi bi-cloud-fill"></i>
-                </div>
-                {/* <div className="numbers-container">
-                    <p className="storage-loader-1">1</p>
-                    <p className="storage-loader-2">0</p>
-                    <p className="storage-loader-3">1</p>
-                    <p className="storage-loader-4">0</p>
-                </div>
-                <div className="computer-container">
-                    <i className="bi bi-laptop"></i>
-                </div> */}
+            <section className="storage-view-cloud">
+                <i className="bi bi-cloud-fill"></i>
+            </section>
+            <section className="storage-view-numbers anime-fade-in">
+                <span>
+                    {
+                        <>
+                            <span>{pre}</span>
+                            <span className="storage-view-the-one">1</span>
+                            <span>{post}</span>
+                        </>
+                    }
+                </span>
             </section>
         </div>
     );

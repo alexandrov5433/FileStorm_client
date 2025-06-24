@@ -1,71 +1,22 @@
 @import '../../../lib/style/styleExporter'
 
 #storage-view-loader-main-container
-    animation: 2s ease-out 0s infinite forwards wave-lines
     justify-content: center
     align-items: center
 
-    .cloud-container
-        position: relative
-        width: 5rem
-        height: 5rem
+    .storage-view-cloud
+        animation: 1.4s linear 0s infinite alternate float
         i
             font-size: 5.4rem
-            position: absolute
-            top: 0%
-            left: -4%
             color: $teal-500
             z-index: 20
-        div
-            position: absolute
-            top: 50%
-            left: 30%
-            z-index: 21
-            color: $blue-600
+    .storage-view-numbers
+        .storage-view-the-one
+            color: $teal-500
 
-//     .numbers-container
-//         position: relative
-//         height: 6rem
-//         p
-//             margin: 0
-//             font-size: 1rem
-//             opacity: 0
-//             color: $teal-600
-//             top: 0%
-//             left: 50%
-//             transform: translateX(-50%)
-//             position: absolute
+@keyframes float
+    0%
+        transform: translateY(0)
 
-// @for $i from 1 through 4
-//     p.storage-loader-#{$i}
-//         animation: 4s linear #{$i}s forwards infinite waterfall
-
-//     .computer-container
-//         display: flex
-//         justify-content: center
-//         align-items: center
-//         i
-//             font-size: 2rem
-//             // width: fit-content
-//             // height: fit-content
-//             animation: 1s linear 4s forwards infinite pulse
-
-// @keyframes waterfall
-//     0%
-//         opacity: 0.2
-//         top: 0%
-//     10%
-//         opacity: 1
-//     90%
-//         opacity: 0.8
-
-//     100%
-//         opacity: 0
-//         top: 95%
-
-// @keyframes pulse
-//     0%
-
-//     50%
-//         color: $teal-200
-//     100%
+    100%
+        transform: translateY(-1rem)
