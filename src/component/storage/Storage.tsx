@@ -4,6 +4,7 @@ import NavBar from '../base/navBar/NavBar';
 import SideOptions from './sideOptions/SideOptions';
 import UploadProgressViewer from './uploadProgressViewer/UploadProgressViewer';
 import TextInputBox from '../global/textInputBox/TextInputBox';
+import ShareInterface from '../global/share/shareInterface/ShareInterface';
 
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { Outlet } from 'react-router';
@@ -11,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../lib/redux/reduxTypedHooks'
 import { validateFileAndDirName } from '../../lib/util/validator';
 import fetcher from '../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../lib/action/fileSystem/directoryRequest';
-import { setDirPath, setNewAddedFile, setNewlyAddedDir } from '../../lib/redux/slice/directory';
+import { setDirPath, addChunk, addSubdir } from '../../lib/redux/slice/directory';
 import type { UploadProgressEntity } from '../../lib/definition/redux';
 import fileUpload from '../../lib/action/fileUpload';
 import { addUploadEntity, removeUploadEntityById, updateUploadEntityById } from '../../lib/redux/slice/uploadProgress';
@@ -58,7 +59,7 @@ export default function Storage() {
         );
         if (res.status == 200) {
             // trigger refresh in my-storage
-            dispatch(setNewlyAddedDir(res.payload as Directory));
+            dispatch(addSubdir(res.payload as Directory));
         }
     }
 
@@ -99,7 +100,7 @@ export default function Storage() {
                 .then(res => {
                     if ((res as FetcherReturn).status === 200) {
                         dispatch(removeUploadEntityById(uploadProgressEntity.id));
-                        dispatch(setNewAddedFile((res as FetcherReturn).payload as Chunk));
+                        dispatch(addChunk((res as FetcherReturn).payload as Chunk));
                     } else {
                         dispatch(removeUploadEntityById(uploadProgressEntity.id));
                         console.log((res as FetcherReturn).msg || 'A problem occured.');
@@ -175,6 +176,7 @@ export default function Storage() {
                         btnText='Add Directory' /> : ''
                 }
                 <UploadProgressViewer />
+                <ShareInterface/>
             </div>
         </>
     );

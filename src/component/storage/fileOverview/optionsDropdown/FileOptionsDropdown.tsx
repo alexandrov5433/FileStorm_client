@@ -7,8 +7,9 @@ import { useState } from 'react';
 import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
 import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
-import { setNewlyDeletedFileId } from '../../../../lib/redux/slice/directory';
+import { removeChunkById } from '../../../../lib/redux/slice/directory';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
+import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
 
 export default function FileOptionsDropdown({
     chunk
@@ -34,7 +35,7 @@ export default function FileOptionsDropdown({
         setDeleteFileInProgress(true);
         const res = await fetcher(deleteFileRequest(chunk.id));
         if (res.status == 200) {
-            dispatch(setNewlyDeletedFileId(res.payload as number));
+            dispatch(removeChunkById(res.payload as number));
         }
         setDeleteFileInProgress(false);
     }
@@ -57,6 +58,10 @@ export default function FileOptionsDropdown({
             dispatch(chunkRemovedFromFav(res.payload as Chunk));
         }
         setFavoriteRequestLoading(false);
+    }
+
+    function openShareInterface() {
+        dispatch(initShareInterfaceWithEntity(chunk));
     }
 
     return (
@@ -97,6 +102,12 @@ export default function FileOptionsDropdown({
                         }>
                             <i className="bi bi-trash3"></i>
                             Delete
+                        </span>
+                    </li>
+                    <li>
+                        <span className="dropdown-item" onClick={openShareInterface}>
+                            <i className="bi bi-share"></i>
+                            Share
                         </span>
                     </li>
                 </ul>

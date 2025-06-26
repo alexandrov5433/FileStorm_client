@@ -2,45 +2,80 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { Chunk } from "../../definition/chunk";
 import type { Directory } from "../../definition/directory";
 
+type ChunkReplacementActionPayload = {
+    idOfChunkToRemove: number,
+    chunkToAdd: Chunk
+}
+
 export const directorySlice = createSlice({
     name: 'directory',
     initialState: {
         dirPath: [],
-        newlyDeletedDirId: null,
-        newlyAddedDir: null,
-        newlyDeletedFileId: null,
-        newlyAddedFile: null
+        subdirectories: [],
+        hydratedChunks: [],
+        newlyDeletedSubdirId: null,
+        newlyDeletedChunkId: null
     } as {
         dirPath: Array<[number, string]>,
-        newlyDeletedDirId: number | null,
-        newlyAddedDir: Directory | null,
-        newlyDeletedFileId: number | null,
-        newlyAddedFile: Chunk | null
+        subdirectories: Directory[],
+        hydratedChunks: Chunk[],
+        newlyDeletedSubdirId: number | null,
+        newlyDeletedChunkId: number | null,
     },
     reducers: {
         setDirPath: (state, action: { payload: Array<[number, string]>, type: string }) => {
             return { ...state, dirPath: action.payload };
         },
-        setNewlyDeleteDirId: (state, action: { payload: number, type: string }) => {
-            return { ...state, newlyDeletedDirId: action.payload };
+
+        // subdirectories
+        setSubdirectories: (state, action: { payload: Directory[], type: string }) => {
+            return { ...state, subdirectories: action.payload };
         },
-        setNewlyAddedDir: (state, action: { payload: Directory, type: string }) => {
-            return { ...state, newlyAddedDir: action.payload };
+        addSubdir: (state, action: { payload: Directory, type: string }) => {
+            return { ...state, subdirectories: [...state.subdirectories, action.payload] };
         },
-        setNewlyDeletedFileId: (state, action: { payload: number, type: string }) => {
-            return { ...state, newlyDeletedFileId: action.payload };
+        removeSubdirById: (state, action: { payload: number, type: string }) => {
+            const updatedDirectories = state.subdirectories.filter(d => d.id !== action.payload);
+            return { ...state, subdirectories: updatedDirectories, newlyDeletedSubdirId: action.payload };
         },
-        setNewAddedFile: (state, action: { payload: Chunk, type: string }) => {
-            return { ...state, newlyAddedFile: action.payload };
+
+        // chunks
+        setHydratedChunks: (state, action: { payload: Chunk[], type: string }) => {
+            return { ...state, hydratedChunks: action.payload };
+        },
+        addChunk: (state, action: { payload: Chunk, type: string }) => {
+            return { ...state, hydratedChunks: [...state.hydratedChunks, action.payload] };
+        },
+        removeChunkById: (state, action: { payload: number, type: string }) => {
+            const updatedChunks = state.hydratedChunks.filter(c => c.id !== action.payload);
+            return { ...state, hydratedChunks: updatedChunks, newlyDeletedChunkId: action.payload };
+        },
+        replaceChunkByIdWithNewChunk: (state, action: { payload: ChunkReplacementActionPayload, type: string }) => {
+            let indexOfTarget = state.hydratedChunks.findIndex(c => c.id === action.payload.idOfChunkToRemove);
+            if (indexOfTarget < 0) {
+                // case -1
+                return state;
+            }
+            const updatedChunks = [...state.hydratedChunks]
+            updatedChunks[indexOfTarget] = action.payload.chunkToAdd;
+
+            return {
+                ...state,
+                hydratedChunks: updatedChunks
+            };
         }
+
     }
 });
 
 export const {
     setDirPath,
-    setNewlyDeleteDirId,
-    setNewlyAddedDir,
-    setNewlyDeletedFileId,
-    setNewAddedFile
+    removeSubdirById,
+    addSubdir,
+    removeChunkById,
+    addChunk,
+    setSubdirectories,
+    setHydratedChunks,
+    replaceChunkByIdWithNewChunk
 } = directorySlice.actions;
 export default directorySlice.reducer;

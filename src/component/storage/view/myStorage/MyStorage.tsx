@@ -7,27 +7,22 @@ import { useEffect, useRef, useState } from 'react';
 import fetcher from '../../../../lib/action/fetcher';
 import { getDirectoryRequest } from '../../../../lib/action/fileSystem/directoryRequest';
 import type { HydratedDirectory } from '../../../../lib/definition/hydratedDirectory';
-import type { Chunk } from '../../../../lib/definition/chunk';
 import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
-import type { Directory } from '../../../../lib/definition/directory';
 import useDragAndDropListenerHook from '../../../../lib/hook/useDragAndDrop';
 import { useOutletContext } from 'react-router';
 import Breadcrumbs from './breadcrumbs/Breadcrumbs';
-import { setDirPath } from '../../../../lib/redux/slice/directory';
+import { setDirPath, setHydratedChunks, setSubdirectories } from '../../../../lib/redux/slice/directory';
 import { goBackOne, goForwardOne, initHistory } from '../../../../lib/redux/slice/breadcrumbs';
 import CheckedEntitiesOptions from './checkedEntitiesOptions/CheckedEntitiesOptions';
 
 export default function MyStorage() {
-    const { dirPath, newlyDeletedDirId, newlyAddedDir, newlyDeletedFileId, newlyAddedFile } = useAppSelector(state => state.directory);
+    const { dirPath, subdirectories, hydratedChunks } = useAppSelector(state => state.directory);
     const user = useAppSelector(state => state.user);
     const breadcrumbsState = useAppSelector(state => state.breadcrumbs);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
     const dispatch = useAppDispatch();
 
     const outletContext = useOutletContext();
-
-    const [subdirectories, setSubdirectories] = useState<Directory[] | null>(null);
-    const [hydratedChunks, setHydratedChunks] = useState<Chunk[] | null>(null);
 
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
@@ -104,36 +99,6 @@ export default function MyStorage() {
         getDirectoryData();
     }, [dirPath]);
 
-
-
-    useEffect(() => {
-        if (!newlyAddedDir) return;
-        setSubdirectories(state => {
-            return [...state || [], newlyAddedDir];
-        });
-    }, [newlyAddedDir]);
-
-    useEffect(() => {
-        if (!newlyDeletedDirId) return;
-        setSubdirectories(state => {
-            return (state || []).filter(d => d.id != newlyDeletedDirId);
-        });
-    }, [newlyDeletedDirId]);
-
-    useEffect(() => {
-        if (!newlyAddedFile) return;
-        setHydratedChunks(state => {
-            return [...state || [], newlyAddedFile];
-        });
-    }, [newlyAddedFile]);
-
-    useEffect(() => {
-        if (!newlyDeletedFileId) return;
-        setHydratedChunks(state => {
-            return (state || []).filter(c => c.id != newlyDeletedFileId);
-        });
-    }, [newlyDeletedFileId]);
-
     async function getDirectoryData() {
         setDirRefLoading(true);
         const directoryid = dirPath?.[dirPath.length - 1]?.[0];
@@ -142,8 +107,8 @@ export default function MyStorage() {
             getDirectoryRequest(directoryid)
         );
         if (res.status == 200) {
-            setSubdirectories((res.payload as HydratedDirectory).subdirectories || []);
-            setHydratedChunks((res.payload as HydratedDirectory).hydratedChunks || []);
+            dispatch(setSubdirectories((res.payload as HydratedDirectory).subdirectories || []));
+            dispatch(setHydratedChunks((res.payload as HydratedDirectory).hydratedChunks || []));
         }
         setDirRefLoading(false);
     }
@@ -160,8 +125,8 @@ export default function MyStorage() {
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview
-                        subdirectories={subdirectories || []}
-                        hydratedChunks={hydratedChunks || []}
+                        subdirectories={subdirectories}
+                        hydratedChunks={hydratedChunks}
                         displayEntities='all'
                     />
             }

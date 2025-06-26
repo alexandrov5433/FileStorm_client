@@ -3,7 +3,7 @@ import './optionsDropdown.sass';
 import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
 import { useState } from 'react';
 import { deleteDirectory } from '../../../../lib/action/fileSystem/directoryRequest';
-import { setNewlyDeleteDirId } from '../../../../lib/redux/slice/directory';
+import { removeSubdirById } from '../../../../lib/redux/slice/directory';
 import fetcher from '../../../../lib/action/fetcher';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 
@@ -20,7 +20,7 @@ export default function DirectoryOptionsDropdown({
         setDeletionInProgress(true);
         const res = await fetcher(deleteDirectory(directoryId));
         if (res.status == 200) {
-            dispatch(setNewlyDeleteDirId(res.payload as number));
+            dispatch(removeSubdirById(res.payload as number));
         }
         setDeletionInProgress(false);
     }

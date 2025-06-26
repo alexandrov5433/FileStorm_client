@@ -24,22 +24,22 @@ export default function FileOverview({
     emptyDirectoryTextContent = 'Empty Directory.',
     emptyDirectoryIcon = 'directory'
 }: {
-    subdirectories?: Directory[] | null,
-    hydratedChunks: Chunk[] | null,
+    subdirectories?: Directory[],
+    hydratedChunks: Chunk[],
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string,
     emptyDirectoryIcon?: 'directory' | 'file'
 }) {
     const dispatch = useAppDispatch();
-    const { dirPath, newlyDeletedDirId, newlyDeletedFileId } = useAppSelector(state => state.directory);
+    const { dirPath, newlyDeletedSubdirId, newlyDeletedChunkId } = useAppSelector(state => state.directory);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
-        return chunkRefs.sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
+        return [...chunkRefs].sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
     }
 
     function dirSort(subdirectories: Directory[]): Directory[] {
-        return subdirectories.sort((a, b) => (a.name).localeCompare(b.name));
+        return [...subdirectories].sort((a, b) => (a.name).localeCompare(b.name));
     }
 
 
@@ -89,11 +89,11 @@ export default function FileOverview({
         areAllSelectorsChecked();
     }, [checkedList]);
     useEffect(() => {
-        removeFromCheckedList(newlyDeletedDirId || 0);
-    }, [newlyDeletedDirId]);
+        removeFromCheckedList(newlyDeletedSubdirId || 0);
+    }, [newlyDeletedSubdirId]);
     useEffect(() => {
-        removeFromCheckedList(newlyDeletedFileId || 0);
-    }, [newlyDeletedFileId]);
+        removeFromCheckedList(newlyDeletedChunkId || 0);
+    }, [newlyDeletedChunkId]);
 
 
 
