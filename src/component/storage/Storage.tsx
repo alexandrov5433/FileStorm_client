@@ -35,7 +35,7 @@ export default function Storage() {
 
     useEffect(() => {
         if (!user) return;
-        dispatch(setDirPath([[user.id, 'My Storage']]));
+        dispatch(setDirPath([[user.rootStorageDir, 'My Storage']]));
     }, [user]);
 
     function toggleSideOptionsDisplay() {

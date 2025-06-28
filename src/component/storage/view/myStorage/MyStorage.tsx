@@ -83,7 +83,7 @@ export default function MyStorage() {
     useEffect(() => {
         if (backButtonClickRef.current) {
             backButtonClickRef.current = false;
-            dispatch(setDirPath(breadcrumbsState.history?.[breadcrumbsState.currentPosition || 0] || [[user?.id || 0, 'My Storage']]));
+            dispatch(setDirPath(breadcrumbsState.history?.[breadcrumbsState.currentPosition || 0] || [[user?.rootStorageDir || 0, 'My Storage']]));
         } else {
             window.history.pushState(breadcrumbsState.currentPosition || 0, '', window.location.pathname);
         }

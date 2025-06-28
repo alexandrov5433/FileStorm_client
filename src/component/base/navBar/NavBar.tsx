@@ -9,6 +9,7 @@ import type { Theme } from '../../../lib/definition/theme';
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest } from '../../../lib/redux/slice/user';
+import { setDirPathToInitialState } from '../../../lib/redux/slice/directory';
 
 export default function NavBar() {
     const dispatch = useAppDispatch();
@@ -56,6 +57,7 @@ export default function NavBar() {
         )
         if (res.status === 200) {
             dispatch(setGuest());
+            dispatch(setDirPathToInitialState());
             navigate('/account/login');
         }
         setLogoutBtnDisabled(false);
