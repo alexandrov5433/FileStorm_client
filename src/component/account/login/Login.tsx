@@ -7,7 +7,7 @@ import type { AuthValidationResult } from '../../../lib/definition/authValidatio
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
-import useEnterKeyBind from '../../../lib/hook/useEnterKeyBind';
+import { useEnterKeyBind } from '../../../lib/hook/useEnterKeyBind';
 
 export default function Login() {
     const dispatch = useAppDispatch();
@@ -112,7 +112,7 @@ export default function Login() {
                         <p className="auth-error-message">{loginState.password.message}</p>
                     </div>
 
-                    <button ref={loginBtnRef} onClick={login} type="button" className="custom-btn main-btn"  disabled={isLoginBtnDisabled}>Log in</button>
+                    <button ref={loginBtnRef} onClick={login} type="button" className="custom-btn main-btn" disabled={isLoginBtnDisabled}>Log in</button>
                 </section>
                 <section>
                     <hr />
