@@ -22,9 +22,10 @@ export function useEventListener<K extends keyof ExtendedEventMap>(
 }
 
 export function useEventListenerForRef<K extends keyof ExtendedEventMap>(
-    ref: RefObject<HTMLElement>,
+    ref: RefObject<HTMLElement | null>,
     eventType: K,
-    listener: (event: ExtendedEventMap[K]) => any | void
+    listener: (event: ExtendedEventMap[K]) => any | void,
+    extraHookTrigger?: any
 ) {
     const eventListenerRef = useRef(listener);
 
@@ -41,5 +42,5 @@ export function useEventListenerForRef<K extends keyof ExtendedEventMap>(
             // when a DOM Element is deleted from the DOM, event listeners attached to it are also removed, as long as there are no references to that same element.
             ref.current?.removeEventListener(eventType, _listener)
         };
-    }, [ref, eventType]);
+    }, [ref, ref.current, eventType, extraHookTrigger]);
 }

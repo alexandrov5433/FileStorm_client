@@ -1,12 +1,17 @@
 import type { ApiResponse } from "../definition/apiResponse";
 import type { FetcherReturn } from "../definition/fetcherReturn";
 
-export default async function fetcher(request: Request) {
+export default async function fetcher(request: Request, abortController?: AbortController) {
     const returnVal: FetcherReturn = {
         status: 0
     };
     try {
-        const req = await fetch(request);
+        let req;
+        if (abortController) {
+            req = await fetch(Object.assign(request, { signal: abortController.signal }));
+        } else {
+            req = await fetch(request);
+        }
         returnVal.status = req.status;
         const apiRes: ApiResponse = await req.json();
         returnVal.msg = apiRes.message;

@@ -1,7 +1,7 @@
 import './textInputBox.sass';
 
 import { useRef, useState, type ChangeEvent } from 'react';
-import useEnterKeyBind from '../../../lib/hook/useEnterKeyBind';
+import { useEnterKeyBind } from '../../../lib/hook/useEnterKeyBind';
 
 export default function TextInputBox({
     funcToRunOnInputDone,
@@ -44,7 +44,7 @@ export default function TextInputBox({
                     <i className="bi bi-x-lg"></i>
                 </button>
                 <p className="textContent">{textContent}</p>
-                <input type="text" onChange={validateInput} autoFocus/>
+                <input type="text" onChange={validateInput} autoFocus />
                 <p className="textExtraNote">{textExtraNote || ''}</p>
                 <button ref={submitBtnRef} id="submit-btn" className="custom-btn main-btn w-100" disabled={!isInputValid} onClick={inputSubmission}>{btnText}</button>
             </section>

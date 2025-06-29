@@ -1,0 +1,155 @@
+@import '../../../../lib/style/styleExporter'
+
+#share-interface-main-container
+    position: absolute
+    width: 100%
+    height: 100%
+    z-index: 3
+    backdrop-filter: blur(2.5px)
+    display: none
+    &.share-interface-display
+        display: flex
+    
+    #share-interface-window
+        width: 100%
+        max-height: 100%
+        display: flex
+        flex-direction: column
+        padding: 0.2rem 0.5rem
+        margin: auto
+        background-color: var(--neutralTertiarySurface)
+        border: 1px solid var(--neutralTertiary)
+        & .margin-bottom
+            margin-bottom: 3rem
+            &:last-child
+                margin-bottom: 1rem
+            
+
+        .button-container
+            display: flex
+            justify-content: flex-end
+
+        .share-title-container
+            text-align: center
+            padding: 0 1rem
+            h6
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+                span
+                    color: $teal-500
+
+        .status
+            display: flex
+            align-items: center
+            justify-content: center
+            gap: 0.4rem
+            div.spinner-border
+                color: $yellow-500
+            i
+                color: $green-500
+
+        .share-option-container
+            .form-select
+                background-color: var(--neutralSecondarySurface)
+                border: 1px solid var(--neutralSecondary)
+                border-radius: 0px
+                &:focus
+                    box-shadow: none //removes glow on input focus
+
+        .user-search-container
+            position: relative
+            label
+                display: block
+            input
+                @include general-input-text
+            .search-results
+                width: 100%
+                list-style: none outside
+                margin: 0
+                padding: 0.5rem 0.4rem
+                max-height: 25dvh
+                overflow-y: auto
+                background-color: var(--neutralSecondarySurface) !important
+                border: 1px solid var(--neutralTertiary)
+                li
+                    padding: 1rem 0.4rem
+                li:not(.status-holder)
+                    &:hover
+                        background-color: var(--neutralTertiarySurface)
+                        cursor: pointer
+                        color: $green-500
+                
+        .share-link-container
+            .share-link
+                @include general-input-text
+                display: flex
+                align-items: center
+                overflow: hidden
+                input
+                    flex: 0 1 100%
+                    padding: 0 0.4rem
+
+
+        .shared-with-container
+            ul
+                list-style: none outside
+                margin: 0
+                padding: 0
+                max-height: 30dvh
+                overflow-y: auto
+                
+                li
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    gap: 1rem
+                    margin: 1.8rem 0
+                    border: 1px solid transparent
+                    &:hover
+                        border: 1px solid var(--neutralPrimaryAlt)
+            .shared-with-no-users-in-list
+                color: var(--neutralSecondary)
+
+        .person-icon-and-username-container
+            display: flex
+            align-items: center
+            gap: 0.5rem
+            overflow: hidden
+            i
+                color: $green-500
+                font-size: 1.6rem
+            span
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+
+
+                    
+
+@include media-breakpoint-up(sm)
+    #share-interface-main-container
+        #share-interface-window
+            width: 70%
+
+@include media-breakpoint-up(lg)
+    #share-interface-main-container
+        #share-interface-window
+            width: 40%
+            & .margin-bottom
+                margin-bottom: 1rem
+        
+            .shared-with-container
+                ul
+                    max-height: 20dvh
+                    li
+                        margin: 0.5rem 0
+            .user-search-container
+                .search-results
+                    padding: 0.5rem 0.4rem
+                    max-height: 20dvh
+                    overflow-y: auto
+                    background-color: var(--neutralTertiarySurface)
+                    border: 1px solid var(--neutralTertiary)
+                    li
+                        padding: 0.2rem 0.4rem

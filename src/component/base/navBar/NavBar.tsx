@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHoo
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest } from '../../../lib/redux/slice/user';
 import { setDirPathToInitialState } from '../../../lib/redux/slice/directory';
+import { setShareInterfaceStateToNull } from '../../../lib/redux/slice/shareInterface';
 
 export default function NavBar() {
     const dispatch = useAppDispatch();
@@ -58,6 +59,7 @@ export default function NavBar() {
         if (res.status === 200) {
             dispatch(setGuest());
             dispatch(setDirPathToInitialState());
+            dispatch(setShareInterfaceStateToNull());
             navigate('/account/login');
         }
         setLogoutBtnDisabled(false);

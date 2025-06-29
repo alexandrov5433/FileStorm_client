@@ -8,6 +8,7 @@ import uploadProgressReducer from './slice/uploadProgress';
 import messengerReducer from './slice/messenger';
 import breadcrunbsReducer from './slice/breadcrumbs';
 import checkedEntitiesReducer from './slice/checkedEntities';
+import shareInterfaceReducer from './slice/shareInterface';
 
 export const store = configureStore({
     reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
         uploadProgress: uploadProgressReducer,
         messenger: messengerReducer,
         breadcrumbs: breadcrunbsReducer,
-        checkedEntities: checkedEntitiesReducer
+        checkedEntities: checkedEntitiesReducer,
+        shareInterface: shareInterfaceReducer
     }
 });
 

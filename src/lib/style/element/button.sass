@@ -6,7 +6,6 @@
     text-transform: capitalize
     padding: 0.6rem 1rem
     text-align: center
-    // width: 100%
     text-decoration: none
 
     // general customization
@@ -16,6 +15,8 @@
         width: 100%
     &.size-medium
         padding: 0.2rem 0.5rem
+    &.size-small
+        padding: 0.1rem 0.2rem
 
     &:disabled
         opacity: 0.6
@@ -39,6 +40,15 @@
         background-color: transparent
         color: var(--neutralSecondary)
         border: 1px solid var(--neutralSecondaryAlt)
+
+        &:hover:not(:disabled)
+            color: var(--neutralDark)
+            border: 1px solid var(--neutralDark)
+
+    &.red-btn
+        background-color: transparent
+        color: var(--color-error)
+        border: 1px solid var(--color-error)
 
         &:hover:not(:disabled)
             color: var(--neutralDark)
