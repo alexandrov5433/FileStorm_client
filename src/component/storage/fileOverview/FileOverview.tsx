@@ -15,7 +15,7 @@ import type { Directory } from '../../../lib/definition/directory';
 import { pushToHistory } from '../../../lib/redux/slice/breadcrumbs';
 import { useEffect, useRef } from 'react';
 import type { SelectorManipulationObject } from '../../../lib/definition/selectRing';
-import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList } from '../../../lib/redux/slice/checkedEntities';
+import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList, setCheckedEntitiesRenderOptions } from '../../../lib/redux/slice/checkedEntities';
 import type { FileOptionsDropdownOptionsToRender } from '../../../lib/definition/fileOptionsDropdownTypes';
 
 export default function FileOverview({
@@ -55,6 +55,10 @@ export default function FileOverview({
     function addToCheckedList(id: number) {
         if (id <= 0) return;
         dispatch(addEntityToCheckedList(id));
+        dispatch(setCheckedEntitiesRenderOptions({
+            delete: parrentComponent === 'SharedWithMe' ? false : true,
+            download: true
+        }));
     }
     function removeFromCheckedList(id: number) {
         dispatch(deleteEntityFromCheckedList(id));

@@ -1,14 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { CheckedEntitiesRenderOptions } from "../../definition/checkedEntitiesOptionsTypes";
 
 export const checkedEntitiesSlice = createSlice({
     name: 'checkedEntities',
     initialState: {
-        checkedList: []
+        checkedList: [],
+        renderOptions: {
+            delete: true,
+            download: true
+        }
     } as {
-        checkedList: Array<number>
+        checkedList: Array<number>,
+        renderOptions: CheckedEntitiesRenderOptions
     },
     reducers: {
-        addEntityToCheckedList: (state, action:  {payload: number, type: string}) => {
+        addEntityToCheckedList: (state, action: { payload: number, type: string }) => {
             const newCheckedList = [...state.checkedList];
             if (!newCheckedList.includes(action.payload)) {
                 newCheckedList.push(action.payload);
@@ -18,7 +24,7 @@ export const checkedEntitiesSlice = createSlice({
                 checkedList: newCheckedList
             }
         },
-        deleteEntityFromCheckedList: (state, action:  {payload: number, type: string}) => {
+        deleteEntityFromCheckedList: (state, action: { payload: number, type: string }) => {
             return {
                 ...state,
                 checkedList: state.checkedList.filter(e => e != action.payload)
@@ -29,6 +35,12 @@ export const checkedEntitiesSlice = createSlice({
                 ...state,
                 checkedList: []
             }
+        },
+        setCheckedEntitiesRenderOptions: (state, action: { payload: CheckedEntitiesRenderOptions, type: string }) => {
+            return {
+                ...state,
+                renderOptions: action.payload
+            }
         }
     }
 });
@@ -36,6 +48,7 @@ export const checkedEntitiesSlice = createSlice({
 export const {
     addEntityToCheckedList,
     deleteEntityFromCheckedList,
-    clearCheckedList
+    clearCheckedList,
+    setCheckedEntitiesRenderOptions
 } = checkedEntitiesSlice.actions;
 export default checkedEntitiesSlice.reducer;
