@@ -16,19 +16,22 @@ import { pushToHistory } from '../../../lib/redux/slice/breadcrumbs';
 import { useEffect, useRef } from 'react';
 import type { SelectorManipulationObject } from '../../../lib/definition/selectRing';
 import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList } from '../../../lib/redux/slice/checkedEntities';
+import type { FileOptionsDropdownOptionsToRender } from '../../../lib/definition/fileOptionsDropdownTypes';
 
 export default function FileOverview({
     subdirectories,
     hydratedChunks,
     displayEntities,
     emptyDirectoryTextContent = 'Empty Directory.',
-    emptyDirectoryIcon = 'directory'
+    emptyDirectoryIcon = 'directory',
+    fileOptionsToRender
 }: {
     subdirectories?: Directory[],
     hydratedChunks: Chunk[],
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string,
-    emptyDirectoryIcon?: 'directory' | 'file'
+    emptyDirectoryIcon?: 'directory' | 'file',
+    fileOptionsToRender: FileOptionsDropdownOptionsToRender
 }) {
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirId, newlyDeletedChunkId } = useAppSelector(state => state.directory);
@@ -117,7 +120,7 @@ export default function FileOverview({
                             {chunk.originalFileName}
                         </a>
                     </div>
-                    <FileOptionsDropdown chunk={chunk} />
+                    <FileOptionsDropdown chunk={chunk} fileOptionsToRender={fileOptionsToRender}/>
                 </div>
                 <div className="file-col size">
                     <p className="text-content">

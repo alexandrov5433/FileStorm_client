@@ -4,7 +4,6 @@
     position: relative
     display: flex
     flex-direction: column
-    // overflow: hidden
     flex: 0 1 100%;
 
 #storage-file-upload
@@ -13,7 +12,11 @@
     pointer-events: none
 
 #storageFileOverviewContainer
-    // overflow: hidden
+    .storage-checked-entities-container
+        padding: 0.5rem 0.8rem
+        min-height: 10%
+        display: flex
+        align-items: center
 
 #storageSideOptionsContainer
     display: flex
@@ -68,3 +71,5 @@
     #storageFileOverviewContainer
         width: 80%
         height: 100%
+        .storage-checked-entities-container
+            padding: 0.5rem 0rem

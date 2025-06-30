@@ -20,12 +20,14 @@ import type { FetcherReturn } from '../../lib/definition/fetcherReturn';
 import type { Chunk } from '../../lib/definition/chunk';
 import type { Directory } from '../../lib/definition/directory';
 import { setMessage } from '../../lib/redux/slice/messenger';
+import CheckedEntitiesOptions from './view/myStorage/checkedEntitiesOptions/CheckedEntitiesOptions';
 
 
 export default function Storage() {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
     const { dirPath } = useAppSelector(state => state.directory);
+    const { checkedList } = useAppSelector(state => state.checkedEntities);
 
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
     const [isDirectoryDialog, setDirectoryDialog] = useState(false);
@@ -130,6 +132,15 @@ export default function Storage() {
         }));
     }
 
+
+    // checked entities options display
+
+    const [displayCheckedEntitiesOptions, setDisplayCheckedEntitiesOptions] = useState(false);
+    useEffect(() => {
+        setDisplayCheckedEntitiesOptions(checkedList.length > 0);
+    }, [checkedList]);
+
+
     return (
         <>
             <NavBar />
@@ -164,7 +175,13 @@ export default function Storage() {
                         sideOptionsDisplayToggler={toggleSideOptionsDisplay} />
                 </section>
                 <section id="storageFileOverviewContainer" className="flex-col-strech-wrapper">
-                    <Outlet context={storageFileUploadRef}/>
+                    <div className="storage-checked-entities-container">
+                        {
+                            displayCheckedEntitiesOptions ?
+                                <CheckedEntitiesOptions /> : ''
+                        }
+                    </div>
+                    <Outlet context={storageFileUploadRef} />
                 </section>
                 {
                     isDirectoryDialog ? <TextInputBox
@@ -176,7 +193,7 @@ export default function Storage() {
                         btnText='Add Directory' /> : ''
                 }
                 <UploadProgressViewer />
-                <ShareInterface/>
+                <ShareInterface />
             </div>
         </>
     );

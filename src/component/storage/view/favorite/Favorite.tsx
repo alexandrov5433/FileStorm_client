@@ -15,6 +15,13 @@ export default function Favorite() {
     const [favorite, setFavorite] = useState<Chunk[]>([]);
     const [isFavoriteLoading, setFavoriteLoading] = useState(true);
 
+    const fileOptionsToRender = {
+        favorite: true,
+        download: true,
+        delete: true,
+        share: true
+    }
+
     useEffect(() => {
         getFavorite();
     }, []);
@@ -38,7 +45,7 @@ export default function Favorite() {
     return (
         <div id="favorite-main-container" className="flex-col-strech-wrapper">
             <section id="favorite-top-bar">
-                <h3>Favorite</h3>
+                <h4>Favorite</h4>
             </section>
             {
                 isFavoriteLoading ? <StorageViewLoader /> :
@@ -47,6 +54,7 @@ export default function Favorite() {
                         hydratedChunks={favorite}
                         emptyDirectoryTextContent='No Favorites.'
                         emptyDirectoryIcon='file'
+                        fileOptionsToRender={fileOptionsToRender}
                     />
             }
         </div>

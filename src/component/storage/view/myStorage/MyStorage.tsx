@@ -13,26 +13,24 @@ import { useOutletContext } from 'react-router';
 import Breadcrumbs from './breadcrumbs/Breadcrumbs';
 import { setDirPath, setHydratedChunks, setSubdirectories } from '../../../../lib/redux/slice/directory';
 import { goBackOne, goForwardOne, initHistory } from '../../../../lib/redux/slice/breadcrumbs';
-import CheckedEntitiesOptions from './checkedEntitiesOptions/CheckedEntitiesOptions';
 
 export default function MyStorage() {
     const { dirPath, subdirectories, hydratedChunks } = useAppSelector(state => state.directory);
     const user = useAppSelector(state => state.user);
     const breadcrumbsState = useAppSelector(state => state.breadcrumbs);
-    const { checkedList } = useAppSelector(state => state.checkedEntities);
+
     const dispatch = useAppDispatch();
 
     const outletContext = useOutletContext();
 
     const [isDirRefLoading, setDirRefLoading] = useState(true);
 
-
-    // checked entities options display
-    const [displayCheckedEntitiesOptions, setDisplayCheckedEntitiesOptions] = useState(false);
-    useEffect(() => {
-        setDisplayCheckedEntitiesOptions(checkedList.length > 0);
-    }, [checkedList]);
-
+    const fileOptionsToRender = {
+        favorite: true,
+        download: true,
+        delete: true,
+        share: true
+    }
 
     // drag and drop file upload functionality
     const myStorageMainContainerRef = useRef(null);
@@ -115,19 +113,14 @@ export default function MyStorage() {
 
     return (
         <div ref={myStorageMainContainerRef} id="my-storage-main-container" className={`flex-col-strech-wrapper${isDragover ? ' dragover' : ''}`}>
-            <section id="my-storage-header-container">
-                <Breadcrumbs />
-                {
-                    displayCheckedEntitiesOptions ?
-                        <CheckedEntitiesOptions /> : ''
-                }
-            </section>
+            <Breadcrumbs />
             {
                 isDirRefLoading ? <StorageViewLoader /> :
                     <FileOverview
                         subdirectories={subdirectories}
                         hydratedChunks={hydratedChunks}
                         displayEntities='all'
+                        fileOptionsToRender={fileOptionsToRender}
                     />
             }
             <section className="drag-and-drop-message">

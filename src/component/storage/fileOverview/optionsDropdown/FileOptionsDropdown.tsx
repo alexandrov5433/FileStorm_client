@@ -10,11 +10,14 @@ import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest
 import { removeChunkById } from '../../../../lib/redux/slice/directory';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
+import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definition/fileOptionsDropdownTypes';
 
 export default function FileOptionsDropdown({
-    chunk
+    chunk,
+    fileOptionsToRender
 }: {
-    chunk: Chunk
+    chunk: Chunk,
+    fileOptionsToRender: FileOptionsDropdownOptionsToRender
 }) {
     const dispatch = useAppDispatch();
 
@@ -66,21 +69,25 @@ export default function FileOptionsDropdown({
 
     return (
         <div id="options-dropdown-main-container">
-            <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
-                isFavoriteRequestLoading ? () => null :
-                    (isFavorite ? removeFromFavorite : addToFavorite)
+            {
+                fileOptionsToRender.favorite ?
+                    <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
+                        isFavoriteRequestLoading ? () => null :
+                            (isFavorite ? removeFromFavorite : addToFavorite)
+                    }
+                        data-bs-toggle-tooltip="tooltip"
+                        data-bs-title={
+                            isFavorite ? 'Remove from Favorite' : 'Add to Favorite'
+                        }
+                        data-bs-trigger="hover focus"
+                        data-bs-custom-class="custom-tooltip">
+                        {
+                            isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
+                                <i className="bi bi-star"></i>
+                        }
+                    </div>
+                    : ''
             }
-                data-bs-toggle-tooltip="tooltip"
-                data-bs-title={
-                    isFavorite ? 'Remove from Favorite' : 'Add to Favorite'
-                }
-                data-bs-trigger="hover focus"
-                data-bs-custom-class="custom-tooltip">
-                {
-                    isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
-                        <i className="bi bi-star"></i>
-                }
-            </div>
 
             <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
                 data-bs-toggle-tooltip="tooltip"
@@ -90,26 +97,38 @@ export default function FileOptionsDropdown({
             >
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul className="dropdown-menu custom-dropdown">
-                    <li>
-                        <span className="dropdown-item" onClick={download}>
-                            <i className="bi bi-download"></i>
-                            Download
-                        </span>
-                    </li>
-                    <li>
-                        <span className="dropdown-item red-item" onClick={
-                            isDeleteFileInProgress ? () => null : deleteFile
-                        }>
-                            <i className="bi bi-trash3"></i>
-                            Delete
-                        </span>
-                    </li>
-                    <li>
-                        <span className="dropdown-item" onClick={openShareInterface}>
-                            <i className="bi bi-share"></i>
-                            Share
-                        </span>
-                    </li>
+                    {
+                        fileOptionsToRender.download ?
+                            <li>
+                                <span className="dropdown-item" onClick={download}>
+                                    <i className="bi bi-download"></i>
+                                    Download
+                                </span>
+                            </li>
+                            : ''
+                    }
+                    {
+                        fileOptionsToRender.delete ?
+                            <li>
+                                <span className="dropdown-item red-item" onClick={
+                                    isDeleteFileInProgress ? () => null : deleteFile
+                                }>
+                                    <i className="bi bi-trash3"></i>
+                                    Delete
+                                </span>
+                            </li>
+                            : ''
+                    }
+                    {
+                        fileOptionsToRender.share ?
+                            <li>
+                                <span className="dropdown-item" onClick={openShareInterface}>
+                                    <i className="bi bi-share"></i>
+                                    Share
+                                </span>
+                            </li>
+                            : ''
+                    }
                 </ul>
             </div>
 
