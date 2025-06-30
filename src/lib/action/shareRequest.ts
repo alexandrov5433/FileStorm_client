@@ -31,11 +31,18 @@ function changeShareOptionRequest(
     });
 }
 
+function getSharedWithMeRequest() {
+    return new Request('/api/file-sharing/shared_with_me', {
+        method: 'GET'
+    });
+}
+
 
 export {
     getUsersFromShareWithRequest,
     removeUserFromShareWithRequest,
     addUserToShareWithRequest,
     searchUsersRequest,
-    changeShareOptionRequest
+    changeShareOptionRequest,
+    getSharedWithMeRequest
 };

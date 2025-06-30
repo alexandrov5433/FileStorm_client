@@ -14,10 +14,12 @@ import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definit
 
 export default function FileOptionsDropdown({
     chunk,
-    fileOptionsToRender
+    fileOptionsToRender,
+    downloadFileSharedWithMe
 }: {
     chunk: Chunk,
-    fileOptionsToRender: FileOptionsDropdownOptionsToRender
+    fileOptionsToRender: FileOptionsDropdownOptionsToRender,
+    downloadFileSharedWithMe?: boolean
 }) {
     const dispatch = useAppDispatch();
 
@@ -29,7 +31,7 @@ export default function FileOptionsDropdown({
 
     function download() {
         const anchor = document.createElement('a');
-        anchor.href = `/api/file/${chunk.id}`;
+        anchor.href = downloadFileSharedWithMe ? `/api/file-sharing/file?fileId=${chunk.id}` : `/api/file/${chunk.id}`;
         anchor.download = chunk.originalFileName;
         anchor.click();
     }

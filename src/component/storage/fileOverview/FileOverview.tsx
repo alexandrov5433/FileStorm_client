@@ -24,14 +24,16 @@ export default function FileOverview({
     displayEntities,
     emptyDirectoryTextContent = 'Empty Directory.',
     emptyDirectoryIcon = 'directory',
-    fileOptionsToRender
+    fileOptionsToRender,
+    parrentComponent
 }: {
     subdirectories?: Directory[],
     hydratedChunks: Chunk[],
     displayEntities: 'all' | 'filesOnly',
     emptyDirectoryTextContent?: string,
     emptyDirectoryIcon?: 'directory' | 'file',
-    fileOptionsToRender: FileOptionsDropdownOptionsToRender
+    fileOptionsToRender: FileOptionsDropdownOptionsToRender,
+    parrentComponent?: 'SharedWithMe'
 }) {
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirId, newlyDeletedChunkId } = useAppSelector(state => state.directory);
@@ -116,11 +118,18 @@ export default function FileOverview({
                 </div>
                 <div className="file-col name">
                     <div className="name-text-content-container">
-                        <a className="text-content" href={`/api/file?fileId=${chunk.id}`} download={chunk.originalFileName}>
+                        <a className="text-content" href={
+                            parrentComponent === 'SharedWithMe' ?
+                            `/api/file-sharing/file?fileId=${chunk.id}`
+                            : `/api/file?fileId=${chunk.id}`
+                        } download={chunk.originalFileName}>
                             {chunk.originalFileName}
                         </a>
                     </div>
-                    <FileOptionsDropdown chunk={chunk} fileOptionsToRender={fileOptionsToRender}/>
+                    <FileOptionsDropdown
+                    chunk={chunk}
+                    fileOptionsToRender={fileOptionsToRender}
+                    downloadFileSharedWithMe={parrentComponent === 'SharedWithMe'}/>
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
