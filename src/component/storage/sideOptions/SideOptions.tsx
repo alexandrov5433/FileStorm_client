@@ -59,18 +59,6 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-shared-files" ref={mySharedFilesRef} onClick={() => {
-                            dispatch(setDirPath([[user?.rootStorageDir || 0, 'My Storage']]));
-                            dispatch(clearCheckedList());
-                        }}>
-                            <span></span>
-                            <div>
-                                <i className="bi bi-share"></i>
-                            </div>
-                            My Shared Files
-                        </NavLink>
-                    </li>
-                    <li>
                         <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={() => {
                             dispatch(setDirPath([[user?.rootStorageDir || 0, 'My Storage']]));
                             dispatch(clearCheckedList());
