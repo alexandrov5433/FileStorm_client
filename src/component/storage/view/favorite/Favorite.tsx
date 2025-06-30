@@ -44,9 +44,7 @@ export default function Favorite() {
 
     return (
         <div id="favorite-main-container" className="flex-col-strech-wrapper">
-            <section id="favorite-top-bar">
-                <h4>Favorite</h4>
-            </section>
+            <h4>Favorite</h4>
             {
                 isFavoriteLoading ? <StorageViewLoader /> :
                     <FileOverview
