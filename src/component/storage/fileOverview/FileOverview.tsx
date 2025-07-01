@@ -125,7 +125,7 @@ export default function FileOverview({
                         <a className="text-content" href={
                             parrentComponent === 'SharedWithMe' ?
                             `/api/file-sharing/file?fileId=${chunk.id}`
-                            : `/api/file?fileId=${chunk.id}`
+                            : `/api/file/${chunk.id}`
                         } download={chunk.originalFileName}>
                             {chunk.originalFileName}
                         </a>
