@@ -1,5 +1,7 @@
+import type { CheckedEntityActionPayload } from "./checkedEntitiesOptionsTypes";
+
 export type SelectorManipulationObject = {
-    fileOrDirId: number,
+    entity: CheckedEntityActionPayload,
     check: () => void,
     uncheck: () => void
 };

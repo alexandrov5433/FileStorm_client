@@ -3,10 +3,12 @@ import './selectRing.sass';
 import { useEffect, useRef, type RefObject } from 'react';
 import type { SelectorManipulationObject } from '../../../../lib/definition/selectRing';
 import { useEventListenerForRef } from '../../../../lib/hook/eventListener';
+import type { CheckedEntityActionPayload } from '../../../../lib/definition/checkedEntitiesOptionsTypes';
 
 export default function SelectRing({
-    inputElementId,
-    fileOrDirId,
+    HTMLInputElementId,
+    entityType,
+    entityId,
     addToCheckedList,
     removeFromCheckedList,
     selectAllInDirectory,
@@ -14,10 +16,11 @@ export default function SelectRing({
     addSelectorManipulationObject,
     addMasterSelectorManipulationObject
 }: {
-    inputElementId: string,
-    fileOrDirId?: number,
-    addToCheckedList?: (id: number) => void,
-    removeFromCheckedList?: (id: number) => void,
+    HTMLInputElementId: string,
+    entityType?: 'chunk' | 'directory',
+    entityId?: number,
+    addToCheckedList?: (entity: CheckedEntityActionPayload) => void,
+    removeFromCheckedList?: (entity: CheckedEntityActionPayload) => void,
     selectAllInDirectory?: () => void,
     unselectAllInDirectory?: () => void,
     addSelectorManipulationObject?: (selectorManipulationObject: SelectorManipulationObject) => void,
@@ -31,7 +34,7 @@ export default function SelectRing({
         useEffect(() => {
             if (!checkboxRef.current) return;
             addMasterSelectorManipulationObject?.({
-                fileOrDirId: 0,
+                entity: { entityId: 0, entityType: 'chunk' }, // the entity is irrelevant for the master selector; only the methods are used
                 check: () => {
                     if (!checkboxRef.current) return;
                     checkboxRef.current!.checked = true;
@@ -49,12 +52,12 @@ export default function SelectRing({
     }
 
     // for individual selectors
-    if (addToCheckedList && removeFromCheckedList && addSelectorManipulationObject) {
+    if (entityId && entityType && addToCheckedList && removeFromCheckedList && addSelectorManipulationObject) {
         useEventListenerForRef(checkboxRef as RefObject<HTMLElement>, 'change', checkSingleListener);
         useEffect(() => {
             if (!checkboxRef.current) return;
             addSelectorManipulationObject?.({
-                fileOrDirId: fileOrDirId || 0,
+                entity: { entityId: entityId || 0, entityType: entityType! },
                 check: () => {
                     const isChecked = checkboxRef.current!.checked;
                     if (isChecked == false) checkboxRef.current?.click();
@@ -67,14 +70,19 @@ export default function SelectRing({
         }, [checkboxRef.current]);
     }
     function checkSingleListener(e: Event) {
+        if (!entityId || !entityType) return;
         const isChecked = (e.target as HTMLInputElement)?.checked;
-        isChecked ? addToCheckedList?.(Number(fileOrDirId) || 0) : removeFromCheckedList?.(Number(fileOrDirId) || 0);
+        if (isChecked) {
+            addToCheckedList?.({ entityId: Number(entityId) || 0, entityType: entityType! });
+        } else {
+            removeFromCheckedList?.({ entityId: Number(entityId) || 0, entityType: entityType! });
+        }
     }
 
     return (
         <div className="select-ring-main-container">
-            <input ref={checkboxRef} type="checkbox" name={inputElementId} id={inputElementId} />
-            <label htmlFor={inputElementId}></label>
+            <input ref={checkboxRef} type="checkbox" name={HTMLInputElementId} id={HTMLInputElementId} />
+            <label htmlFor={HTMLInputElementId}></label>
             <i className="bi bi-check"></i>
         </div>
     );

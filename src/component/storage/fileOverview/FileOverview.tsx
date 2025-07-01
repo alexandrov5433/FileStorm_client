@@ -17,6 +17,7 @@ import { useEffect, useRef } from 'react';
 import type { SelectorManipulationObject } from '../../../lib/definition/selectRing';
 import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList, setCheckedEntitiesRenderOptions } from '../../../lib/redux/slice/checkedEntities';
 import type { FileOptionsDropdownOptionsToRender } from '../../../lib/definition/fileOptionsDropdownTypes';
+import type { CheckedEntityActionPayload } from '../../../lib/definition/checkedEntitiesOptionsTypes';
 
 export default function FileOverview({
     subdirectories,
@@ -52,16 +53,17 @@ export default function FileOverview({
     // selection functionality
     const checkboxManipulatorsList = useRef<SelectorManipulationObject[]>([]);
     const masterCheckboxManipulator = useRef<SelectorManipulationObject | null>(null);
-    function addToCheckedList(id: number) {
-        if (id <= 0) return;
-        dispatch(addEntityToCheckedList(id));
+    function addToCheckedList(entity: CheckedEntityActionPayload) {
+        if (!entity || entity?.entityId <= 0 || !entity?.entityType) return;
+        dispatch(addEntityToCheckedList(entity));
         dispatch(setCheckedEntitiesRenderOptions({
             delete: parrentComponent === 'SharedWithMe' ? false : true,
             download: true
         }));
     }
-    function removeFromCheckedList(id: number) {
-        dispatch(deleteEntityFromCheckedList(id));
+    function removeFromCheckedList(entity: CheckedEntityActionPayload) {
+        if (!entity || entity?.entityId <= 0 || !entity?.entityType) return;
+        dispatch(deleteEntityFromCheckedList(entity));
     }
     function addSelectorManipulationObjectList(selectorManipulationObject: SelectorManipulationObject) {
         if (!selectorManipulationObject) return;
@@ -74,7 +76,7 @@ export default function FileOverview({
     function selectAllInDirectory() {
         checkboxManipulatorsList.current.forEach(manipulator => {
             manipulator.check();
-            addToCheckedList(manipulator.fileOrDirId);
+            addToCheckedList(manipulator.entity);
         });
     }
     function unselectAllInDirectory() {
@@ -98,10 +100,16 @@ export default function FileOverview({
         areAllSelectorsChecked();
     }, [checkedList]);
     useEffect(() => {
-        removeFromCheckedList(newlyDeletedSubdirId || 0);
+        removeFromCheckedList({
+            entityId: newlyDeletedSubdirId || 0,
+            entityType: 'directory'
+        });
     }, [newlyDeletedSubdirId]);
     useEffect(() => {
-        removeFromCheckedList(newlyDeletedChunkId || 0);
+        removeFromCheckedList({
+            entityId: newlyDeletedChunkId || 0,
+            entityType: 'chunk'
+        });
     }, [newlyDeletedChunkId]);
 
 
@@ -111,8 +119,9 @@ export default function FileOverview({
             <div className="file-row" key={chunk.id}>
                 <div className="file-col selector">
                     <SelectRing
-                        inputElementId={`select-ring-input-${chunk.id.toString()}`}
-                        fileOrDirId={chunk.id}
+                        HTMLInputElementId={`select-ring-input-${chunk.id.toString()}`}
+                        entityId={chunk.id}
+                        entityType='chunk'
                         addToCheckedList={addToCheckedList}
                         removeFromCheckedList={removeFromCheckedList}
                         addSelectorManipulationObject={addSelectorManipulationObjectList} />
@@ -124,16 +133,16 @@ export default function FileOverview({
                     <div className="name-text-content-container">
                         <a className="text-content" href={
                             parrentComponent === 'SharedWithMe' ?
-                            `/api/file-sharing/file?fileId=${chunk.id}`
-                            : `/api/file/${chunk.id}`
+                                `/api/file-sharing/file?fileId=${chunk.id}`
+                                : `/api/file/${chunk.id}`
                         } download={chunk.originalFileName}>
                             {chunk.originalFileName}
                         </a>
                     </div>
                     <FileOptionsDropdown
-                    chunk={chunk}
-                    fileOptionsToRender={fileOptionsToRender}
-                    downloadFileSharedWithMe={parrentComponent === 'SharedWithMe'}/>
+                        chunk={chunk}
+                        fileOptionsToRender={fileOptionsToRender}
+                        downloadFileSharedWithMe={parrentComponent === 'SharedWithMe'} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
@@ -161,8 +170,9 @@ export default function FileOverview({
             <div className="file-row" key={dir.id}>
                 <div className="file-col selector">
                     <SelectRing
-                        inputElementId={`select-ring-input-${dir.id.toString()}`}
-                        fileOrDirId={dir.id}
+                        HTMLInputElementId={`select-ring-input-${dir.id.toString()}`}
+                        entityId={dir.id}
+                        entityType='directory'
                         addToCheckedList={addToCheckedList}
                         removeFromCheckedList={removeFromCheckedList}
                         addSelectorManipulationObject={addSelectorManipulationObjectList} />
@@ -200,7 +210,7 @@ export default function FileOverview({
                     <div className="file-table-header">
                         <div className="file-col selector">
                             <SelectRing
-                                inputElementId="select-ring-input-all-checkbox-elements"
+                                HTMLInputElementId="select-ring-input-all-checkbox-elements"
                                 selectAllInDirectory={selectAllInDirectory}
                                 unselectAllInDirectory={unselectAllInDirectory}
                                 addMasterSelectorManipulationObject={addMasterSelectorManipulationObject} />
