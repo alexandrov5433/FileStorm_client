@@ -1,7 +1,6 @@
 import './checkedEntitiesOptions.sass';
 
 import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
-import fetcher from '../../../../../lib/action/fetcher';
 import { getDownloadSelectedRequest } from '../../../../../lib/action/checkedEntities';
 import { setMessage } from '../../../../../lib/redux/slice/messenger';
 import { useState } from 'react';
