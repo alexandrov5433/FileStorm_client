@@ -6,6 +6,8 @@ import { deleteDirectory } from '../../../../lib/action/fileSystem/directoryRequ
 import { removeSubdirById } from '../../../../lib/redux/slice/directory';
 import fetcher from '../../../../lib/action/fetcher';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
+import type { User } from '../../../../lib/definition/user';
+import { setUser } from '../../../../lib/redux/slice/user';
 
 export default function DirectoryOptionsDropdown({
     directoryId
@@ -20,7 +22,8 @@ export default function DirectoryOptionsDropdown({
         setDeletionInProgress(true);
         const res = await fetcher(deleteDirectory(directoryId));
         if (res.status == 200) {
-            dispatch(removeSubdirById(res.payload as number));
+            dispatch(removeSubdirById(directoryId));
+            dispatch(setUser(res.payload as User));
         }
         setDeletionInProgress(false);
     }

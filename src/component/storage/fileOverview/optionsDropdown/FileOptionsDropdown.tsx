@@ -11,6 +11,7 @@ import { removeChunkById } from '../../../../lib/redux/slice/directory';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
 import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definition/fileOptionsDropdownTypes';
+import { removeBytesInStorage } from '../../../../lib/redux/slice/user';
 
 export default function FileOptionsDropdown({
     chunk,
@@ -41,6 +42,7 @@ export default function FileOptionsDropdown({
         const res = await fetcher(deleteFileRequest(chunk.id));
         if (res.status == 200) {
             dispatch(removeChunkById(res.payload as number));
+            dispatch(removeBytesInStorage(chunk.sizeBytes));
         }
         setDeleteFileInProgress(false);
     }
