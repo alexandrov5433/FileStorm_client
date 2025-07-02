@@ -21,6 +21,7 @@ import type { Chunk } from '../../lib/definition/chunk';
 import type { Directory } from '../../lib/definition/directory';
 import { setMessage } from '../../lib/redux/slice/messenger';
 import CheckedEntitiesOptions from './view/myStorage/checkedEntitiesOptions/CheckedEntitiesOptions';
+import { addBytesInStorage } from '../../lib/redux/slice/user';
 
 
 export default function Storage() {
@@ -38,7 +39,7 @@ export default function Storage() {
     useEffect(() => {
         if (!user) return;
         dispatch(setDirPath([[user.rootStorageDir, 'My Storage']]));
-    }, [user]);
+    }, []);
 
     function toggleSideOptionsDisplay() {
         setSideOptionsDisplay(state => !state);
@@ -103,10 +104,25 @@ export default function Storage() {
                     if ((res as FetcherReturn).status === 200) {
                         dispatch(removeUploadEntityById(uploadProgressEntity.id));
                         dispatch(addChunk((res as FetcherReturn).payload as Chunk));
+                        dispatch(addBytesInStorage(((res as FetcherReturn).payload as Chunk).sizeBytes));
                     } else {
                         dispatch(removeUploadEntityById(uploadProgressEntity.id));
-                        console.log((res as FetcherReturn).msg || 'A problem occured.');
+                        dispatch(setMessage({
+                            title: 'Ooops...',
+                            text: (res as FetcherReturn)?.msg || 'A problem ocurred. Please try again.',
+                            type: 'negative',
+                            duration: 5000
+                        }));
                     }
+                })
+                .catch(rej => {
+                    dispatch(removeUploadEntityById(uploadProgressEntity.id));
+                    dispatch(setMessage({
+                        title: 'Ooops...',
+                        text: (rej as FetcherReturn)?.msg || 'A problem ocurred. Please try again.',
+                        type: 'negative',
+                        duration: 5000
+                    }));
                 });
         }
         input.value = '';
