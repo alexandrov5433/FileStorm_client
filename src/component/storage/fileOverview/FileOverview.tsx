@@ -37,7 +37,7 @@ export default function FileOverview({
     parrentComponent?: 'SharedWithMe'
 }) {
     const dispatch = useAppDispatch();
-    const { dirPath, newlyDeletedSubdirId, newlyDeletedChunkId } = useAppSelector(state => state.directory);
+    const { dirPath, newlyDeletedSubdirs, newlyDeletedChunks } = useAppSelector(state => state.directory);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
@@ -64,6 +64,9 @@ export default function FileOverview({
     function removeFromCheckedList(entity: CheckedEntityActionPayload) {
         if (!entity || entity?.entityId <= 0 || !entity?.entityType) return;
         dispatch(deleteEntityFromCheckedList(entity));
+    }
+    function removeSelectorManipulatorObjectFromList(idOfEntityToRemove: number) {
+        checkboxManipulatorsList.current = checkboxManipulatorsList.current.filter(obj => obj.entity.entityId !== idOfEntityToRemove);
     }
     function addSelectorManipulationObjectList(selectorManipulationObject: SelectorManipulationObject) {
         if (!selectorManipulationObject) return;
@@ -98,19 +101,33 @@ export default function FileOverview({
 
     useEffect(() => {
         areAllSelectorsChecked();
+        console.log(checkedList);
+        
     }, [checkedList]);
     useEffect(() => {
-        removeFromCheckedList({
-            entityId: newlyDeletedSubdirId || 0,
-            entityType: 'directory'
+        console.log('newlyDeletedSubdirs', newlyDeletedSubdirs);
+        if (!newlyDeletedSubdirs) return;
+        newlyDeletedSubdirs.forEach(dirId => {
+            removeFromCheckedList({
+                entityId: dirId || 0,
+                entityType: 'directory'
+            });
+            removeSelectorManipulatorObjectFromList(dirId || 0);
         });
-    }, [newlyDeletedSubdirId]);
+        
+    }, [newlyDeletedSubdirs]);
     useEffect(() => {
-        removeFromCheckedList({
-            entityId: newlyDeletedChunkId || 0,
-            entityType: 'chunk'
+        console.log('newlyDeletedChunks', newlyDeletedChunks);
+        if (!newlyDeletedChunks) return;
+        newlyDeletedChunks.forEach(chunkId => {
+            removeFromCheckedList({
+                entityId: chunkId || 0,
+                entityType: 'chunk'
+            });
+            removeSelectorManipulatorObjectFromList(chunkId || 0);    
         });
-    }, [newlyDeletedChunkId]);
+        
+    }, [newlyDeletedChunks]);
 
 
 

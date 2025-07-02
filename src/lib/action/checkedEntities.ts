@@ -1,6 +1,6 @@
-import type { DownloadSelectedRequestPayload } from "../definition/checkedEntitiesOptionsTypes";
+import type { CheckedEntitiesRequestPayload } from "../definition/checkedEntitiesOptionsTypes";
 
-function getDownloadSelectedRequest(payload: DownloadSelectedRequestPayload) {
+function getDownloadSelectedRequest(payload: CheckedEntitiesRequestPayload) {
     return new Request('/api/file/bulk', {
         method: 'POST',
         headers: [
@@ -10,6 +10,17 @@ function getDownloadSelectedRequest(payload: DownloadSelectedRequestPayload) {
     });
 }
 
+function getDeleteSelectedRequest(payload: CheckedEntitiesRequestPayload) {
+    return new Request('/api/file/bulk', {
+        method: 'DELETE',
+        headers: [
+            ['Content-Type', 'application/json']
+        ],
+        body: JSON.stringify(payload)
+    });
+}
+
 export {
-    getDownloadSelectedRequest
+    getDownloadSelectedRequest,
+    getDeleteSelectedRequest
 }

@@ -11,14 +11,14 @@ const directorySliceInitialState = {
     dirPath: [],
     subdirectories: [],
     hydratedChunks: [],
-    newlyDeletedSubdirId: null,
-    newlyDeletedChunkId: null
+    newlyDeletedSubdirs: null,
+    newlyDeletedChunks: null
 } as {
     dirPath: Array<[number, string]>,
     subdirectories: Directory[],
     hydratedChunks: Chunk[],
-    newlyDeletedSubdirId: number | null,
-    newlyDeletedChunkId: number | null,
+    newlyDeletedSubdirs: number[] | null,
+    newlyDeletedChunks: number[] | null,
 };
 
 export const directorySlice = createSlice({
@@ -41,7 +41,19 @@ export const directorySlice = createSlice({
         },
         removeSubdirById: (state, action: { payload: number, type: string }) => {
             const updatedDirectories = state.subdirectories.filter(d => d.id !== action.payload);
-            return { ...state, subdirectories: updatedDirectories, newlyDeletedSubdirId: action.payload };
+            return {
+                ...state,
+                subdirectories: updatedDirectories,
+                newlyDeletedSubdirs: [action.payload]
+            };
+        },
+        removeMultipleSubdirsById: (state, action: { payload: number[], type: string }) => {
+            const updatedDirectories = state.subdirectories.filter(d => !action.payload.includes(d.id));
+            return {
+                ...state,
+                subdirectories: updatedDirectories,
+                newlyDeletedSubdirs: action.payload
+            };
         },
 
         // chunks
@@ -53,7 +65,19 @@ export const directorySlice = createSlice({
         },
         removeChunkById: (state, action: { payload: number, type: string }) => {
             const updatedChunks = state.hydratedChunks.filter(c => c.id !== action.payload);
-            return { ...state, hydratedChunks: updatedChunks, newlyDeletedChunkId: action.payload };
+            return {
+                ...state,
+                hydratedChunks: updatedChunks,
+                newlyDeletedChunks: [action.payload]
+            };
+        },
+        removeMultipleChunksById: (state, action: { payload: number[], type: string }) => {
+            const updatedChunks = state.hydratedChunks.filter(c => !action.payload.includes(c.id));
+            return {
+                ...state,
+                hydratedChunks: updatedChunks,
+                newlyDeletedChunks: action.payload
+            };
         },
         replaceChunkByIdWithNewChunk: (state, action: { payload: ChunkReplacementActionPayload, type: string }) => {
             let indexOfTarget = state.hydratedChunks.findIndex(c => c.id === action.payload.idOfChunkToRemove);
@@ -68,7 +92,20 @@ export const directorySlice = createSlice({
                 ...state,
                 hydratedChunks: updatedChunks
             };
-        }
+        },
+
+        // general
+        // removeMultipleEntitiesById: (state, action: {payload: { directories: number[], chunks: number[]}, type: string}) => {
+        //     const updatedDirectories = state.subdirectories.filter(d => !action.payload.includes(d.id));
+        //     const updatedChunks = state.hydratedChunks.filter(c => !action.payload.includes(c.id));
+        //     return {
+        //         ...state,
+        //         hydratedChunks: updatedChunks,
+        //         subdirectories: updatedDirectories,
+        //         newlyDeletedSubdirs: action.payload
+        //         newlyDeletedChunkId: action.payload
+        //     };
+        // }
 
     }
 });
@@ -77,8 +114,10 @@ export const {
     setDirPath,
     setDirPathToInitialState,
     removeSubdirById,
+    removeMultipleSubdirsById,
     addSubdir,
     removeChunkById,
+    removeMultipleChunksById,
     addChunk,
     setSubdirectories,
     setHydratedChunks,

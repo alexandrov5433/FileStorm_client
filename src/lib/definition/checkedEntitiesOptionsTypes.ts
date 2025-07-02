@@ -8,7 +8,7 @@ export type CheckedEntityActionPayload = {
     entityType: 'chunk' | 'directory'
 }
 
-export type DownloadSelectedRequestPayload = {
+export type CheckedEntitiesRequestPayload = {
     chunks: number[],
     directories: number[]
 }

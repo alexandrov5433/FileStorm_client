@@ -44,7 +44,7 @@ export default function SelectRing({
                     checkboxRef.current!.checked = false;
                 }
             });
-        }, [checkboxRef.current]);
+        }, [checkboxRef, checkboxRef.current]);
     }
     function checkAllListener(e: Event) {
         const isChecked = (e.target as HTMLInputElement)?.checked;
@@ -59,15 +59,15 @@ export default function SelectRing({
             addSelectorManipulationObject?.({
                 entity: { entityId: entityId || 0, entityType: entityType! },
                 check: () => {
-                    const isChecked = checkboxRef.current!.checked;
+                    const isChecked = checkboxRef.current?.checked;
                     if (isChecked == false) checkboxRef.current?.click();
                 },
                 uncheck: () => {
-                    const isChecked = checkboxRef.current!.checked;
+                    const isChecked = checkboxRef.current?.checked;
                     if (isChecked) checkboxRef.current?.click();
                 }
             });
-        }, [checkboxRef.current]);
+        }, [checkboxRef, checkboxRef.current]);
     }
     function checkSingleListener(e: Event) {
         if (!entityId || !entityType) return;
