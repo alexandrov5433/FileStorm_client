@@ -12,8 +12,8 @@
     padding: 1rem
     &.show
         display: block
-    & > *
-        margin-bottom: 0.5rem
+    // & > *
+    //     margin-bottom: 0.5rem
 
 #side-options-username-container
     display: flex
@@ -27,6 +27,7 @@
         width: 80%
         font-weight: 100
         color: var(--neutralDark)
+        margin-bottom: 0.5rem
     button
         flex: 20%
 
@@ -34,6 +35,7 @@
     ul
         list-style: none inside
         padding-left: 0
+        margin: 0
         li
             width: 100%
             max-width: 100%
@@ -73,6 +75,21 @@
                     margin-left: 1.5rem
                     margin-right: 0.8rem
 
+#side-options-storage-space-container
+    margin: 1.2rem 0
+    .storage-space-bar
+        height: 0.3rem
+        background-color: var(--neutralTertiary)
+        margin-bottom: 0.4rem
+        .storage-space-bar-filler
+            height: 100%
+            width: 0%
+            max-width: 100%
+            background-color: $teal-500
+    .storage-space-numbers
+        text-align: center
+        margin: 0
+
 @include media-breakpoint-up(lg)
     #side-options-main-container
         display: block
@@ -84,7 +101,11 @@
             width: 100%
         button
             display: none
-
+    #side-options-storage-space-container
+        margin: 0.8rem 0
+        .storage-space-numbers
+            font-size: 0.85rem
+            
 @keyframes bg-color-fade-in
     0%
         background-color: color-mix(in oklab, var(--neutralTertiarySurface) 0%, rgb(0, 0, 0) 0%)
