@@ -39,8 +39,6 @@ export default function SideOptions({
         setValMaxStorageSpace(bytesToGigabytes(user?.maxStorageSpace || 0, 0));
         let percent = (user.bytesInStorage / user.maxStorageSpace) * 100;
         storageBar!.style.width = `${percent}%`;
-        console.log(user);
-        
     }, [user]);
 
     return (
