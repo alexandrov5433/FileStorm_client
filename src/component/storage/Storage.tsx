@@ -22,6 +22,7 @@ import type { Directory } from '../../lib/definition/directory';
 import { setMessage } from '../../lib/redux/slice/messenger';
 import CheckedEntitiesOptions from './view/myStorage/checkedEntitiesOptions/CheckedEntitiesOptions';
 import { addBytesInStorage } from '../../lib/redux/slice/user';
+import { openTextInputBox } from '../../lib/redux/slice/textInputBox';
 
 
 export default function Storage() {
@@ -31,7 +32,6 @@ export default function Storage() {
     const { checkedList } = useAppSelector(state => state.checkedEntities);
 
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
-    const [isDirectoryDialog, setDirectoryDialog] = useState(false);
 
     const storageFileUploadRef = useRef(null);
     const fileUploadIdRef = useRef(0);
@@ -48,11 +48,15 @@ export default function Storage() {
 
     // new directory addition
     function openAddDirectoryDialog() {
-        setDirectoryDialog(true);
+        dispatch(openTextInputBox({
+            funcToRunOnInputDone: addNewDirectory,
+            funcInputValueValidator: validateFileAndDirName,
+            textContent: 'New Directory Name',
+            textExtraNote: 'Can not contain: < > : " / \ | ? *',
+            btnText: 'Create'
+        }));
     }
-    function closeAddDirectoryDialog() {
-        setDirectoryDialog(false);
-    }
+
     async function addNewDirectory(newDirName: string) {
         const res = await fetcher(
             createDirectoryRequest(
@@ -150,7 +154,6 @@ export default function Storage() {
 
 
     // checked entities options display
-
     const [displayCheckedEntitiesOptions, setDisplayCheckedEntitiesOptions] = useState(false);
     useEffect(() => {
         setDisplayCheckedEntitiesOptions(checkedList.length > 0);
@@ -199,15 +202,7 @@ export default function Storage() {
                     </div>
                     <Outlet context={storageFileUploadRef} />
                 </section>
-                {
-                    isDirectoryDialog ? <TextInputBox
-                        funcToRunOnInputDone={addNewDirectory}
-                        funcToClose={closeAddDirectoryDialog}
-                        funcInputValueValidator={validateFileAndDirName}
-                        textContent='New Directory Name'
-                        textExtraNote='Can not contain: < > : " / \ | ? *'
-                        btnText='Add Directory' /> : ''
-                }
+                <TextInputBox/>
                 <UploadProgressViewer />
                 <ShareInterface />
             </div>

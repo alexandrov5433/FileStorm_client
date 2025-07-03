@@ -9,6 +9,7 @@ import messengerReducer from './slice/messenger';
 import breadcrunbsReducer from './slice/breadcrumbs';
 import checkedEntitiesReducer from './slice/checkedEntities';
 import shareInterfaceReducer from './slice/shareInterface';
+import textInputBoxReducer from './slice/textInputBox';
 
 export const store = configureStore({
     reducer: {
@@ -20,7 +21,8 @@ export const store = configureStore({
         messenger: messengerReducer,
         breadcrumbs: breadcrunbsReducer,
         checkedEntities: checkedEntitiesReducer,
-        shareInterface: shareInterfaceReducer
+        shareInterface: shareInterfaceReducer,
+        textInputBox: textInputBoxReducer
     }
 });
 
