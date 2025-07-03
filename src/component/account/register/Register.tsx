@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
 import type { AuthValidationResult } from '../../../lib/definition/authValidationResult';
-import { useEnterKeyBind } from '../../../lib/hook/useEnterKeyBind';
+import { useEnterKeyBind } from '../../../lib/hook/useKeyBind';
 import tooltipInitializer from '../../../lib/hook/tooltipInitializer';
 
 export default function Register() {

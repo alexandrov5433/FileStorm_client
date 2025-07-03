@@ -7,7 +7,7 @@ import type { AuthValidationResult } from '../../../lib/definition/authValidatio
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
-import { useEnterKeyBind } from '../../../lib/hook/useEnterKeyBind';
+import { useEnterKeyBind } from '../../../lib/hook/useKeyBind';
 
 export default function Login() {
     const dispatch = useAppDispatch();
