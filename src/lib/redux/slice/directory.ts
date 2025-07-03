@@ -92,21 +92,7 @@ export const directorySlice = createSlice({
                 ...state,
                 hydratedChunks: updatedChunks
             };
-        },
-
-        // general
-        // removeMultipleEntitiesById: (state, action: {payload: { directories: number[], chunks: number[]}, type: string}) => {
-        //     const updatedDirectories = state.subdirectories.filter(d => !action.payload.includes(d.id));
-        //     const updatedChunks = state.hydratedChunks.filter(c => !action.payload.includes(c.id));
-        //     return {
-        //         ...state,
-        //         hydratedChunks: updatedChunks,
-        //         subdirectories: updatedDirectories,
-        //         newlyDeletedSubdirs: action.payload
-        //         newlyDeletedChunkId: action.payload
-        //     };
-        // }
-
+        }
     }
 });
 
