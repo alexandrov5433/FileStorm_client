@@ -6,7 +6,10 @@ import { setMessage } from '../../../../../lib/redux/slice/messenger';
 import { useState } from 'react';
 import type { ApiResponse } from '../../../../../lib/definition/apiResponse';
 import fetcher from '../../../../../lib/action/fetcher';
-import { removeChunkById, removeMultipleChunksById, removeMultipleSubdirsById, removeSubdirById } from '../../../../../lib/redux/slice/directory';
+import { removeMultipleChunksById, removeMultipleSubdirsById } from '../../../../../lib/redux/slice/directory';
+import { getBytesInStorageRequest } from '../../../../../lib/action/userDataRequest';
+import { setBytesInStorage } from '../../../../../lib/redux/slice/user';
+import type { FetcherReturn } from '../../../../../lib/definition/fetcherReturn';
 
 export default function CheckedEntitiesOptions() {
     const dispatch = useAppDispatch();
@@ -60,9 +63,7 @@ export default function CheckedEntitiesOptions() {
             directories
         }));
         if (res.status === 200) {
-            console.log('deleteSelected chunks', chunks);
-            console.log('deleteSelected directories', directories);
-            
+            getBytesInStorage();
             dispatch(removeMultipleChunksById(chunks));
             dispatch(removeMultipleSubdirsById(directories));
         } else {
@@ -74,6 +75,13 @@ export default function CheckedEntitiesOptions() {
             }));
         }
         setDeleteLoading(false);
+    }
+
+    async function getBytesInStorage() {
+        const res = await fetcher(getBytesInStorageRequest());
+        if (res.status === 200) {
+            dispatch(setBytesInStorage((res as FetcherReturn).payload as number || 0));
+        }
     }
 
     function extractEntitiesIds(entityType: 'chunk' | 'directory'): number[] {

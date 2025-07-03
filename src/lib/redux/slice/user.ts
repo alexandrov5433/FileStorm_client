@@ -11,6 +11,13 @@ export const userSlice = createSlice({
         setGuest: (_state) => {
             return null;
         },
+        setBytesInStorage: (state, action: {payload: number, type: string}) => {
+            if (!state) return state;
+            return {
+                ...state,
+                bytesInStorage: action.payload
+            };
+        },
         addBytesInStorage: (state, action: { payload: number, type: string }) => {
             if (!state) return state;
             return {
@@ -35,6 +42,7 @@ export const userSlice = createSlice({
 export const {
     setUser,
     setGuest,
+    setBytesInStorage,
     addBytesInStorage,
     removeBytesInStorage
 } = userSlice.actions;
