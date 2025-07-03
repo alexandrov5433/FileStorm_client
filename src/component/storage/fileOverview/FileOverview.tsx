@@ -101,11 +101,8 @@ export default function FileOverview({
 
     useEffect(() => {
         areAllSelectorsChecked();
-        console.log(checkedList);
-        
     }, [checkedList]);
     useEffect(() => {
-        console.log('newlyDeletedSubdirs', newlyDeletedSubdirs);
         if (!newlyDeletedSubdirs) return;
         newlyDeletedSubdirs.forEach(dirId => {
             removeFromCheckedList({
@@ -113,11 +110,9 @@ export default function FileOverview({
                 entityType: 'directory'
             });
             removeSelectorManipulatorObjectFromList(dirId || 0);
-        });
-        
+        }); 
     }, [newlyDeletedSubdirs]);
     useEffect(() => {
-        console.log('newlyDeletedChunks', newlyDeletedChunks);
         if (!newlyDeletedChunks) return;
         newlyDeletedChunks.forEach(chunkId => {
             removeFromCheckedList({
@@ -125,8 +120,7 @@ export default function FileOverview({
                 entityType: 'chunk'
             });
             removeSelectorManipulatorObjectFromList(chunkId || 0);    
-        });
-        
+        }); 
     }, [newlyDeletedChunks]);
 
 
