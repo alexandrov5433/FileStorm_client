@@ -20,7 +20,7 @@ export function useEnterKeyBind(element: HTMLElement) {
 }
 
 /**
- * Creates an event listener on keydown for the Enter key and triggers a click on the given element when the Enter key is hit.
+ * Creates an event listener on keydown for the Escape key and triggers a click on the given element when the Escape key is hit.
  * @param element The HTMLElement on which to trigger the click.
  */
 export function useEscapeKeyBind(element: HTMLElement) {
