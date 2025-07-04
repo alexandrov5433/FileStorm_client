@@ -96,7 +96,7 @@ export default function Storage() {
                         dispatch(removeUploadEntityById(uploadProgressEntity.id));
                         dispatch(setMessage({
                             title: 'Ooops...',
-                            text: (res as FetcherReturn)?.msg || 'A problem ocurred. Please try again.',
+                            text: (res as FetcherReturn)?.msg || 'A problem occurred. Please try again.',
                             type: 'negative',
                             duration: 5000
                         }));
@@ -106,7 +106,7 @@ export default function Storage() {
                     dispatch(removeUploadEntityById(uploadProgressEntity.id));
                     dispatch(setMessage({
                         title: 'Ooops...',
-                        text: (rej as FetcherReturn)?.msg || 'A problem ocurred. Please try again.',
+                        text: (rej as FetcherReturn)?.msg || 'A problem occurred. Please try again.',
                         type: 'negative',
                         duration: 5000
                     }));

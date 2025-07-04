@@ -64,7 +64,7 @@ export default function ShareInterface() {
     } else {
       dispatch(setMessage({
         title: 'Ooops...',
-        text: res.msg || 'A problem ocurred. Please try again.',
+        text: res.msg || 'A problem occurred. Please try again.',
         type: 'negative',
         duration: 5000
       }));
@@ -106,7 +106,7 @@ export default function ShareInterface() {
     } else {
       dispatch(setMessage({
         title: 'Ooops...',
-        text: res.msg || 'A problem ocurred. Please try again.',
+        text: res.msg || 'A problem occurred. Please try again.',
         type: 'negative',
         duration: 5000
       }));
@@ -130,7 +130,7 @@ export default function ShareInterface() {
     } else {
       dispatch(setMessage({
         title: 'Ooops...',
-        text: res.msg || 'A problem ocurred. Please try again.',
+        text: res.msg || 'A problem occurred. Please try again.',
         type: 'negative',
         duration: 5000
       }));
@@ -161,7 +161,7 @@ export default function ShareInterface() {
     } else {
       dispatch(setMessage({
         title: 'Ooops...',
-        text: res.msg || 'A problem ocurred. Please try again.',
+        text: res.msg || 'A problem occurred. Please try again.',
         type: 'negative',
         duration: 5000
       }));
@@ -193,7 +193,7 @@ export default function ShareInterface() {
     } else {
       dispatch(setMessage({
         title: 'Ooops...',
-        text: res.msg || 'A problem ocurred. Please try again.',
+        text: res.msg || 'A problem occurred. Please try again.',
         type: 'negative',
         duration: 5000
       }));
