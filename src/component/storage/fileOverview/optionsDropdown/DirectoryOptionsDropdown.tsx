@@ -8,11 +8,12 @@ import fetcher from '../../../../lib/action/fetcher';
 import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import type { User } from '../../../../lib/definition/user';
 import { setUser } from '../../../../lib/redux/slice/user';
+import type { Directory } from '../../../../lib/definition/directory';
 
 export default function DirectoryOptionsDropdown({
-    directoryId
+    directory
 }: {
-    directoryId: number
+    directory: Directory
 }) {
     const dispatch = useAppDispatch();
 
@@ -20,9 +21,9 @@ export default function DirectoryOptionsDropdown({
 
     async function deleteDir() {
         setDeletionInProgress(true);
-        const res = await fetcher(deleteDirectory(directoryId));
+        const res = await fetcher(deleteDirectory(directory?.id || 0));
         if (res.status == 200) {
-            dispatch(removeSubdirById(directoryId));
+            dispatch(removeSubdirById(directory?.id || 0));
             dispatch(setUser(res.payload as User));
         }
         setDeletionInProgress(false);

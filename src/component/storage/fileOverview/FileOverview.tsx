@@ -197,7 +197,7 @@ export default function FileOverview({
                             {dir.name}
                         </p>
                     </div>
-                    <DirectoryOptionsDropdown directoryId={dir.id} />
+                    <DirectoryOptionsDropdown directory={dir} />
                 </div>
                 <div className="file-col size">
                     <p className="text-content">
