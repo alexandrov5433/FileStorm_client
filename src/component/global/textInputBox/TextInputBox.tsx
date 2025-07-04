@@ -5,8 +5,8 @@ import { useEnterKeyBind, useEscapeKeyBind } from '../../../lib/hook/useKeyBind'
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import { closeTextInputBox } from '../../../lib/redux/slice/textInputBox';
 import fetcher from '../../../lib/action/fetcher';
-import { createDirectoryRequest } from '../../../lib/action/fileSystem/directoryRequest';
-import { addSubdir, replaceChunkByIdWithNewChunk } from '../../../lib/redux/slice/directory';
+import { createDirectoryRequest, gerRenameDirectoryRequest } from '../../../lib/action/fileSystem/directoryRequest';
+import { addSubdir, replaceChunkByIdWithNewChunk, replaceSubdirByIdWithNewSubdir } from '../../../lib/redux/slice/directory';
 import type { Directory } from '../../../lib/definition/directory';
 import { validateFileAndDirName } from '../../../lib/util/validator';
 import { getRenameFileRequest } from '../../../lib/action/fileSystem/fileRequest';
@@ -39,8 +39,12 @@ export default function TextInputBox() {
         } else {
             setDisplayTextInputBoxClass('display-text-input-box');
 
-            const startingInputValue = (textInputBoxState?.entityToRename as Chunk)?.originalFileName ?
-                extractFileNameUntilExtention((textInputBoxState?.entityToRename as Chunk)?.originalFileName) : '';
+            let startingInputValue = '';
+            if ((textInputBoxState?.entityToRename as Chunk)?.originalFileName) {
+                startingInputValue = extractFileNameUntilExtention((textInputBoxState?.entityToRename as Chunk)?.originalFileName);
+            } else if ((textInputBoxState?.entityToRename as Directory)?.name) {
+                startingInputValue = (textInputBoxState?.entityToRename as Directory)?.name;
+            }
 
             resetInputField(startingInputValue);
         }
@@ -62,8 +66,6 @@ export default function TextInputBox() {
         } else if (textInputBoxState?.funcInputValueValidator) {
             validationResult = validatorsLibrary[textInputBoxState.funcInputValueValidator]?.(value) ?? false;
         }
-        console.log(validationResult);
-        
         setInputValid(validationResult);
     }
 
@@ -108,15 +110,40 @@ export default function TextInputBox() {
         },
         'renameFile': async (newFileNameWithoutTheExtention: string) => {
             setRequestLoading(true);
+            const idOfChunkToRemove = textInputBoxState?.entityToRename?.id || 0;
             const res = await fetcher(getRenameFileRequest(
-                textInputBoxState?.entityToRename?.id || 0,
+                idOfChunkToRemove,
                 newFileNameWithoutTheExtention
             ));
             if (res.status === 200) {
                 const updatedChunk = res.payload as Chunk;
                 dispatch(replaceChunkByIdWithNewChunk({
-                    idOfChunkToRemove: textInputBoxState?.entityToRename?.id || 0,
+                    idOfChunkToRemove,
                     chunkToAdd: updatedChunk
+                }));
+                close();
+            } else {
+                dispatch(setMessage({
+                    title: 'Ooops...',
+                    text: res.msg || 'A problem occurred. Please try again.',
+                    type: 'negative',
+                    duration: 5000
+                }));
+            }
+            setRequestLoading(false);
+        },
+        'renameDirectory': async (newDirectoryName: string) => {
+            setRequestLoading(true);
+            const idOfDirectoryToRemove = textInputBoxState?.entityToRename?.id || 0;
+            const res = await fetcher(gerRenameDirectoryRequest(
+                idOfDirectoryToRemove,
+                newDirectoryName
+            ));
+            if (res.status === 200) {
+                const updatedDirectory = res.payload as Directory;
+                dispatch(replaceSubdirByIdWithNewSubdir({
+                    idOfDirectoryToRemove,
+                    directoryToAdd: updatedDirectory
                 }));
                 close();
             } else {
@@ -134,8 +161,6 @@ export default function TextInputBox() {
     const validatorsLibrary = {
         'validateFileAndDirName': validateFileAndDirName
     };
-
-
 
     return (
         <div id="text-input-box-main-container" className={`anime-fade-in ${displayTextInputBoxClass}`}>

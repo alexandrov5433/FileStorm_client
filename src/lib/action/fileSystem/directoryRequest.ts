@@ -27,9 +27,16 @@ function deleteDirectory(directoryId: number) {
     );
 }
 
+function gerRenameDirectoryRequest(directoryId: number, newDirecotoryName: string) {
+    return new Request(`/api/directory/${directoryId}?newDirecotoryName=${newDirecotoryName}`, {
+        method: 'PATCH'
+    });
+}
+
 export {
     getDirectoryRequest,
     createDirectoryRequest,
-    deleteDirectory
+    deleteDirectory,
+    gerRenameDirectoryRequest
 };
 

@@ -6,6 +6,10 @@ type ChunkReplacementActionPayload = {
     idOfChunkToRemove: number,
     chunkToAdd: Chunk
 }
+type DirectoryReplacementActionPayload = {
+    idOfDirectoryToRemove: number,
+    directoryToAdd: Directory
+}
 
 const directorySliceInitialState = {
     dirPath: [],
@@ -55,6 +59,18 @@ export const directorySlice = createSlice({
                 newlyDeletedSubdirs: action.payload
             };
         },
+        replaceSubdirByIdWithNewSubdir: (state, action: { payload: DirectoryReplacementActionPayload, type: string }) => {
+            let indexOfTarget = state.subdirectories.findIndex(d => d.id === action.payload.idOfDirectoryToRemove);
+            if (indexOfTarget < 0) {
+                return state;
+            }
+            const updatedSubdirs = [...state.subdirectories];
+            updatedSubdirs[indexOfTarget] = action.payload.directoryToAdd;
+            return {
+                ...state,
+                subdirectories: updatedSubdirs
+            };
+        },
 
         // chunks
         setHydratedChunks: (state, action: { payload: Chunk[], type: string }) => {
@@ -85,7 +101,7 @@ export const directorySlice = createSlice({
                 // case -1
                 return state;
             }
-            const updatedChunks = [...state.hydratedChunks]
+            const updatedChunks = [...state.hydratedChunks];
             updatedChunks[indexOfTarget] = action.payload.chunkToAdd;
 
             return {
@@ -101,6 +117,7 @@ export const {
     setDirPathToInitialState,
     removeSubdirById,
     removeMultipleSubdirsById,
+    replaceSubdirByIdWithNewSubdir,
     addSubdir,
     removeChunkById,
     removeMultipleChunksById,

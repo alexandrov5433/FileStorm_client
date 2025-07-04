@@ -3,7 +3,7 @@ import type { Chunk } from "../../definition/chunk";
 import type { Directory } from "../../definition/directory";
 
 type TextInputBoxState = {
-    funcToRunOnInputDone: 'addNewDirectory' | 'renameFile'
+    funcToRunOnInputDone: 'addNewDirectory' | 'renameFile' | 'renameDirectory'
     funcInputValueValidator?: 'validateFileAndDirName',
     textContent: string,
     textExtraNote?: string,

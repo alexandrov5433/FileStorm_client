@@ -77,7 +77,7 @@ export default function FileOptionsDropdown({
             funcToRunOnInputDone: 'renameFile',
             funcInputValueValidator: 'validateFileAndDirName',
             btnText: 'Rename',
-            textContent: 'New Filename',
+            textContent: 'New File Name',
             textExtraNote: 'Can not contain: < > : " / \\ | ? *',
             entityToRename: chunk
         }));

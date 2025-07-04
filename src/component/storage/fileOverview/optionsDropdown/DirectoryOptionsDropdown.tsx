@@ -9,6 +9,7 @@ import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import type { User } from '../../../../lib/definition/user';
 import { setUser } from '../../../../lib/redux/slice/user';
 import type { Directory } from '../../../../lib/definition/directory';
+import { openTextInputBox } from '../../../../lib/redux/slice/textInputBox';
 
 export default function DirectoryOptionsDropdown({
     directory
@@ -27,6 +28,17 @@ export default function DirectoryOptionsDropdown({
             dispatch(setUser(res.payload as User));
         }
         setDeletionInProgress(false);
+    }
+
+    function rename() {
+        dispatch(openTextInputBox({
+            funcToRunOnInputDone: 'renameDirectory',
+            funcInputValueValidator: 'validateFileAndDirName',
+            btnText: 'Rename',
+            textContent: 'New Directory Name',
+            textExtraNote: 'Can not contain: < > : " / \\ | ? *',
+            entityToRename: directory
+        }));
     }
 
     tooltipInitializer('[data-bs-toggle-tooltip="tooltip"]');
@@ -48,6 +60,12 @@ export default function DirectoryOptionsDropdown({
                         }>
                             <i className="bi bi-trash3"></i>
                             Delete
+                        </span>
+                    </li>
+                    <li>
+                        <span className="dropdown-item" onClick={rename}>
+                            <i className="bi bi-input-cursor"></i>
+                            Rename
                         </span>
                     </li>
                 </ul>
