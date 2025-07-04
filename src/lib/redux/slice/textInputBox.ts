@@ -12,7 +12,7 @@ export const textInputBoxSlice = createSlice({
     name: 'textInputBox',
     initialState: null as TextInputBoxState,
     reducers: {
-        openTextInputBox: (state, action: {payload: TextInputBoxState, type: string}) => {
+        openTextInputBox: (_state, action: {payload: TextInputBoxState, type: string}) => {
             return action.payload;
         },
         closeTextInputBox: () => {
