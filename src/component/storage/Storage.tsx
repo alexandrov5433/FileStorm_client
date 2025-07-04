@@ -49,25 +49,12 @@ export default function Storage() {
     // new directory addition
     function openAddDirectoryDialog() {
         dispatch(openTextInputBox({
-            funcToRunOnInputDone: addNewDirectory,
-            funcInputValueValidator: validateFileAndDirName,
+            funcToRunOnInputDone: 'addNewDirectory',
+            funcInputValueValidator: 'validateFileAndDirName',
             textContent: 'New Directory Name',
             textExtraNote: 'Can not contain: < > : " / \ | ? *',
             btnText: 'Create'
         }));
-    }
-
-    async function addNewDirectory(newDirName: string) {
-        const res = await fetcher(
-            createDirectoryRequest(
-                dirPath[dirPath.length - 1][0],
-                newDirName
-            )
-        );
-        if (res.status == 200) {
-            // trigger refresh in my-storage
-            dispatch(addSubdir(res.payload as Directory));
-        }
     }
 
 

@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type TextInputBoxState = {
-    funcToRunOnInputDone: Function
-    funcInputValueValidator?: (arg: any) => boolean,
+    funcToRunOnInputDone: 'addNewDirectory'
+    funcInputValueValidator?: 'validateFileAndDirName',
     textContent: string,
     textExtraNote?: string,
     btnText: string,
