@@ -18,7 +18,8 @@ export default function SharedWithMe() {
         favorite: false,
         download: true,
         delete: false,
-        share: false
+        share: false,
+        rename: false,
     }
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export default function SharedWithMe() {
         } else {
             dispatch(setMessage({
                 title: 'Ooops...',
-                text: res.msg || 'A problem ocurred. Please try again.',
+                text: res.msg || 'A problem occurred. Please try again.',
                 type: 'negative',
                 duration: 5000
             }));

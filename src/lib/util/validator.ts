@@ -5,7 +5,10 @@
  * @returns True if the value is valid, false otherwise.
  */
 function validateFileAndDirName(value: string) {
-    return !value.match('\\\\|/|:|\\*|\\?|\"|<|>|\\|');
+    console.log(value);
+    if (!value) return false;
+    // return !value.match('\\\\|/|:|\\*|\\?|\"|<|>|\\|');
+    return !new RegExp('\\\\|/|:|\\*|\\?|\"|<|>|\\|').test(value);
 }
 
 export {

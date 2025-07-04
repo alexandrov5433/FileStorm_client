@@ -3,4 +3,5 @@ export type FileOptionsDropdownOptionsToRender = {
     download: boolean,
     delete: boolean,
     share: boolean,
+    rename: boolean
 }

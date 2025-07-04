@@ -30,7 +30,7 @@ export default function CheckedEntitiesOptions() {
             .then(res => {
                 if (!res.ok) {
                     res.json().then((apiRes: ApiResponse) => {
-                        throw new Error(apiRes?.message || 'A problem ocurred. Please try again.');
+                        throw new Error(apiRes?.message || 'A problem occurred. Please try again.');
                     });
                 }
                 return res.blob();
@@ -44,7 +44,7 @@ export default function CheckedEntitiesOptions() {
             .catch(e => {
                 dispatch(setMessage({
                     title: 'Ooops...',
-                    text: e.msg || 'A problem ocurred. Please try again.',
+                    text: e.msg || 'A problem occurred. Please try again.',
                     type: 'negative',
                     duration: 5000
                 }));
@@ -69,7 +69,7 @@ export default function CheckedEntitiesOptions() {
         } else {
             dispatch(setMessage({
                 title: 'Ooops...',
-                text: res.msg || 'A problem ocurred. Please try again.',
+                text: res.msg || 'A problem occurred. Please try again.',
                 type: 'negative',
                 duration: 5000
             }));

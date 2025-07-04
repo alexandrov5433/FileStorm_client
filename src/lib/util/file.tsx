@@ -78,8 +78,18 @@ function getFormatedDate(time: number): string {
     return formater.format(time);
 }
 
+function extractFileNameUntilExtention(fileName: string) {
+    return fileName.slice(0, fileName.lastIndexOf('.'));
+}
+
+function extractFileExtention(fileName: string) {
+    return fileName.slice(fileName.lastIndexOf('.'));
+}
+
 export {
     getIconElement,
     getFormatedFileSize,
-    getFormatedDate
+    getFormatedDate,
+    extractFileNameUntilExtention,
+    extractFileExtention
 };

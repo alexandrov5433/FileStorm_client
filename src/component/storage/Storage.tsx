@@ -48,7 +48,7 @@ export default function Storage() {
             funcToRunOnInputDone: 'addNewDirectory',
             funcInputValueValidator: 'validateFileAndDirName',
             textContent: 'New Directory Name',
-            textExtraNote: 'Can not contain: < > : " / \ | ? *',
+            textExtraNote: 'Can not contain: < > : " / \\ | ? *',
             btnText: 'Create'
         }));
     }

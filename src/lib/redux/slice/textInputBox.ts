@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { Chunk } from "../../definition/chunk";
+import type { Directory } from "../../definition/directory";
 
 type TextInputBoxState = {
-    funcToRunOnInputDone: 'addNewDirectory'
+    funcToRunOnInputDone: 'addNewDirectory' | 'renameFile'
     funcInputValueValidator?: 'validateFileAndDirName',
     textContent: string,
     textExtraNote?: string,
     btnText: string,
+    entityToRename?: Chunk | Directory
 } | null;
 
 export const textInputBoxSlice = createSlice({

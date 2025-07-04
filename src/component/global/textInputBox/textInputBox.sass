@@ -27,9 +27,14 @@
         p.textExtraNote
             text-align: center
             color: var(--neutralPrimaryAlt)
-        input
-            @include general-input-text
+        .input-element-container
+            display: flex
+            align-items: center
             margin-bottom: 1rem
+            input
+                @include general-input-text
+            span
+                color: $teal-500
             
         button#text-input-box-close-btn
             align-self: flex-end

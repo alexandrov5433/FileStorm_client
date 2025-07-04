@@ -6,9 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHoo
 import { closeTextInputBox } from '../../../lib/redux/slice/textInputBox';
 import fetcher from '../../../lib/action/fetcher';
 import { createDirectoryRequest } from '../../../lib/action/fileSystem/directoryRequest';
-import { addSubdir } from '../../../lib/redux/slice/directory';
+import { addSubdir, replaceChunkByIdWithNewChunk } from '../../../lib/redux/slice/directory';
 import type { Directory } from '../../../lib/definition/directory';
 import { validateFileAndDirName } from '../../../lib/util/validator';
+import { getRenameFileRequest } from '../../../lib/action/fileSystem/fileRequest';
+import type { Chunk } from '../../../lib/definition/chunk';
+import { setMessage } from '../../../lib/redux/slice/messenger';
+import { extractFileExtention, extractFileNameUntilExtention } from '../../../lib/util/file';
 
 export default function TextInputBox() {
     const dispatch = useAppDispatch();
@@ -23,6 +27,7 @@ export default function TextInputBox() {
     const [isInputValid, setInputValid] = useState(false);
     const [inputFieldTouched, setInputFieldTouched] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const [requestLoading, setRequestLoading] = useState(false);
 
     useEnterKeyBind(submitBtnRef.current!);
     useEscapeKeyBind(closeBtnRef.current!);
@@ -31,50 +36,56 @@ export default function TextInputBox() {
         if (!textInputBoxState) {
             setDisplayTextInputBoxClass('hide-text-input-box');
             resetInputField();
-            if (inputFieldRef.current) {
-                inputFieldRef.current.focus();
-            }
         } else {
             setDisplayTextInputBoxClass('display-text-input-box');
-            resetInputField();
+
+            const startingInputValue = (textInputBoxState?.entityToRename as Chunk)?.originalFileName ?
+                extractFileNameUntilExtention((textInputBoxState?.entityToRename as Chunk)?.originalFileName) : '';
+
+            resetInputField(startingInputValue);
         }
     }, [textInputBoxState]);
 
-    function validateInput(e: ChangeEvent) {
+    function inputChageListener(e: ChangeEvent<HTMLInputElement>) {
         setInputFieldTouched(true);
-        const value = ((e.currentTarget as HTMLInputElement)?.value || '').trim();
+        const value = e.currentTarget?.value || '';
+        setInputValue(value);
+        if (textInputBoxState?.funcInputValueValidator) {
+            validateInput(value);
+        }
+    }
+
+    function validateInput(value: string) {
         let validationResult = true;
-        if (!value) {
+        if (!value || !value.trim()) {
             validationResult = false;
         } else if (textInputBoxState?.funcInputValueValidator) {
             validationResult = validatorsLibrary[textInputBoxState.funcInputValueValidator]?.(value) ?? false;
         }
-        setInputValue(value);
+        console.log(validationResult);
+        
         setInputValid(validationResult);
     }
 
     function inputSubmission() {
         if (!textInputBoxState) return;
-        actionsLibrary[textInputBoxState.funcToRunOnInputDone]?.(inputValue);
-        close();
+        actionsLibrary[textInputBoxState.funcToRunOnInputDone]?.(inputValue.trim());
     }
 
     function close() {
-        setInputValue('');
         resetInputField();
         dispatch(closeTextInputBox());
     }
 
-    function resetInputField() {
-        if (inputFieldRef.current) {
-            inputFieldRef.current.value = '';
-        }
+    function resetInputField(startingInputValue = '') {
+        setInputValue(startingInputValue);
         setInputFieldTouched(false);
         setInputValid(false);
     }
 
     const actionsLibrary = {
         'addNewDirectory': async (newDirName: string) => {
+            setRequestLoading(true);
             const res = await fetcher(
                 createDirectoryRequest(
                     dirPath[dirPath.length - 1][0],
@@ -84,13 +95,47 @@ export default function TextInputBox() {
             if (res.status == 200) {
                 // trigger refresh in my-storage
                 dispatch(addSubdir(res.payload as Directory));
+                close();
+            } else {
+                dispatch(setMessage({
+                    title: 'Ooops...',
+                    text: res.msg || 'A problem occurred. Please try again.',
+                    type: 'negative',
+                    duration: 5000
+                }));
             }
+            setRequestLoading(false);
+        },
+        'renameFile': async (newFileNameWithoutTheExtention: string) => {
+            setRequestLoading(true);
+            const res = await fetcher(getRenameFileRequest(
+                textInputBoxState?.entityToRename?.id || 0,
+                newFileNameWithoutTheExtention
+            ));
+            if (res.status === 200) {
+                const updatedChunk = res.payload as Chunk;
+                dispatch(replaceChunkByIdWithNewChunk({
+                    idOfChunkToRemove: textInputBoxState?.entityToRename?.id || 0,
+                    chunkToAdd: updatedChunk
+                }));
+                close();
+            } else {
+                dispatch(setMessage({
+                    title: 'Ooops...',
+                    text: res.msg || 'A problem occurred. Please try again.',
+                    type: 'negative',
+                    duration: 5000
+                }));
+            }
+            setRequestLoading(false);
         }
     };
 
     const validatorsLibrary = {
         'validateFileAndDirName': validateFileAndDirName
     };
+
+
 
     return (
         <div id="text-input-box-main-container" className={`anime-fade-in ${displayTextInputBoxClass}`}>
@@ -99,12 +144,32 @@ export default function TextInputBox() {
                     <i className="bi bi-x-lg"></i>
                 </button>
                 <p className="textContent">{textInputBoxState?.textContent || 'Enter value'}</p>
-                <input autoFocus ref={inputFieldRef} type="text" onChange={
-                    textInputBoxState?.funcInputValueValidator ?
-                        validateInput : () => true
-                } className={inputFieldTouched ? (isInputValid ? '' : 'false-input') : ''} />
+                <div className="input-element-container">
+                    <input
+                        autoFocus
+                        ref={inputFieldRef}
+                        type="text"
+                        onChange={inputChageListener}
+                        className={inputFieldTouched ? (isInputValid ? '' : 'false-input') : ''}
+                        value={inputValue}
+                    />
+                    {
+                        (textInputBoxState?.entityToRename as Chunk)?.originalFileName ?
+                            <span>
+                                {extractFileExtention((textInputBoxState?.entityToRename as Chunk)?.originalFileName || '')}
+                            </span>
+                            : ''
+                    }
+                </div>
                 <p className="textExtraNote">{textInputBoxState?.textExtraNote || ''}</p>
-                <button ref={submitBtnRef} id="submit-btn" className="custom-btn main-btn w-100" disabled={textInputBoxState?.funcInputValueValidator ? !isInputValid : false} onClick={inputSubmission}>{textInputBoxState?.btnText || 'Done'}</button>
+                <button
+                    ref={submitBtnRef}
+                    id="submit-btn"
+                    className="custom-btn main-btn w-100"
+                    disabled={requestLoading ? true : (textInputBoxState?.funcInputValueValidator ? !isInputValid : false)}
+                    onClick={inputSubmission}>
+                    {requestLoading ? 'Loading...' : textInputBoxState?.btnText || 'Done'}
+                </button>
             </section>
         </div>
     );

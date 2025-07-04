@@ -29,7 +29,8 @@ export default function MyStorage() {
         favorite: true,
         download: true,
         delete: true,
-        share: true
+        share: true,
+        rename: true
     }
 
     // drag and drop file upload functionality

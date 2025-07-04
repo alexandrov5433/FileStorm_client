@@ -12,6 +12,7 @@ import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
 import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definition/fileOptionsDropdownTypes';
 import { removeBytesInStorage } from '../../../../lib/redux/slice/user';
+import { openTextInputBox } from '../../../../lib/redux/slice/textInputBox';
 
 export default function FileOptionsDropdown({
     chunk,
@@ -69,6 +70,17 @@ export default function FileOptionsDropdown({
 
     function openShareInterface() {
         dispatch(initShareInterfaceWithEntity(chunk));
+    }
+
+    function rename() {
+        dispatch(openTextInputBox({
+            funcToRunOnInputDone: 'renameFile',
+            funcInputValueValidator: 'validateFileAndDirName',
+            btnText: 'Rename',
+            textContent: 'New Filename',
+            textExtraNote: 'Can not contain: < > : " / \\ | ? *',
+            entityToRename: chunk
+        }));
     }
 
     return (
@@ -129,6 +141,16 @@ export default function FileOptionsDropdown({
                                 <span className="dropdown-item" onClick={openShareInterface}>
                                     <i className="bi bi-share"></i>
                                     Share
+                                </span>
+                            </li>
+                            : ''
+                    }
+                    {
+                        fileOptionsToRender.rename ?
+                            <li>
+                                <span className="dropdown-item" onClick={rename}>
+                                    <i className="bi bi-input-cursor"></i>
+                                    Rename
                                 </span>
                             </li>
                             : ''

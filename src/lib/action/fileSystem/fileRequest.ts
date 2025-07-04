@@ -15,8 +15,15 @@ function deleteFileRequest(fileId: number) {
     });
 }
 
+function getRenameFileRequest(fileId: number, newFileNameWithoutTheExtention: string) {
+    return new Request(`/api/file/${fileId}?newFileNameWithoutTheExtention=${newFileNameWithoutTheExtention}`, {
+        method: 'PATCH'
+    });
+}
+
 export {
     fileDownloadRequest,
-    deleteFileRequest
+    deleteFileRequest,
+    getRenameFileRequest
 };
 

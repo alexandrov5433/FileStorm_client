@@ -19,7 +19,8 @@ export default function Favorite() {
         favorite: true,
         download: true,
         delete: true,
-        share: true
+        share: true,
+        rename: true
     }
 
     useEffect(() => {
