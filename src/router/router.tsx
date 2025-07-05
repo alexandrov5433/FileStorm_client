@@ -10,6 +10,7 @@ import Account from "../component/account/Account";
 import MyStorage from "../component/storage/view/myStorage/MyStorage";
 import Favorite from "../component/storage/view/favorite/Favorite";
 import SharedWithMe from "../component/storage/view/sharedWithMe/SharedWithMe";
+import DownloadPublicFile from "../component/public/downloadSharedFile/DownloadPublicFile";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
                     { path: 'shared-with-me', Component: SharedWithMe }
                 ]
             },
+            { path: 'public/download_shared_file/:chunkIdToDownload', Component: DownloadPublicFile },
 
 
             { path: '*', Component: PageNotFound }

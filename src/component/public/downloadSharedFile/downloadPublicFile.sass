@@ -1,0 +1,59 @@
+@import '../../../lib/style/styleExporter'
+
+#dpf-main-container
+    padding: 1rem
+    overflow-y: auto
+    a
+        display: block
+    p
+        margin: 0
+
+    #file-section
+        h1
+            color: $teal-500
+        #file-info
+            .info-row
+                overflow: hidden
+                white-space: nowrap
+                text-overflow: ellipsis
+                
+            #file-name
+                color: $teal-500
+
+        
+        #download-link
+            box-sizing: content-box
+            margin: 1rem auto
+
+    .custom-horizontal-divider
+        margin: 1rem 0 !important
+    
+    #account-section
+        a
+            margin: 0.5rem 0
+    
+    #share-section
+        p
+            margin-bottom: 0.5rem
+        div
+            display: flex
+            flex-wrap: wrap
+            gap: 2rem
+            a
+                color: $teal-500
+                i
+                    font-size: 1.4rem
+
+    #storm-section
+        display: flex
+        flex: 1 1 50%
+        justify-content: center
+        align-items: center
+    
+@include media-breakpoint-up(lg)
+    #dpf-main-container
+        display: flex
+        
+        #main-section,
+        #storm-section
+            width: 50%

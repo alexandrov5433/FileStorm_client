@@ -21,9 +21,22 @@ function getRenameFileRequest(fileId: number, newFileNameWithoutTheExtention: st
     });
 }
 
+function getPublicFileDownloadRequest(fileId: number) {
+    return new Request(`/api/public/file/${fileId}/download`, {
+        method: 'GET'
+    });
+};
+function getPublicFileDataRequest(fileId: number) {
+    return new Request(`/api/public/file/${fileId}/data`, {
+        method: 'GET'
+    });
+};
+
 export {
     fileDownloadRequest,
     deleteFileRequest,
-    getRenameFileRequest
+    getRenameFileRequest,
+    getPublicFileDownloadRequest,
+    getPublicFileDataRequest
 };
 

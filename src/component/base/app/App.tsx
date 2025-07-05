@@ -1,5 +1,5 @@
 import './App.sass'
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router'
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest, setUser } from '../../../lib/redux/slice/user';
@@ -15,16 +15,23 @@ function App() {
   const location = useLocation();
 
   const componentFirstMount = useRef(true);
+  const [landingNeeded, setLandingNeeded] = useState(true);
 
   useEffect(() => {
     dispatch(setWindowHistoryLengthOnAppEntry(window.history.length));
     const targetPath = location.pathname;
-    navigate('/');
 
-    (async () => {
-      await checkCookieAndSessionData(targetPath);
-      componentFirstMount.current = false;
-    })();
+    const isPublic = new RegExp(/\/public\/download_shared_file\/\d+/).test(targetPath);
+    if (isPublic) {
+      setLandingNeeded(false);
+    } else {
+      navigate('/');
+
+      (async () => {
+        await checkCookieAndSessionData(targetPath);
+        componentFirstMount.current = false;
+      })();
+    }
   }, []);
 
   useEffect(() => {
@@ -46,7 +53,7 @@ function App() {
   }
 
   return (
-    <div id="app-main-container" className={landing.isMounted ? '' : 'hide-all-content'}>
+    <div id="app-main-container" className={landingNeeded ? (landing.isMounted ? '' : 'hide-all-content') : ''}>
       <Outlet />
       <Messenger />
     </div>
