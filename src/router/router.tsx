@@ -10,7 +10,7 @@ import Account from "../component/account/Account";
 import MyStorage from "../component/storage/view/myStorage/MyStorage";
 import Favorite from "../component/storage/view/favorite/Favorite";
 import SharedWithMe from "../component/storage/view/sharedWithMe/SharedWithMe";
-import DownloadPublicFile from "../component/public/downloadSharedFile/DownloadPublicFile";
+import DownloadPublicFile from "../component/public/downloadPublicFile/DownloadPublicFile";
 
 const router = createBrowserRouter([
     {
