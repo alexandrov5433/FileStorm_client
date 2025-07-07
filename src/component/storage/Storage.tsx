@@ -16,7 +16,7 @@ import { addUploadEntity, removeUploadEntityById, updateUploadEntityById } from 
 import type { FetcherReturn } from '../../lib/definition/fetcherReturn';
 import type { Chunk } from '../../lib/definition/chunk';
 import { setMessage } from '../../lib/redux/slice/messenger';
-import CheckedEntitiesOptions from './view/myStorage/checkedEntitiesOptions/CheckedEntitiesOptions';
+import CheckedEntitiesOptions from './checkedEntitiesOptions/CheckedEntitiesOptions';
 import { addBytesInStorage } from '../../lib/redux/slice/user';
 import { openTextInputBox } from '../../lib/redux/slice/textInputBox';
 

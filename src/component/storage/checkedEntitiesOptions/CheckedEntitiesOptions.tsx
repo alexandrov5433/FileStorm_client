@@ -1,15 +1,15 @@
 import './checkedEntitiesOptions.sass';
 
-import { useAppDispatch, useAppSelector } from '../../../../../lib/redux/reduxTypedHooks';
-import { getDeleteSelectedRequest, getDownloadSelectedRequest } from '../../../../../lib/action/checkedEntities';
-import { setMessage } from '../../../../../lib/redux/slice/messenger';
+import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
+import { getDeleteSelectedRequest, getDownloadSelectedRequest } from '../../../lib/action/checkedEntities';
+import { setMessage } from '../../../lib/redux/slice/messenger';
 import { useState } from 'react';
-import type { ApiResponse } from '../../../../../lib/definition/apiResponse';
-import fetcher from '../../../../../lib/action/fetcher';
-import { removeMultipleChunksById, removeMultipleSubdirsById } from '../../../../../lib/redux/slice/directory';
-import { getBytesInStorageRequest } from '../../../../../lib/action/userDataRequest';
-import { setBytesInStorage } from '../../../../../lib/redux/slice/user';
-import type { FetcherReturn } from '../../../../../lib/definition/fetcherReturn';
+import type { ApiResponse } from '../../../lib/definition/apiResponse';
+import fetcher from '../../../lib/action/fetcher';
+import { removeMultipleChunksById, removeMultipleSubdirsById } from '../../../lib/redux/slice/directory';
+import { getBytesInStorageRequest } from '../../../lib/action/userDataRequest';
+import { setBytesInStorage } from '../../../lib/redux/slice/user';
+import type { FetcherReturn } from '../../../lib/definition/fetcherReturn';
 
 export default function CheckedEntitiesOptions() {
     const dispatch = useAppDispatch();
