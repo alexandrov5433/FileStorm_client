@@ -58,7 +58,8 @@ export default function FileOverview({
         dispatch(addEntityToCheckedList(entity));
         dispatch(setCheckedEntitiesRenderOptions({
             delete: parrentComponent === 'SharedWithMe' ? false : true,
-            download: true
+            download: true,
+            currentView: parrentComponent
         }));
     }
     function removeFromCheckedList(entity: CheckedEntityActionPayload) {

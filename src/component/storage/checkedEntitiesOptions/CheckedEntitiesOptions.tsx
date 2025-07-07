@@ -1,7 +1,7 @@
 import './checkedEntitiesOptions.sass';
 
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
-import { getDeleteSelectedRequest, getDownloadSelectedRequest } from '../../../lib/action/checkedEntities';
+import { getDeleteSelectedRequest, getDownloadSelectedRequest, getDownloadSharedSelectedRequest } from '../../../lib/action/checkedEntities';
 import { setMessage } from '../../../lib/redux/slice/messenger';
 import { useState } from 'react';
 import type { ApiResponse } from '../../../lib/definition/apiResponse';
@@ -22,10 +22,17 @@ export default function CheckedEntitiesOptions() {
         setDownloadLoading(true);
         const chunks = extractEntitiesIds('chunk');
         const directories = extractEntitiesIds('directory');
-        const request = getDownloadSelectedRequest({
-            chunks,
-            directories
-        });
+
+        const request = renderOptions.currentView === 'SharedWithMe' ?
+            getDownloadSharedSelectedRequest({
+                chunks,
+                directories
+            })
+            : getDownloadSelectedRequest({
+                chunks,
+                directories
+            });
+
         fetch(request)
             .then(res => {
                 if (!res.ok) {

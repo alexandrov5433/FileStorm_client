@@ -1,6 +1,7 @@
 export type CheckedEntitiesRenderOptions = {
     delete: boolean,
-    download: boolean
+    download: boolean,
+    currentView?: 'SharedWithMe'
 }
 
 export type CheckedEntityActionPayload = {

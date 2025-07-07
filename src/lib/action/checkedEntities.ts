@@ -20,7 +20,18 @@ function getDeleteSelectedRequest(payload: CheckedEntitiesRequestPayload) {
     });
 }
 
+function getDownloadSharedSelectedRequest(payload: CheckedEntitiesRequestPayload) {
+    return new Request('/api/file-sharing/file/bulk', {
+        method: 'POST',
+        headers: [
+            ['Content-Type', 'application/json']
+        ],
+        body: JSON.stringify(payload)
+    });
+}
+
 export {
     getDownloadSelectedRequest,
-    getDeleteSelectedRequest
+    getDeleteSelectedRequest,
+    getDownloadSharedSelectedRequest
 }
