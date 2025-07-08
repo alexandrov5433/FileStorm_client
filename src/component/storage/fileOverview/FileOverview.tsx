@@ -39,6 +39,7 @@ export default function FileOverview({
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirs, newlyDeletedChunks } = useAppSelector(state => state.directory);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
+    const fileStorageScrollState = useAppSelector(state => state.fileStorageScroll);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return [...chunkRefs].sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
@@ -48,6 +49,19 @@ export default function FileOverview({
         return [...subdirectories].sort((a, b) => (a.name).localeCompare(b.name));
     }
 
+
+    // scrolling
+    useEffect(() => {
+        if (!fileStorageScrollState) return;
+        const scrollIdentifier = fileStorageScrollState.scrollTargetId;
+        const targetElement = document.querySelector(`#${scrollIdentifier}`);
+        if (!targetElement) return;
+        targetElement.scrollIntoView({block: "center", inline: "nearest"});
+        targetElement.classList.add('pulse-to-identify');
+        setTimeout(() => {
+            targetElement.classList.remove('pulse-to-identify');
+        }, 2000);
+    }, [fileStorageScrollState]);
 
 
     // selection functionality
@@ -128,7 +142,7 @@ export default function FileOverview({
 
     function fileMapper(chunk: Chunk) {
         return (
-            <div className="file-row" key={chunk.id}>
+            <div className="file-row" key={chunk.id} id={`scroll-to-id-${chunk.id}`}>
                 <div className="file-col selector">
                     <SelectRing
                         HTMLInputElementId={`select-ring-input-${chunk.id.toString()}`}

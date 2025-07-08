@@ -32,11 +32,18 @@ function getPublicFileDataRequest(fileId: number) {
     });
 };
 
+function getSearchUserFilesRequest(searchValue: string) {
+    return new Request(`/api/search/file?searchValue=${searchValue || ''}`, {
+        method: 'GET'
+    });
+}
+
 export {
     fileDownloadRequest,
     deleteFileRequest,
     getRenameFileRequest,
     getPublicFileDownloadRequest,
-    getPublicFileDataRequest
+    getPublicFileDataRequest,
+    getSearchUserFilesRequest
 };
 

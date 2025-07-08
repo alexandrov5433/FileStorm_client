@@ -26,6 +26,7 @@ nav.navbar
     height: auto
 
 #navbar-user-container
+    margin-top: 1rem
     #logoutBtn
         padding: 1rem 0
         color: var(--color-error) !important
@@ -34,6 +35,72 @@ nav.navbar
     p
         margin: 0
 
+#navbarNav
+    #nav-file-search-container
+        display: flex
+        align-items: center
+        position: relative
+        #nav-file-search
+            @include general-input-text
+            height: 80%
+            &:focus
+                border: 1px solid $teal-500
+        &:has(:focus)
+            #nav-file-search-keybind
+                display: none
+        #nav-file-search-keybind
+            position: absolute
+            top: 50%
+            left: 2%
+            transform: translateY(-50%)
+            border: 1px solid var(--neutralTertiary)
+            padding: 0 0.2rem
+            font-size: 0.8em
+            color: var(--neutralTertiary)
+        #file-search-results-container
+            width: 100%
+            max-height: 80dvh
+            overflow-y: auto
+            position: absolute
+            top: 100%
+            left: 0%
+            background-color: var(--neutralPrimarySurface)
+            border: 1px solid var(--neutralPrimaryAlt)
+            .file-search-loader-container
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: center
+                p
+                    margin-bottom: 0.2rem
+            .search-results-title
+                background-color: var(--neutralSecondarySurface)
+                padding: 0 0.5rem
+            .search-results-list
+                width: 100%
+                padding: 0.5rem 0
+                .search-results-no-result-msg
+                    padding: 0 0.5rem
+                .search-results-result
+                    &:not(:last-child)
+                        margin-bottom: 1.8rem
+                    &:hover
+                        background-color: color-mix(in oklab, $teal-500 30%, var(--neutralTertiarySurface) 70%)
+                    padding: 0 0.5rem
+                    width: 100%
+                    display: flex
+                    align-items: center
+                    gap: 0.2rem
+                    // .search-results-icon
+                    .search-results-filename
+                        cursor: pointer
+                        flex: 1 1 100%
+                        overflow: hidden
+                        white-space: nowrap
+                        text-overflow: ellipsis
+                    // .search-results-button
+                        
+
 @include media-breakpoint-up(lg)
     #navbarNav
         justify-content: space-between
@@ -41,10 +108,21 @@ nav.navbar
         .pagesNav .nav-link
             padding-left: 1.2rem
             padding-right: 1.2rem
+    
+    #navbarNav
+        #nav-file-search-container
+            width: 30rem
+            #file-search-results-container
+                max-height: 85dvh
+                .search-results-list
+                    .search-results-result
+                        &:not(:last-child)
+                            margin-bottom: 0.5rem
 
     #navbar-user-container
         display: flex
         align-items: center
+        margin-top: 0
         #logoutBtn
             padding: 0
         .pipe

@@ -10,6 +10,7 @@ import breadcrunbsReducer from './slice/breadcrumbs';
 import checkedEntitiesReducer from './slice/checkedEntities';
 import shareInterfaceReducer from './slice/shareInterface';
 import textInputBoxReducer from './slice/textInputBox';
+import fileStorageScrollReducer from './slice/fileStorageScroll';
 
 export const store = configureStore({
     reducer: {
@@ -22,7 +23,8 @@ export const store = configureStore({
         breadcrumbs: breadcrunbsReducer,
         checkedEntities: checkedEntitiesReducer,
         shareInterface: shareInterfaceReducer,
-        textInputBox: textInputBoxReducer
+        textInputBox: textInputBoxReducer,
+        fileStorageScroll: fileStorageScrollReducer
     }
 });
 

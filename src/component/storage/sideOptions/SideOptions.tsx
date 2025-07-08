@@ -53,7 +53,7 @@ export default function SideOptions({
             <section id="side-options-location-container">
                 <ul>
                     <li>
-                        <NavLink to="my-storage" ref={myStorageRef}>
+                        <NavLink to="/my-storage" ref={myStorageRef}>
                             <span></span>
                             <div>
                                 <i className="bi bi-archive"></i>
@@ -62,7 +62,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="favorite" ref={favoriteRef} onClick={() => {
+                        <NavLink to="/favorite" ref={favoriteRef} onClick={() => {
                             dispatch(setDirPath([[user?.rootStorageDir || 0, 'My Storage']]));
                             dispatch(clearCheckedList());
                         }}>
@@ -74,7 +74,7 @@ export default function SideOptions({
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="shared-with-me" ref={sharedWithMeRef} onClick={() => {
+                        <NavLink to="/shared-with-me" ref={sharedWithMeRef} onClick={() => {
                             dispatch(setDirPath([[user?.rootStorageDir || 0, 'My Storage']]));
                             dispatch(clearCheckedList());
                         }}>

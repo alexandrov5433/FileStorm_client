@@ -38,3 +38,34 @@ export function useEscapeKeyBind(element: HTMLElement) {
         };
     }, [element]);
 }
+
+/**
+ * Creates an event listener on keydown for the Ctrl + secondKey combination and triggers an action (click or focus) on the given element when the Ctrl + secondKey is hit.
+ * @param element The HTMLElement on which to trigger the action.
+ * @param secondKey The key with which the combination is triggered.
+ * @param action The action to trigger.
+ */
+export function useControllComboKeyBind(element: HTMLElement, secondKey: string, action: 'click' | 'focus') {
+    useEffect(() => {
+        if (!element) return;
+        const keyStrokeListener = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.key === secondKey) {
+                console.log(e.ctrlKey, e.key, element);
+
+                e.preventDefault();
+                switch (action) {
+                    case "click":
+                        element?.click();
+                        break;
+                    case "focus":
+                        element?.focus();
+                        break;
+                }
+            }
+        }
+        document.addEventListener('keydown', keyStrokeListener);
+        return () => {
+            document.removeEventListener('keydown', keyStrokeListener);
+        };
+    }, [element]);
+}

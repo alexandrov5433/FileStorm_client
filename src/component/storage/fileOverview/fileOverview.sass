@@ -45,6 +45,9 @@
     border-bottom: 1px solid var(--neutralSecondary)
     &:has(.select-ring-main-container input:checked)
         animation: 0.2s linear 0s forwards checked-bg-color-shift
+    
+    &.pulse-to-identify
+        animation: 2s linear 0s forwards pulse
 
 .file-col
     padding: 0.5rem 0.4rem
@@ -96,6 +99,15 @@
         background-color: var(--neutralTertiaryAlt)
     100%
         background-color: $teal-700
+
+@keyframes pulse
+    0%
+        background-color: transparent
+    50%
+        background-color: color-mix(in oklab, $teal-500 50%, rgba(0,0,0,0) 50%)
+    100%
+        background-color: transparent
+        
 
 @include media-breakpoint-up(md)
     .name
