@@ -46,7 +46,7 @@ export default function DirectoryOptionsDropdown({
     return (
         <div id="options-dropdown-main-container">
 
-            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
+            <button className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
                 data-bs-toggle-tooltip="tooltip"
                 data-bs-title="Directory Options"
                 data-bs-trigger="hover focus"
@@ -69,7 +69,7 @@ export default function DirectoryOptionsDropdown({
                         </span>
                     </li>
                 </ul>
-            </div>
+            </button>
 
         </div>
     );

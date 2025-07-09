@@ -87,7 +87,7 @@ export default function FileOptionsDropdown({
         <div id="options-dropdown-main-container">
             {
                 fileOptionsToRender.favorite ?
-                    <div id="file-options-favorite-container" className="custom-icon-btn" onClick={
+                    <button id="file-options-favorite-container" className="custom-icon-btn" onClick={
                         isFavoriteRequestLoading ? () => null :
                             (isFavorite ? removeFromFavorite : addToFavorite)
                     }
@@ -101,11 +101,11 @@ export default function FileOptionsDropdown({
                             isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
                                 <i className="bi bi-star"></i>
                         }
-                    </div>
+                    </button>
                     : ''
             }
 
-            <div className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
+            <button className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
                 data-bs-toggle-tooltip="tooltip"
                 data-bs-title="File Options"
                 data-bs-trigger="hover focus"
@@ -156,7 +156,7 @@ export default function FileOptionsDropdown({
                             : ''
                     }
                 </ul>
-            </div>
+            </button>
 
         </div>
     );
