@@ -1,7 +1,7 @@
 import './optionsDropdown.sass';
 
 import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { deleteDirectory } from '../../../../lib/action/fileSystem/directoryRequest';
 import { removeSubdirById } from '../../../../lib/redux/slice/directory';
 import fetcher from '../../../../lib/action/fetcher';
@@ -10,6 +10,7 @@ import type { User } from '../../../../lib/definition/user';
 import { setUser } from '../../../../lib/redux/slice/user';
 import type { Directory } from '../../../../lib/definition/directory';
 import { openTextInputBox } from '../../../../lib/redux/slice/textInputBox';
+import { verticalDropdownPositionAdjuster } from '../../../../lib/util/dropdown';
 
 export default function DirectoryOptionsDropdown({
     directory
@@ -19,6 +20,8 @@ export default function DirectoryOptionsDropdown({
     const dispatch = useAppDispatch();
 
     const [isDeletionInProgress, setDeletionInProgress] = useState(false);
+
+    const ulDropdownRef = useRef<HTMLUListElement | null>(null);
 
     async function deleteDir() {
         setDeletionInProgress(true);
@@ -51,9 +54,10 @@ export default function DirectoryOptionsDropdown({
                 data-bs-title="Directory Options"
                 data-bs-trigger="hover focus"
                 data-bs-custom-class="custom-tooltip"
+                onClick={() => verticalDropdownPositionAdjuster(ulDropdownRef.current!)}
             >
                 <i className="bi bi-three-dots-vertical"></i>
-                <ul className="dropdown-menu custom-dropdown">
+                <ul ref={ulDropdownRef} className="dropdown-menu custom-dropdown">
                     <li>
                         <span className="dropdown-item red-item" onClick={
                             isDeletionInProgress ? () => null : deleteDir

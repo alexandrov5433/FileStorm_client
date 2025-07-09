@@ -3,7 +3,7 @@ import './optionsDropdown.sass';
 import type { Chunk } from '../../../../lib/definition/chunk';
 import fetcher from '../../../../lib/action/fetcher';
 import { markFileAsFavorite, removeFileFromFavorite } from '../../../../lib/action/favoriteRequest';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
 import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
@@ -13,6 +13,7 @@ import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareI
 import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definition/fileOptionsDropdownTypes';
 import { removeBytesInStorage } from '../../../../lib/redux/slice/user';
 import { openTextInputBox } from '../../../../lib/redux/slice/textInputBox';
+import { verticalDropdownPositionAdjuster } from '../../../../lib/util/dropdown';
 
 export default function FileOptionsDropdown({
     chunk,
@@ -28,6 +29,8 @@ export default function FileOptionsDropdown({
     const [isFavorite, setIsFavorite] = useState(chunk.isFavorite);
     const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
     const [isDeleteFileInProgress, setDeleteFileInProgress] = useState(false);
+
+    const ulDropdownRef = useRef<HTMLUListElement | null>(null);
 
     tooltipInitializer('[data-bs-toggle-tooltip="tooltip"]');
 
@@ -110,9 +113,10 @@ export default function FileOptionsDropdown({
                 data-bs-title="File Options"
                 data-bs-trigger="hover focus"
                 data-bs-custom-class="custom-tooltip"
+                onClick={() => verticalDropdownPositionAdjuster(ulDropdownRef.current!)}
             >
                 <i className="bi bi-three-dots-vertical"></i>
-                <ul className="dropdown-menu custom-dropdown">
+                <ul ref={ulDropdownRef} className="dropdown-menu custom-dropdown">
                     {
                         fileOptionsToRender.download ?
                             <li>
