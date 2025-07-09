@@ -183,13 +183,12 @@ export default function NavBar() {
                                     <span>{result.chunk.originalFileName}</span>
                                 </div>
                                 <div className="search-results-button">
-                                    <button
+                                    <div
                                         data-searchnoblur={true}
                                         onClick={e => navigateToChunkInMyStorage(e as any, result)}
-                                        type="button"
                                         className="custom-btn secondary-btn w-fit-cont size-small">
                                         Go To
-                                    </button>
+                                    </div>
                                 </div>
                             </button >
                         )
@@ -215,13 +214,12 @@ export default function NavBar() {
                                     <span>{result.chunk.originalFileName}</span>
                                 </div>
                                 <div className="search-results-button">
-                                    <button
+                                    <div
                                         onClick={e => navigateToChunkInSharedWithMe(e as any, result)}
                                         data-searchnoblur={true}
-                                        type="button"
                                         className="custom-btn secondary-btn w-fit-cont size-small">
                                         Go To
-                                    </button>
+                                    </div>
                                 </div>
                             </button>
                         )
