@@ -1,22 +1,32 @@
 @import '../../lib/style/styleExporter'
 
+#storage-main-container
+    height: 100%
+    display: flex
+    flex-direction: column
+
+.storage-nav-container
+    height: 10%
 .wrapper
     position: relative
     display: flex
     flex-direction: column
-    flex: 0 1 100%;
-
+    height: 90%
 #storage-file-upload
     display: none
     appearance: none
     pointer-events: none
 
 #storageFileOverviewContainer
+    height: 90%
     .storage-checked-entities-container
-        padding: 0.5rem 0.8rem
-        min-height: 10%
+        height: 10%
         display: flex
         align-items: center
+    .storage-outlet-container
+        height: 90%
+        display: flex
+        flex-direction: column
 
 #storageSideOptionsContainer
     display: flex
@@ -72,7 +82,4 @@
             width: 100%
 
     #storageFileOverviewContainer
-        width: 80%
         height: 100%
-        .storage-checked-entities-container
-            padding: 0.5rem 0rem

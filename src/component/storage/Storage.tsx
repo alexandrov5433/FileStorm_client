@@ -144,8 +144,10 @@ export default function Storage() {
 
 
     return (
-        <>
-            <NavBar />
+        <div id="storage-main-container">
+            <div className="storage-nav-container">
+                <NavBar />
+            </div>
             <div className="wrapper anime-fade-in">
                 <section id="storageSideOptionsContainer">
                     <div className="dropdown">
@@ -183,12 +185,14 @@ export default function Storage() {
                                 <CheckedEntitiesOptions /> : ''
                         }
                     </div>
-                    <Outlet context={storageFileUploadRef} />
+                    <div className="storage-outlet-container">
+                        <Outlet context={storageFileUploadRef} />
+                    </div>
                 </section>
-                <TextInputBox/>
+                <TextInputBox />
                 <UploadProgressViewer />
                 <ShareInterface />
             </div>
-        </>
+        </div>
     );
 }

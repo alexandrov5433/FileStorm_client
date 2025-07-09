@@ -2,8 +2,10 @@
 
 #file-overview-main-container
     background-color: var(--neutralPrimarySurface)
-    flex: 0 1 100%
-    overflow-y: auto
+    flex: 1 1 auto
+    display: flex
+    flex-direction: column
+    overflow: hidden
 
 .file-table-wrapper
     height: 100%
@@ -29,6 +31,7 @@
     display: flex
     flex-direction: column
     height: 100%
+    flex: 1 1 auto
 
     .file-col.name .text-content
         text-decoration: none
@@ -45,7 +48,7 @@
     border-bottom: 1px solid var(--neutralSecondary)
     &:has(.select-ring-main-container input:checked)
         animation: 0.2s linear 0s forwards checked-bg-color-shift
-    
+
     &.pulse-to-identify
         animation: 2s linear 0s forwards pulse
 
@@ -72,18 +75,16 @@
     max-width: 3rem
     min-width: 3rem
 
-
 .size
     display: none
-    border-left: 1px solid var(--neutralSecondary) 
+    border-left: 1px solid var(--neutralSecondary)
 
 .created
     display: none
-    border-left: 1px solid var(--neutralSecondary) 
+    border-left: 1px solid var(--neutralSecondary)
 
 .name
     flex: 1 1 80%
-    // justify-content: space-between
     .name-text-content-container
         max-width: 60dvw
         overflow: hidden
@@ -107,7 +108,6 @@
         background-color: color-mix(in oklab, $teal-500 50%, rgba(0,0,0,0) 50%)
     100%
         background-color: transparent
-        
 
 @include media-breakpoint-up(md)
     .name
