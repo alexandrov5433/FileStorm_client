@@ -20,6 +20,15 @@ function verticalDropdownPositionAdjuster(
     }
 }
 
+function hideAndBlurDropdown(ul: HTMLUListElement | null, dropdownMainButton: HTMLButtonElement | null) {
+    // if statement removed in order to improve function execution speed - can be felt!
+    // if (!ulDropdownRef.current) return;
+    ul?.classList?.remove('show');
+    ul?.blur();
+    dropdownMainButton?.blur();
+}
+
 export {
-    verticalDropdownPositionAdjuster
+    verticalDropdownPositionAdjuster,
+    hideAndBlurDropdown
 };

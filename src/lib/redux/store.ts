@@ -11,6 +11,7 @@ import checkedEntitiesReducer from './slice/checkedEntities';
 import shareInterfaceReducer from './slice/shareInterface';
 import textInputBoxReducer from './slice/textInputBox';
 import fileStorageScrollReducer from './slice/fileStorageScroll';
+import dropdownOptionsReducer from './slice/dropdownOptions';
 
 export const store = configureStore({
     reducer: {
@@ -24,7 +25,8 @@ export const store = configureStore({
         checkedEntities: checkedEntitiesReducer,
         shareInterface: shareInterfaceReducer,
         textInputBox: textInputBoxReducer,
-        fileStorageScroll: fileStorageScrollReducer
+        fileStorageScroll: fileStorageScrollReducer,
+        dropdownOptions: dropdownOptionsReducer
     }
 });
 

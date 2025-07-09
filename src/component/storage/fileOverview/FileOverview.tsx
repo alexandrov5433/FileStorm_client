@@ -18,6 +18,7 @@ import type { SelectorManipulationObject } from '../../../lib/definition/selectR
 import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList, setCheckedEntitiesRenderOptions } from '../../../lib/redux/slice/checkedEntities';
 import type { FileOptionsDropdownOptionsToRender } from '../../../lib/definition/fileOptionsDropdownTypes';
 import type { CheckedEntityActionPayload } from '../../../lib/definition/checkedEntitiesOptionsTypes';
+import { toggleFileOverviewScrollIndicator } from '../../../lib/redux/slice/dropdownOptions';
 
 export default function FileOverview({
     subdirectories,
@@ -228,11 +229,15 @@ export default function FileOverview({
         );
     }
 
+    function scrollListrener() {
+        dispatch(toggleFileOverviewScrollIndicator());
+    }
+
     return (
         <div id="file-overview-main-container">
 
             <div className="file-table-wrapper anime-fade-in">
-                <div className="file-table">
+                <div className="file-table" onScroll={scrollListrener}>
                     <div className="file-table-header">
                         <div className="file-col selector">
                             <SelectRing
@@ -244,9 +249,9 @@ export default function FileOverview({
                         <div className="file-col type">
                             <i className="bi bi-file-earmark"></i>
                         </div>
-                        <div className="file-col name">Name</div>
-                        <div className="file-col size">Size</div>
-                        <div className="file-col created">Created</div>
+                        <div title="The name of the file or directory" className="file-col name">Name</div>
+                        <div title="The size of the file or the count of the contained elements of the directory" className="file-col size">Size</div>
+                        <div title="Time of creation" className="file-col created">Created</div>
                     </div>
 
                     <div className="file-table-body">

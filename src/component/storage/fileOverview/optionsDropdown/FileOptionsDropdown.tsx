@@ -3,17 +3,16 @@ import './optionsDropdown.sass';
 import type { Chunk } from '../../../../lib/definition/chunk';
 import fetcher from '../../../../lib/action/fetcher';
 import { markFileAsFavorite, removeFileFromFavorite } from '../../../../lib/action/favoriteRequest';
-import { useRef, useState } from 'react';
-import { useAppDispatch } from '../../../../lib/redux/reduxTypedHooks';
+import { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
 import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
 import { removeChunkById } from '../../../../lib/redux/slice/directory';
-import tooltipInitializer from '../../../../lib/hook/tooltipInitializer';
 import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
 import type { FileOptionsDropdownOptionsToRender } from '../../../../lib/definition/fileOptionsDropdownTypes';
 import { removeBytesInStorage } from '../../../../lib/redux/slice/user';
 import { openTextInputBox } from '../../../../lib/redux/slice/textInputBox';
-import { verticalDropdownPositionAdjuster } from '../../../../lib/util/dropdown';
+import { hideAndBlurDropdown, verticalDropdownPositionAdjuster } from '../../../../lib/util/dropdown';
 
 export default function FileOptionsDropdown({
     chunk,
@@ -25,14 +24,14 @@ export default function FileOptionsDropdown({
     downloadFileSharedWithMe?: boolean
 }) {
     const dispatch = useAppDispatch();
+    const { fileOverviewScrollIndicator } = useAppSelector(state => state.dropdownOptions);
 
     const [isFavorite, setIsFavorite] = useState(chunk.isFavorite);
     const [isFavoriteRequestLoading, setFavoriteRequestLoading] = useState(false);
     const [isDeleteFileInProgress, setDeleteFileInProgress] = useState(false);
 
     const ulDropdownRef = useRef<HTMLUListElement | null>(null);
-
-    tooltipInitializer('[data-bs-toggle-tooltip="tooltip"]');
+    const optionsDropdownMainButtonRef = useRef<HTMLButtonElement | null>(null);
 
     function download() {
         const anchor = document.createElement('a');
@@ -86,20 +85,25 @@ export default function FileOptionsDropdown({
         }));
     }
 
+    // hide dropdown on FileOverview scroll
+    useEffect(() => {
+        hideAndBlurDropdown(ulDropdownRef.current, optionsDropdownMainButtonRef.current);
+    }, [fileOverviewScrollIndicator]);
+
     return (
         <div id="options-dropdown-main-container">
             {
                 fileOptionsToRender.favorite ?
-                    <button id="file-options-favorite-container" className="custom-icon-btn" onClick={
-                        isFavoriteRequestLoading ? () => null :
-                            (isFavorite ? removeFromFavorite : addToFavorite)
-                    }
-                        data-bs-toggle-tooltip="tooltip"
-                        data-bs-title={
-                            isFavorite ? 'Remove from Favorite' : 'Add to Favorite'
+                    <button
+                        id="file-options-favorite-container"
+                        className="custom-icon-btn"
+                        onClick={
+                            isFavoriteRequestLoading ? () => null :
+                                (isFavorite ? removeFromFavorite : addToFavorite)
                         }
-                        data-bs-trigger="hover focus"
-                        data-bs-custom-class="custom-tooltip">
+                        title={
+                            isFavorite ? 'Remove From Favorite' : 'Add To Favorite'
+                        }>
                         {
                             isFavorite ? <i className="bi bi-star-fill is_favorite"></i> :
                                 <i className="bi bi-star"></i>
@@ -108,18 +112,18 @@ export default function FileOptionsDropdown({
                     : ''
             }
 
-            <button className="dropdown custom-icon-btn" data-bs-toggle="dropdown"
-                data-bs-toggle-tooltip="tooltip"
-                data-bs-title="File Options"
-                data-bs-trigger="hover focus"
-                data-bs-custom-class="custom-tooltip"
+            <button
+                ref={optionsDropdownMainButtonRef}
+                className="dropdown custom-icon-btn"
+                data-bs-toggle="dropdown"
+                title="File Options"
                 onClick={() => verticalDropdownPositionAdjuster(ulDropdownRef.current!)}
             >
                 <i className="bi bi-three-dots-vertical"></i>
                 <ul ref={ulDropdownRef} className="dropdown-menu custom-dropdown">
                     {
                         fileOptionsToRender.download ?
-                            <li>
+                            <li title="Download This File">
                                 <span className="dropdown-item" onClick={download}>
                                     <i className="bi bi-download"></i>
                                     Download
@@ -129,7 +133,7 @@ export default function FileOptionsDropdown({
                     }
                     {
                         fileOptionsToRender.delete ?
-                            <li>
+                            <li title="Delete This File">
                                 <span className="dropdown-item red-item" onClick={
                                     isDeleteFileInProgress ? () => null : deleteFile
                                 }>
@@ -141,7 +145,7 @@ export default function FileOptionsDropdown({
                     }
                     {
                         fileOptionsToRender.share ?
-                            <li>
+                            <li title="Share This File">
                                 <span className="dropdown-item" onClick={openShareInterface}>
                                     <i className="bi bi-share"></i>
                                     Share
@@ -151,7 +155,7 @@ export default function FileOptionsDropdown({
                     }
                     {
                         fileOptionsToRender.rename ?
-                            <li>
+                            <li title="Rename This File">
                                 <span className="dropdown-item" onClick={rename}>
                                     <i className="bi bi-input-cursor"></i>
                                     Rename
