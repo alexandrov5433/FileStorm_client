@@ -40,7 +40,7 @@ export default function FileOverview({
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirs, newlyDeletedChunks } = useAppSelector(state => state.directory);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
-    const fileStorageScrollState = useAppSelector(state => state.fileStorageScroll);
+    const { scrollTargetId } = useAppSelector(state => state.fileStorageScroll);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return [...chunkRefs].sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
@@ -53,16 +53,15 @@ export default function FileOverview({
 
     // scrolling
     useEffect(() => {
-        if (!fileStorageScrollState) return;
-        const scrollIdentifier = fileStorageScrollState.scrollTargetId;
-        const targetElement = document.querySelector(`#${scrollIdentifier}`);
+        if (!scrollTargetId) return;
+        const targetElement = document.querySelector(`#${scrollTargetId}`);
         if (!targetElement) return;
-        targetElement.scrollIntoView({block: "center", inline: "nearest"});
+        targetElement.scrollIntoView({ block: "center", inline: "nearest" });
         targetElement.classList.add('pulse-to-identify');
         setTimeout(() => {
             targetElement.classList.remove('pulse-to-identify');
         }, 2000);
-    }, [fileStorageScrollState]);
+    }, [scrollTargetId]);
 
 
     // selection functionality
@@ -126,7 +125,7 @@ export default function FileOverview({
                 entityType: 'directory'
             });
             removeSelectorManipulatorObjectFromList(dirId || 0);
-        }); 
+        });
     }, [newlyDeletedSubdirs]);
     useEffect(() => {
         if (!newlyDeletedChunks) return;
@@ -135,8 +134,8 @@ export default function FileOverview({
                 entityId: chunkId || 0,
                 entityType: 'chunk'
             });
-            removeSelectorManipulatorObjectFromList(chunkId || 0);    
-        }); 
+            removeSelectorManipulatorObjectFromList(chunkId || 0);
+        });
     }, [newlyDeletedChunks]);
 
 

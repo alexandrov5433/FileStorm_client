@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const fileStorageScrollSlice = createSlice({
     name: 'fileStorageScroll',
-    initialState: null as {
+    initialState: {
+        scrollTargetId: ''
+    } as {
         scrollTargetId: string
-    } | null,
+    },
     reducers: {
         setScrollTargetInFileStorage: (state, action: {payload: string, type: string}) => {
             return {
