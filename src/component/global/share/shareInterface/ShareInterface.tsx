@@ -142,6 +142,8 @@ export default function ShareInterface() {
   // user search
   const searchUsersAbortController = useRef(new AbortController());
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const [displaySearchResults, setDisplaySearchResults] = useState(false);
   const [searchUsersLoading, setSearchUsersLoading] = useState(false);
   const [usersFromSearch, setUsersFromSearch] = useState<UsersAsNameAndId>({});
 
@@ -149,10 +151,11 @@ export default function ShareInterface() {
     if (!chunk?.id) return;
     const searchValue = (e.target.value || '').replaceAll(/[^A-Za-z0-9_]/ig, '');
     if (!searchValue) {
+      setDisplaySearchResults(false);
       setUsersFromSearch({});
       return;
     }
-
+    setDisplaySearchResults(true);
     // searchUsersAbortController.current.abort();
     setSearchUsersLoading(true);
     const res = await fetcher(searchUsersRequest(searchValue, chunk.id, searchUsersAbortController.current));
@@ -245,33 +248,37 @@ export default function ShareInterface() {
             <div className="user-search-container margin-bottom">
               <label htmlFor="share-interface-search-username">Search For User</label>
               <input type="text" name="username" id="share-interface-search-username" placeholder='Type in username...' onChange={searchUsers} ref={searchInputRef} />
-              <ul className="search-results">
-                {
-                  searchUsersLoading ?
-                    <li className="status-holder">
-                      <div className="status">
-                        <div className="spinner-border spinner-border-sm" role="status">
-                          <span className="visually-hidden">Loading...</span>
-                        </div>
-                        <span>Searching...</span>
-                      </div>
-                    </li>
-                    :
-                    Object.entries(usersFromSearch).length <= 0 ?
-                      <li className="status-holder">
-                        <span>No Results.</span>
-                      </li>
-                      :
-                      Object.entries(usersFromSearch).map(entry =>
-                        <li key={entry[1]} onClick={() => addUserToShareWith(entry[1])}>
-                          <div className="person-icon-and-username-container" >
-                            <i className="bi bi-person-fill"></i>
-                            <span>{entry[0]}</span>
+              {
+                displaySearchResults ?
+                  <ul className="search-results">
+                    {
+                      searchUsersLoading ?
+                        <li className="status-holder">
+                          <div className="status">
+                            <div className="spinner-border spinner-border-sm" role="status">
+                              <span className="visually-hidden">Loading...</span>
+                            </div>
+                            <span>Searching...</span>
                           </div>
                         </li>
-                      )
-                }
-              </ul>
+                        :
+                        Object.entries(usersFromSearch).length <= 0 ?
+                          <li className="status-holder">
+                            <span>No Results.</span>
+                          </li>
+                          :
+                          Object.entries(usersFromSearch).map(entry =>
+                            <li key={entry[1]} onClick={() => addUserToShareWith(entry[1])}>
+                              <div className="person-icon-and-username-container" >
+                                <i className="bi bi-person-fill"></i>
+                                <span>{entry[0]}</span>
+                              </div>
+                            </li>
+                          )
+                    }
+                  </ul>
+                  : ''
+              }
             </div>
             : ''
         }
