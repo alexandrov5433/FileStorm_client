@@ -6,10 +6,10 @@ import { useEffect } from "react";
  * @param className The className which must be added and removed.
  * @param time The time in seconds for which the className must stay on the element. The className will be removed after this time duration is up.
  */
-export default function mouseOutClassUpdate(element: HTMLElement, className: string, time: number) {
+export default function useMouseOutClassUpdate(element: HTMLElement, className: string, time: number) {
     useEffect(() => {
         if (!element) return;
-        const listener = function (e: MouseEvent) {
+        const listener = function (_e: MouseEvent) {
             element.classList.add(className);
             setTimeout(() => element.classList.remove(className), time * 1000);
         }

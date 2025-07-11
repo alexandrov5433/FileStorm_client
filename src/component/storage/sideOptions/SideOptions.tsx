@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import './sideOptions.sass';
 import { useEffect, useRef, useState } from 'react';
-import mouseOutClassUpdate from '../../../lib/hook/mouseOutClassUpdate';
+import useMouseOutClassUpdate from '../../../lib/hook/mouseOutClassUpdate';
 import { setDirPath } from '../../../lib/redux/slice/directory';
 import { clearCheckedList } from '../../../lib/redux/slice/checkedEntities';
 import { bytesToGigabytes } from '../../../lib/util/convert';
@@ -26,10 +26,10 @@ export default function SideOptions({
     const sharedWithMeRef = useRef<HTMLAnchorElement>(null);
     const storageSpaceBarFillerRef = useRef<HTMLDivElement>(null);
 
-    mouseOutClassUpdate(myStorageRef.current!, 'mouseout', 0.3);
-    mouseOutClassUpdate(favoriteRef.current!, 'mouseout', 0.3);
-    mouseOutClassUpdate(mySharedFilesRef.current!, 'mouseout', 0.3);
-    mouseOutClassUpdate(sharedWithMeRef.current!, 'mouseout', 0.3);
+    useMouseOutClassUpdate(myStorageRef.current!, 'mouseout', 0.3);
+    useMouseOutClassUpdate(favoriteRef.current!, 'mouseout', 0.3);
+    useMouseOutClassUpdate(mySharedFilesRef.current!, 'mouseout', 0.3);
+    useMouseOutClassUpdate(sharedWithMeRef.current!, 'mouseout', 0.3);
 
     useEffect(() => {
         if (!user) return;
