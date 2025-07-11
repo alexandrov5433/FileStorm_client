@@ -13,6 +13,7 @@ import { getRenameFileRequest } from '../../../lib/action/fileSystem/fileRequest
 import type { Chunk } from '../../../lib/definition/chunk';
 import { setMessage } from '../../../lib/redux/slice/messenger';
 import { extractFileExtention, extractFileNameUntilExtention } from '../../../lib/util/file';
+import { triggerClearSearchResults } from '../../../lib/redux/slice/search';
 
 export default function TextInputBox() {
     const dispatch = useAppDispatch();
@@ -121,6 +122,7 @@ export default function TextInputBox() {
                     idOfChunkToRemove,
                     chunkToAdd: updatedChunk
                 }));
+                dispatch(triggerClearSearchResults());
                 close();
             } else {
                 dispatch(setMessage({
@@ -145,6 +147,7 @@ export default function TextInputBox() {
                     idOfDirectoryToRemove,
                     directoryToAdd: updatedDirectory
                 }));
+                dispatch(triggerClearSearchResults());
                 close();
             } else {
                 dispatch(setMessage({

@@ -19,6 +19,7 @@ import { addEntityToCheckedList, clearCheckedList, deleteEntityFromCheckedList, 
 import type { FileOptionsDropdownOptionsToRender } from '../../../lib/definition/fileOptionsDropdownTypes';
 import type { CheckedEntityActionPayload } from '../../../lib/definition/checkedEntitiesOptionsTypes';
 import { toggleFileOverviewScrollIndicator } from '../../../lib/redux/slice/dropdownOptions';
+import { setScrollFinished } from '../../../lib/redux/slice/fileStorageScroll';
 
 export default function FileOverview({
     subdirectories,
@@ -40,7 +41,7 @@ export default function FileOverview({
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirs, newlyDeletedChunks } = useAppSelector(state => state.directory);
     const { checkedList } = useAppSelector(state => state.checkedEntities);
-    const { scrollTargetId } = useAppSelector(state => state.fileStorageScroll);
+    const { signalScroll, scrollTargetId } = useAppSelector(state => state.fileStorageScroll);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
         return [...chunkRefs].sort((a, b) => (a.originalFileName).localeCompare(b.originalFileName));
@@ -52,16 +53,20 @@ export default function FileOverview({
 
 
     // scrolling
-    useEffect(() => {
-        if (!scrollTargetId) return;
+    useEffect(() => { 
+        if (!scrollTargetId || !signalScroll) return;
+
         const targetElement = document.querySelector(`#${scrollTargetId}`);
+
         if (!targetElement) return;
-        targetElement.scrollIntoView({ block: "center", inline: "nearest" });
+
+        targetElement.scrollIntoView({ block: "center", inline: "nearest", behavior: 'instant' });
         targetElement.classList.add('pulse-to-identify');
         setTimeout(() => {
             targetElement.classList.remove('pulse-to-identify');
+            dispatch(setScrollFinished());
         }, 2000);
-    }, [scrollTargetId]);
+    }, [scrollTargetId, signalScroll]);
 
 
     // selection functionality

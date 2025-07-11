@@ -26,6 +26,7 @@ export default function NavBar() {
     const navigate = useNavigate();
     const user = useAppSelector(state => state.user);
     const { newlyDeletedChunks } = useAppSelector(state => state.directory);
+    const { signalClearSearchResults } = useAppSelector(state => state.search);
 
     const htmlElem = document.querySelector('html')!;
 
@@ -70,6 +71,7 @@ export default function NavBar() {
             dispatch(setGuest());
             dispatch(setDirPathToInitialState());
             dispatch(setShareInterfaceStateToNull());
+            clearSearchResults();
             navigate('/account/login');
         }
         setLogoutBtnDisabled(false);
@@ -87,6 +89,8 @@ export default function NavBar() {
     useEventListenerForRef(fileSearchInputRef, 'blur', closeResultsOnBlurListener);
     useEventListenerForRef(fileSearchInputRef, 'focus', openeResultsOnFocusIfPresentListener);
 
+
+    // clear search results
     useEffect(() => {
         if (!newlyDeletedChunks || !searchResults) return;
         setSearchResults(state => {
@@ -106,13 +110,25 @@ export default function NavBar() {
             };
         });
     }, [newlyDeletedChunks]);
+    useEffect(() => {
+        clearSearchResults();
+    }, [signalClearSearchResults]);
+
+    function clearSearchResults() {
+        setShowSearchResults(false);
+        setSearchLoading(false);
+        setSearchResults(null);
+        if (!fileSearchInputRef.current) {
+            return;
+        }
+        fileSearchInputRef.current.value = '';
+    }
+
 
     async function searchInitiateListener(e: KeyboardEvent) {
         const searchValue = fileSearchInputRef.current?.value || '';
         if (!searchValue || searchValue.length == 0) {
-            setShowSearchResults(false);
-            setSearchLoading(false);
-            setSearchResults(null);
+            clearSearchResults();
             return;
         }
         if (searchValue && e.key == 'Enter') {
@@ -120,7 +136,6 @@ export default function NavBar() {
             setShowSearchResults(true);
             const res = await fetcher(getSearchUserFilesRequest(searchValue));
             if (res.status === 200) {
-                console.log(res.payload as UserFileSearchResults);
                 setSearchResults(res.payload as UserFileSearchResults);
             } else {
                 dispatch(setMessage({

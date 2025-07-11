@@ -12,6 +12,7 @@ import shareInterfaceReducer from './slice/shareInterface';
 import textInputBoxReducer from './slice/textInputBox';
 import fileStorageScrollReducer from './slice/fileStorageScroll';
 import dropdownOptionsReducer from './slice/dropdownOptions';
+import searchReducer from './slice/search';
 
 export const store = configureStore({
     reducer: {
@@ -26,7 +27,8 @@ export const store = configureStore({
         shareInterface: shareInterfaceReducer,
         textInputBox: textInputBoxReducer,
         fileStorageScroll: fileStorageScrollReducer,
-        dropdownOptions: dropdownOptionsReducer
+        dropdownOptions: dropdownOptionsReducer,
+        search: searchReducer
     }
 });
 
