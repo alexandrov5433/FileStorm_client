@@ -21,6 +21,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: '../FileStorm_server/src/main/resources/static',
-  }
+    outDir: 'dist',
+  },
+  base: '/'
 })
