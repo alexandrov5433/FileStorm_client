@@ -84,7 +84,7 @@ export default function DownloadPublicFile() {
                 <div className="custom-horizontal-divider"></div>
                 <section id="account-section">
                     <p>Want to share files?</p>
-                    <NavLink to={'/account/regiter'} className="custom-btn secondary-btn w-fit-cont">
+                    <NavLink to={'/account/register'} className="custom-btn secondary-btn w-fit-cont">
                         Create Account
                     </NavLink>
                     <p>or</p>
