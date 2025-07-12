@@ -1,0 +1,31 @@
+@import '../../../lib/style/styleExporter'
+
+#page-not-found-main-container
+    height: 100%
+    padding: 0.5rem
+    display: flex
+    flex-direction: column
+    .info-container
+        flex: 1 1 100%
+        a
+            display: block
+            max-width: 450px
+            &:not(:last-child)
+                margin-bottom: 1rem
+        h1 span
+            color: $teal-500
+    .image-container
+        justify-content: center
+        align-items: center
+        .image-wrapper
+            span
+                font-size: 3rem
+                &:not(:last-child)
+                    margin-right: 0.6rem
+                &.missing-cloud
+                    color: $teal-500
+                    font-size: 4.5rem
+
+@include media-breakpoint-up(lg)
+    #page-not-found-main-container
+        flex-direction: row
