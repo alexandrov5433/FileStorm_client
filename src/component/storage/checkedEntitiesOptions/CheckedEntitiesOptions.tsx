@@ -10,6 +10,7 @@ import { removeMultipleChunksById, removeMultipleSubdirsById } from '../../../li
 import { getBytesInStorageRequest } from '../../../lib/action/userDataRequest';
 import { setBytesInStorage } from '../../../lib/redux/slice/user';
 import type { FetcherReturn } from '../../../lib/definition/fetcherReturn';
+import { chunksRemovedFromFav } from '../../../lib/redux/slice/favoriteUpdate';
 
 export default function CheckedEntitiesOptions() {
     const dispatch = useAppDispatch();
@@ -73,6 +74,7 @@ export default function CheckedEntitiesOptions() {
             getBytesInStorage();
             dispatch(removeMultipleChunksById(chunks));
             dispatch(removeMultipleSubdirsById(directories));
+            dispatch(chunksRemovedFromFav(chunks));
         } else {
             dispatch(setMessage({
                 title: 'Ooops...',

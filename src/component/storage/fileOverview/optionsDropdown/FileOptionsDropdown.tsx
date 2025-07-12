@@ -5,7 +5,7 @@ import fetcher from '../../../../lib/action/fetcher';
 import { markFileAsFavorite, removeFileFromFavorite } from '../../../../lib/action/favoriteRequest';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../lib/redux/reduxTypedHooks';
-import { chunkAddedToFav, chunkRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
+import { chunksAddedToFav, chunksRemovedFromFav } from '../../../../lib/redux/slice/favoriteUpdate';
 import { deleteFileRequest } from '../../../../lib/action/fileSystem/fileRequest';
 import { removeChunkById } from '../../../../lib/redux/slice/directory';
 import { initShareInterfaceWithEntity } from '../../../../lib/redux/slice/shareInterface';
@@ -46,6 +46,7 @@ export default function FileOptionsDropdown({
         if (res.status == 200) {
             dispatch(removeChunkById(res.payload as number));
             dispatch(removeBytesInStorage(chunk.sizeBytes));
+            dispatch(chunksRemovedFromFav([chunk.id]));
         }
         setDeleteFileInProgress(false);
     }
@@ -55,7 +56,7 @@ export default function FileOptionsDropdown({
         const res = await fetcher(markFileAsFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(true);
-            dispatch(chunkAddedToFav(chunk));
+            dispatch(chunksAddedToFav([chunk.id]));
         }
         setFavoriteRequestLoading(false);
     }
@@ -65,7 +66,7 @@ export default function FileOptionsDropdown({
         const res = await fetcher(removeFileFromFavorite(chunk.id));
         if (res.status === 200) {
             setIsFavorite(false)
-            dispatch(chunkRemovedFromFav(res.payload as Chunk));
+            dispatch(chunksRemovedFromFav([(res.payload as Chunk).id || 0]));
         }
         setFavoriteRequestLoading(false);
     }

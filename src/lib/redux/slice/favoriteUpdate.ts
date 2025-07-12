@@ -1,26 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { Chunk } from "../../definition/chunk";
 
 export const favoriteUpdateSlice = createSlice({
     name: 'favoriteUpdate',
     initialState: {
         updateType: 'add',
-        chunk: null
+        chunks: null
     } as {
         updateType: 'add' | 'remove',
-        chunk: Chunk | null
+        chunks: number[] | null
     },
     reducers: {
-        chunkAddedToFav: (state, action: { payload: Chunk, type: string }) => {
+        chunksAddedToFav: (state, action: { payload: number[], type: string }) => {
             state.updateType = 'add';
-            state.chunk = action.payload;
+            state.chunks = action.payload;
         },
-        chunkRemovedFromFav: (state, action: { payload: Chunk, type: string }) => {
+        chunksRemovedFromFav: (state, action: { payload: number[], type: string }) => {
             state.updateType = 'remove';
-            state.chunk = action.payload;
+            state.chunks = action.payload;
         }
     }
 });
 
-export const { chunkAddedToFav, chunkRemovedFromFav} = favoriteUpdateSlice.actions;
+export const { chunksAddedToFav, chunksRemovedFromFav } = favoriteUpdateSlice.actions;
 export default favoriteUpdateSlice.reducer;

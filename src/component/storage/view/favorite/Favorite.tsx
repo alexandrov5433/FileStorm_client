@@ -29,8 +29,17 @@ export default function Favorite() {
 
     useEffect(() => {
         if (favoriteUpdate.updateType == 'remove') {
-            const removedChunkId = favoriteUpdate.chunk?.id || 0;
-            setFavorite(state => state.filter(c => c.id != removedChunkId));
+            const removedChunks = favoriteUpdate.chunks || [];
+            setFavorite(state => {
+                return state.reduce((acc, cur) => {
+                    const currentChunkId = cur.id;
+                    const indexInRemoved = removedChunks.findIndex(cId => cId === currentChunkId);
+                    if (indexInRemoved == -1) {
+                        acc.push(cur);
+                    }
+                    return acc;
+                }, [] as Chunk[]);
+            });
         }
     }, [favoriteUpdate]);
 
