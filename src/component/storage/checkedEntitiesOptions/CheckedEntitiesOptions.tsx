@@ -18,9 +18,12 @@ export default function CheckedEntitiesOptions() {
 
     const [downloadLoading, setDownloadLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [processLoading, setProcessLoading] = useState(false);
 
     async function downloadSelected() {
+        if (downloadLoading || deleteLoading || processLoading) return;
         setDownloadLoading(true);
+        setProcessLoading(true);
         const chunks = extractEntitiesIds('chunk');
         const directories = extractEntitiesIds('directory');
 
@@ -59,11 +62,14 @@ export default function CheckedEntitiesOptions() {
             })
             .finally(() => {
                 setDownloadLoading(false);
+                setProcessLoading(false);
             });
     }
 
     async function deleteSelected() {
+        if (downloadLoading || deleteLoading || processLoading) return;
         setDeleteLoading(true);
+        setProcessLoading(true);
         const chunks = extractEntitiesIds('chunk');
         const directories = extractEntitiesIds('directory');
         const res = await fetcher(getDeleteSelectedRequest({
@@ -84,6 +90,7 @@ export default function CheckedEntitiesOptions() {
             }));
         }
         setDeleteLoading(false);
+        setProcessLoading(false);
     }
 
     async function getBytesInStorage() {
@@ -106,7 +113,7 @@ export default function CheckedEntitiesOptions() {
         <div id="check-ent-options-main-cantainer" className="anime-fade-in">
             {
                 renderOptions.download ?
-                    <button disabled={downloadLoading} onClick={downloadSelected} className="custom-btn w-fit-cont size-medium secondary-btn">
+                    <button disabled={downloadLoading || processLoading} onClick={downloadSelected} className="custom-btn w-fit-cont size-medium secondary-btn">
                         <i className="bi bi-download color-teal"></i>&nbsp;{
                             downloadLoading ? 'Loading...' : 'Download Selected'
                         }
@@ -115,7 +122,7 @@ export default function CheckedEntitiesOptions() {
             }
             {
                 renderOptions.delete ?
-                    <button disabled={deleteLoading} onClick={deleteSelected} className="custom-btn w-fit-cont size-medium secondary-btn">
+                    <button disabled={deleteLoading || processLoading} onClick={deleteSelected} className="custom-btn w-fit-cont size-medium secondary-btn">
                         <i className="bi bi-trash3 color-red"></i>&nbsp;{
                             deleteLoading ? 'Loading...' : 'Delete Selected'
                         }
