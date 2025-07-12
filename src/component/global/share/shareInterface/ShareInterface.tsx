@@ -21,6 +21,8 @@ export default function ShareInterface() {
   useEffect(() => {
     if (!shareInterfaceState) {
       setDisplayComponent(false);
+      setDisplaySearchResults(false);
+      setUsersFromSearch({});
       return;
     }
     setDisplayComponent(true);
