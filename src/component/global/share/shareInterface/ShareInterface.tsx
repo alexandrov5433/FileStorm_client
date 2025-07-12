@@ -30,6 +30,9 @@ export default function ShareInterface() {
   }, [shareInterfaceState]);
 
   function closeShareInterface() {
+    if (searchInputRef?.current) {
+      searchInputRef.current.value = '';
+    }
     dispatch(setShareInterfaceStateToNull());
   }
 
@@ -142,7 +145,7 @@ export default function ShareInterface() {
 
 
   // user search
-  const searchUsersAbortController = useRef(new AbortController());
+  const searchAbortController = useRef(new AbortController());
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
@@ -153,17 +156,19 @@ export default function ShareInterface() {
     if (!chunk?.id) return;
     const searchValue = (e.target.value || '').replaceAll(/[^A-Za-z0-9_]/ig, '');
     if (!searchValue) {
+      searchAbortController.current.abort('No search value.');
       setDisplaySearchResults(false);
       setUsersFromSearch({});
       return;
     }
+    searchAbortController.current.abort('New search value inserted.');
+    searchAbortController.current = new AbortController();
     setDisplaySearchResults(true);
-    // searchUsersAbortController.current.abort();
     setSearchUsersLoading(true);
-    const res = await fetcher(searchUsersRequest(searchValue, chunk.id, searchUsersAbortController.current));
+    const res = await fetcher(searchUsersRequest(searchValue, chunk.id, searchAbortController.current));
     if (res.status === 200) {
       setUsersFromSearch(res.payload as UsersAsNameAndId);
-    } else {
+    } else if ([400, 404, 404, 500].includes(res.status)) {
       dispatch(setMessage({
         title: 'Ooops...',
         text: res.msg || 'A problem occurred. Please try again.',
@@ -175,7 +180,7 @@ export default function ShareInterface() {
   }
 
   async function addUserToShareWith(userId: number) {
-    if (!chunk?.id) return;
+    if (!chunk?.id || shareOptionUpdateLoading) return;
     displayStatus.current = true;
     setStatusLoading(true);
     const res = await fetcher(addUserToShareWithRequest(chunk.id, userId));
@@ -239,7 +244,7 @@ export default function ShareInterface() {
         }
         <div className="share-option-container margin-bottom">
           <span>Share Option</span>
-          <select disabled={shareOptionUpdateLoading} className="form-select" aria-label="Default select example" onChange={shareOptionManualChange}>
+          <select disabled={shareOptionUpdateLoading || statusLoading} className="form-select" aria-label="Default select example" onChange={shareOptionManualChange}>
             <option selected={chunk?.shareOption == 'PRIVATE'} value="PRIVATE">Private</option>
             <option selected={chunk?.shareOption == 'SHARE_WITH_ALL_WITH_LINK'} value="SHARE_WITH_ALL_WITH_LINK">All With Link</option>
             <option selected={chunk?.shareOption == 'SHARE_WITH_USER'} value="SHARE_WITH_USER">Share With User</option>
@@ -318,7 +323,16 @@ export default function ShareInterface() {
                             <span>{entry[0] || ''}</span>
                           </div>
                           <div className="button-container">
-                            <button type="button" className="custom-btn w-fit-cont size-small red-btn" onClick={() => removeUserFromShareWith(entry[1])}>Remove</button>
+                            <button
+                              disabled={shareOptionUpdateLoading}
+                              type="button"
+                              className="custom-btn w-fit-cont size-small red-btn"
+                              onClick={() => {
+                                shareOptionUpdateLoading ? null :
+                                  removeUserFromShareWith(entry[1]);
+                              }}>
+                              Remove
+                            </button>
                           </div>
                         </li>
                       )
