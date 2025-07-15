@@ -1,0 +1,24 @@
+name: CI - dist folder to EC2
+
+on:
+  push:
+    branches: [ "production" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Installing npm packages.
+    - run: npm install -D
+    - name: Building FileStorm Client dist file.
+    - run: npm run build
+    - name: Coping dist folder to EC2
+      env:
+        EC2_KEY: ${{ secrets.EC2_KEY }}
+        FILESTORM_STATIC: ${{ secrets.FILESTORM_STATIC }}
+      run: |
+        echo "$EC2_KEY" > ec2_key.pem
+        chmod 600 ec2_key.pem
+        scp -i ec2_key.pem -o StrictHostKeyChecking=no -r dist admin@filestorm.pro:$FILESTORM_STATIC
+
