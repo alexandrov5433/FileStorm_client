@@ -10,9 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Installing npm packages.
-    - run: npm install -D
+      run: npm install -D
     - name: Building FileStorm Client dist file.
-    - run: npm run build
+      run: npm run build
     - name: Coping dist folder to EC2
       env:
         EC2_KEY: ${{ secrets.EC2_KEY }}
