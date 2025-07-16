@@ -4,6 +4,13 @@ function getBytesInStorageRequest() {
     });
 }
 
+function getUsernameRequest(userId: number) {
+    return new Request(`/api/user-data/username?userId=${userId}`, {
+        method: 'GET'
+    });
+}
+
 export {
-    getBytesInStorageRequest
+    getBytesInStorageRequest,
+    getUsernameRequest
 };
