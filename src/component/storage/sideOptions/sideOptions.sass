@@ -38,7 +38,6 @@
         li
             width: 100%
             max-width: 100%
-            overflow: hidden
             &:not(:last-child)
                 margin-bottom: 0.5rem
             a
@@ -48,6 +47,7 @@
                 padding: 0.5rem 0.2rem
                 word-spacing: normal
                 font-weight: 300 !important
+                white-space: nowrap
 
                 &.active
                     color: var(--neutralPrimary)
@@ -97,7 +97,7 @@
 
     #side-options-username-container
         h6
-            width: 100%
+            width: 95%
         button
             display: none
     #side-options-storage-space-container
