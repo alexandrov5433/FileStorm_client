@@ -24,8 +24,8 @@ export default function UserFileCreatorName({
     }
     
     return (
-        <>
+        <span title={name}>
             {name}
-        </>
+        </span>
     );
 }
