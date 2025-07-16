@@ -44,7 +44,7 @@ export default function SideOptions({
     return (
         <div id="side-options-main-container" className={sideOptionsDisplay ? 'show' : ''}>
             <section id="side-options-username-container">
-                <h6>{user?.username || ''}</h6>
+                <h6 title={user?.username || ''}>{user?.username || ''}</h6>
                 <button className="custom-icon-btn" onClick={sideOptionsDisplayToggler}>
                     <i className="bi bi-x-lg"></i>
                 </button>
