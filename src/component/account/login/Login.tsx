@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setUser } from '../../../lib/redux/slice/user';
 import type { User } from '../../../lib/definition/user';
 import { useEnterKeyBind } from '../../../lib/hook/useKeyBind';
+import PositiveSslTrustSeal from '../../global/positiveSslTrustSeal/PositiveSslTrustSeal';
 
 export default function Login() {
     const dispatch = useAppDispatch();
@@ -79,8 +80,7 @@ export default function Login() {
                     <h6 id="filestorm-name">FileStorm</h6>
                     <h2>Log In</h2>
                 </section>
-                <section className="mb-4">
-
+                <section>
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${isFormTouched ?
                             (loginState.username.isValid ? '' : 'error') : ''
@@ -119,6 +119,7 @@ export default function Login() {
                     <NavLink to="/account/register" className="custom-btn secondary-btn">Register</NavLink>
                 </section>
             </div>
+            <PositiveSslTrustSeal/>
         </form>
     );
 }

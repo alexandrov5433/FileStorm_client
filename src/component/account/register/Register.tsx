@@ -11,6 +11,7 @@ import type { User } from '../../../lib/definition/user';
 import type { AuthValidationResult } from '../../../lib/definition/authValidationResult';
 import { useEnterKeyBind } from '../../../lib/hook/useKeyBind';
 import tooltipInitializer from '../../../lib/hook/tooltipInitializer';
+import PositiveSslTrustSeal from '../../global/positiveSslTrustSeal/PositiveSslTrustSeal';
 
 export default function Register() {
     const dispatch = useAppDispatch();
@@ -147,8 +148,7 @@ export default function Register() {
                     <h6 id="filestorm-name">FileStorm</h6>
                     <h2>Register</h2>
                 </section>
-                <section className="mb-4">
-
+                <section>
                     <div className="input-group mb-4">
                         <div className={`input-group custom-input-group ${formState.username.isTouched ?
                             (formState.username.isValid ? '' : 'error') : ''
@@ -223,6 +223,7 @@ export default function Register() {
                     <NavLink to="/account/login" className="custom-btn secondary-btn">Log In</NavLink>
                 </section>
             </div>
+            <PositiveSslTrustSeal/>
         </form>
     );
 }
