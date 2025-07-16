@@ -87,18 +87,19 @@ nav.navbar
                 .search-results-no-result-msg
                     padding: 0 0.5rem
                 .search-results-result
+                    display: flex
+                    padding: 0 0.5rem
+                    width: 100%
+                    display: flex
+                    align-items: center
+                    gap: 0.2rem
                     &:not(:last-child)
                         margin-bottom: 1.8rem
                     &:hover
                         background-color: color-mix(in oklab, $teal-500 30%, var(--neutralTertiarySurface) 70%)
-                        padding: 0 0.5rem
-                        width: 100%
-                        display: flex
-                        align-items: center
-                        gap: 0.2rem
                     .search-results-filename
                         cursor: pointer
-                        flex: 1 1 100%
+                        width: 100%
                         overflow: hidden
                         white-space: nowrap
                         text-overflow: ellipsis
