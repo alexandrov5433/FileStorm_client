@@ -92,7 +92,11 @@ export default function SideOptions({
                 <div className="storage-space-bar">
                     <div ref={storageSpaceBarFillerRef} className="storage-space-bar-filler"></div>
                 </div>
-                <p className="storage-space-numbers">{valBytesInStorage} GB of {valMaxStorageSpace} GB used</p>
+                <p
+                    title='First, the storage space already in use and second, the maximum storage space for this account.'
+                    className="storage-space-numbers">
+                    {valBytesInStorage} GB of {valMaxStorageSpace} GB used
+                </p>
             </section>
         </div>
     );
