@@ -258,7 +258,9 @@ export default function FileOverview({
                         </div>
                         <div title="The name of the file or directory" className="file-col name">Name</div>
                         <div title="The size of the file or the count of the contained elements of the directory" className="file-col size">Size</div>
-                        <div title="Time of creation" className="file-col created">
+                        <div
+                        title={parrentComponent === 'SharedWithMe' ? 'Creator of the file' : 'Time of creation'}
+                        className="file-col created">
                             {parrentComponent === 'SharedWithMe' ? 'Creator' : 'Created'}
                         </div>
                     </div>
