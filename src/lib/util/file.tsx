@@ -11,6 +11,9 @@ import DirectoryIcon from "../svgComponent/DirectoryIcon";
 import AudioIcon from "../svgComponent/AudioIcon";
 import TextIcon from "../svgComponent/TextIcon";
 import UnknownFileIcon from "../svgComponent/UnknownFileIcon";
+import SvgIcon from "../svgComponent/SvgIcon";
+import VideoIcon from "../svgComponent/VideoIcon";
+import CodeIcon from "../svgComponent/CodeIcon";
 
 /**
  * Returns the appropriate SGV icon React element according to the given MimeType. The MimeType is matched with a case-insensitive ("i" flag) RegExp. If the mimeType argument equals "directory" the icon element for a diectory is retured. Otherwise, if there is no match at all, the icon element for an unknown file is returned.
@@ -18,26 +21,66 @@ import UnknownFileIcon from "../svgComponent/UnknownFileIcon";
  */
 function getIconElement(mimeType: string): ReactNode {
     if (mimeType === 'directory') {
-        return <DirectoryIcon/>;
+        return <DirectoryIcon />;
     }
-    const componentLib = {
-        'application\/pdf': <PDFIcon/>,
-        '^image\/.*$': <PictureIcon/>,
-        'application\/msword': <WordIcon/>,
-        'application\/.*excel.*': <ExcelIcon/>,
-        'application\/.*archive.*': <ArchiveIcon/>,
-        'application\/.*zip.*': <ZipIcon/>,
-        '^text\/.*$': <TextIcon/>,
-        '^audio\/.*$': <AudioIcon/>,
-        '^video\/.*$': <TextIcon/>,
-        'application\/.*powerpoint.*': <PowerPointIcon/>,
-        'application\/.*executable.*': <ExeIcon/>,
- 
-    };
-    for (let [regexStr, component] of Object.entries(componentLib)) {
-        if (new RegExp(regexStr, 'i').test(mimeType)) return component;
+    const iconsLib = [
+        {
+            regex: new RegExp(/application\/pdf/, 'i'),
+            component: <PDFIcon />
+        },
+        {
+            regex: new RegExp(/image\/svg\+xml/, 'i'),
+            component: <SvgIcon />
+        },
+        {
+            regex: new RegExp(/image\/.*/, 'i'),
+            component: <PictureIcon />
+        },
+        {
+            regex: new RegExp(/application\/(vnd\.openxmlformats-officedocument\.wordprocessingml.*|msword)/, 'i'),
+            component: <WordIcon />
+        },
+        {
+            regex: new RegExp(/application\/(vnd\.openxmlformats-officedocument\.spreadsheetml.*|.*excel.*)/, 'i'),
+            component: <ExcelIcon />
+        },
+        {
+            regex: new RegExp(/application\/(zip|zip\-compressed|x\-.*-compressed|vnd\.ms\-cab\-compressed)/, 'i'),
+            component: <ZipIcon />
+        },
+        {
+            regex: new RegExp(/application\/.*archive.*/, 'i'),
+            component: <ArchiveIcon />
+        },
+        {
+            regex: new RegExp(/application\/(vnd.openxmlformats-officedocument.presentationml.*|vnd.ms-powerpoint.*)/, 'i'),
+            component: <PowerPointIcon />
+        },
+        {
+            regex: new RegExp(/audio\/.*/, 'i'),
+            component: <AudioIcon />
+        },
+        {
+            regex: new RegExp(/video\/.*/, 'i'),
+            component: <VideoIcon />
+        },
+        {
+            regex: new RegExp(/(application|text)\/x-(sh|shar|shellscript)/, 'i'),
+            component: <CodeIcon />
+        },
+        {
+            regex: new RegExp(/text\/.*/, 'i'),
+            component: <TextIcon />
+        },
+        {
+            regex: new RegExp(/application\/x-msdownload/, 'i'),
+            component: <ExeIcon />
+        },
+    ];
+    for (let { regex, component } of iconsLib) {
+        if (regex.test(mimeType)) return component;
     }
-    return <UnknownFileIcon/>;
+    return <UnknownFileIcon />;
 }
 
 /**
