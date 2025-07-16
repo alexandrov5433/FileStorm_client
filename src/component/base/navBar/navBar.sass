@@ -34,6 +34,10 @@ nav.navbar
         display: none
     p
         margin: 0
+        max-width: 30ch
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
 
 #navbarNav
     #nav-file-search-container
@@ -87,18 +91,17 @@ nav.navbar
                         margin-bottom: 1.8rem
                     &:hover
                         background-color: color-mix(in oklab, $teal-500 30%, var(--neutralTertiarySurface) 70%)
-                    padding: 0 0.5rem
-                    width: 100%
-                    display: flex
-                    align-items: center
-                    gap: 0.2rem
+                        padding: 0 0.5rem
+                        width: 100%
+                        display: flex
+                        align-items: center
+                        gap: 0.2rem
                     .search-results-filename
                         cursor: pointer
                         flex: 1 1 100%
                         overflow: hidden
                         white-space: nowrap
                         text-overflow: ellipsis
-                        
 
 @include media-breakpoint-up(lg)
     #navbarNav
@@ -107,7 +110,7 @@ nav.navbar
         .pagesNav .nav-link
             padding-left: 1.2rem
             padding-right: 1.2rem
-    
+
     #navbarNav
         #nav-file-search-container
             width: 30rem
