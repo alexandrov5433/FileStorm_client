@@ -53,7 +53,10 @@ export default function SideOptions({
             <section id="side-options-location-container">
                 <ul>
                     <li>
-                        <NavLink to="/my-storage" ref={myStorageRef}>
+                        <NavLink to="/my-storage" ref={myStorageRef} onClick={() => {
+                            dispatch(setDirPath([[user?.rootStorageDir || 0, 'My Storage']]));
+                            dispatch(clearCheckedList());
+                        }}>
                             <span></span>
                             <div>
                                 <i className="bi bi-archive"></i>
