@@ -1,10 +1,9 @@
 import './checkedEntitiesOptions.sass';
 
 import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
-import { getDeleteSelectedRequest, getDownloadSelectedRequest, getDownloadSharedSelectedRequest } from '../../../lib/action/checkedEntities';
+import { getDeleteSelectedRequest } from '../../../lib/action/checkedEntities';
 import { setMessage } from '../../../lib/redux/slice/messenger';
 import { useState } from 'react';
-import type { ApiResponse } from '../../../lib/definition/apiResponse';
 import fetcher from '../../../lib/action/fetcher';
 import { removeMultipleChunksById, removeMultipleSubdirsById } from '../../../lib/redux/slice/directory';
 import { getBytesInStorageRequest } from '../../../lib/action/userDataRequest';
@@ -26,44 +25,15 @@ export default function CheckedEntitiesOptions() {
         setProcessLoading(true);
         const chunks = extractEntitiesIds('chunk');
         const directories = extractEntitiesIds('directory');
-
-        const request = renderOptions.currentView === 'SharedWithMe' ?
-            getDownloadSharedSelectedRequest({
-                chunks,
-                directories
-            })
-            : getDownloadSelectedRequest({
-                chunks,
-                directories
-            });
-
-        fetch(request)
-            .then(res => {
-                if (!res.ok) {
-                    res.json().then((apiRes: ApiResponse) => {
-                        throw new Error(apiRes?.message || 'A problem occurred. Please try again.');
-                    });
-                }
-                return res.blob();
-            })
-            .then(blob => {
-                const a = document.createElement('a');
-                a.download = 'FileStorm.zip';
-                a.href = URL.createObjectURL(blob);
-                a.click();
-            })
-            .catch(e => {
-                dispatch(setMessage({
-                    title: 'Ooops...',
-                    text: e.msg || 'A problem occurred. Please try again.',
-                    type: 'negative',
-                    duration: 5000
-                }));
-            })
-            .finally(() => {
-                setDownloadLoading(false);
-                setProcessLoading(false);
-            });
+        const hrefValue = renderOptions.currentView === 'SharedWithMe'
+            ?  `/api/file-sharing/file/bulk?chunkIdsStr=${chunks.join('_')}`
+            : `/api/file/bulk?chunkIdsStr=${chunks.join('_')}&directoryIdsStr=${directories.join('_')}`
+        const a = document.createElement('a');
+        a.download = 'FileStorm.tar';
+        a.href = hrefValue;
+        a.click();
+        setDownloadLoading(false);
+        setProcessLoading(false);
     }
 
     async function deleteSelected() {
