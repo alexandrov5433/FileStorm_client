@@ -21,7 +21,7 @@ export default function UploadProgressViewer() {
                     <section className="status">
                         <p>{entity.actionInProgress}</p>
                     </section>
-                    <section className="custom-icon-btn">
+                    <section className="custom-icon-btn updoad-container-close-button">
                         <i className="bi bi-x-lg"></i>
                     </section>
                 </div>
