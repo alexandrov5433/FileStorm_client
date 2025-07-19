@@ -151,7 +151,7 @@ export default function FileOverview({
             <div className="file-row" key={chunk.id} id={`scroll-to-id-${chunk.id}`}>
                 <div className="file-col selector">
                     <SelectRing
-                        HTMLInputElementId={`select-ring-input-${chunk.id.toString()}`}
+                        HTMLInputElementId={`select-ring-chunk-input-${chunk.id.toString()}`}
                         entityId={chunk.id}
                         entityType='chunk'
                         addToCheckedList={addToCheckedList}
@@ -204,7 +204,7 @@ export default function FileOverview({
             <div className="file-row" key={dir.id}>
                 <div className="file-col selector">
                     <SelectRing
-                        HTMLInputElementId={`select-ring-input-${dir.id.toString()}`}
+                        HTMLInputElementId={`select-ring-directory-input-${dir.id.toString()}`}
                         entityId={dir.id}
                         entityType='directory'
                         addToCheckedList={addToCheckedList}
