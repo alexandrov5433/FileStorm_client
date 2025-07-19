@@ -41,7 +41,7 @@ export default function FileOverview({
 }) {
     const dispatch = useAppDispatch();
     const { dirPath, newlyDeletedSubdirs, newlyDeletedChunks } = useAppSelector(state => state.directory);
-    const { checkedList } = useAppSelector(state => state.checkedEntities);
+    const { checkedTypedEntities } = useAppSelector(state => state.checkedEntities);
     const { signalScroll, scrollTargetId } = useAppSelector(state => state.fileStorageScroll);
 
     function fileSort(chunkRefs: Chunk[]): Chunk[] {
@@ -86,8 +86,14 @@ export default function FileOverview({
         if (!entity || entity?.entityId <= 0 || !entity?.entityType) return;
         dispatch(deleteEntityFromCheckedList(entity));
     }
-    function removeSelectorManipulatorObjectFromList(idOfEntityToRemove: number) {
-        checkboxManipulatorsList.current = checkboxManipulatorsList.current.filter(obj => obj.entity.entityId !== idOfEntityToRemove);
+    function removeSelectorManipulatorObjectFromList(forEntity: CheckedEntityActionPayload) {
+        checkboxManipulatorsList.current = checkboxManipulatorsList.current.reduce((acc, cur) => {
+            if (cur.entity.entityId === forEntity.entityId && cur.entity.entityType === forEntity.entityType) {
+                return acc;
+            }
+            acc.push(cur);
+            return acc;
+        }, [] as SelectorManipulationObject[]);
     }
     function addSelectorManipulationObjectList(selectorManipulationObject: SelectorManipulationObject) {
         if (!selectorManipulationObject) return;
@@ -108,39 +114,41 @@ export default function FileOverview({
         dispatch(clearCheckedList());
     }
     function areAllSelectorsChecked() {
-        const allIds = new Set([
-            ...(subdirectories || []).map(d => d.id),
-            ...(hydratedChunks || []).map(c => c.id)
-        ]);
-        if (allIds.size == 0) {
+        const allRenderedEntities = [
+            ...(subdirectories || []).map(d => ({ entityId: d.id, entityType: 'directory' })),
+            ...(hydratedChunks || []).map(c => ({ entityId: c.id, entityType: 'chunk' }))
+        ];
+        if (allRenderedEntities.length == 0) {
             masterCheckboxManipulator.current?.uncheck();
             return;
         }
-        const notCheckedCount = allIds.difference(new Set(checkedList)).size;
+        const notCheckedCount = allRenderedEntities.length - checkedTypedEntities.length;
         notCheckedCount == 0 ? masterCheckboxManipulator.current?.check() : masterCheckboxManipulator.current?.uncheck();
     }
 
     useEffect(() => {
         areAllSelectorsChecked();
-    }, [checkedList]);
+    }, [checkedTypedEntities]);
     useEffect(() => {
         if (!newlyDeletedSubdirs) return;
         newlyDeletedSubdirs.forEach(dirId => {
-            removeFromCheckedList({
+            const entityToRemove = {
                 entityId: dirId || 0,
                 entityType: 'directory'
-            });
-            removeSelectorManipulatorObjectFromList(dirId || 0);
+            } as CheckedEntityActionPayload;
+            removeFromCheckedList(entityToRemove);
+            removeSelectorManipulatorObjectFromList(entityToRemove);
         });
     }, [newlyDeletedSubdirs]);
     useEffect(() => {
         if (!newlyDeletedChunks) return;
         newlyDeletedChunks.forEach(chunkId => {
-            removeFromCheckedList({
+            const entityToRemove = {
                 entityId: chunkId || 0,
                 entityType: 'chunk'
-            });
-            removeSelectorManipulatorObjectFromList(chunkId || 0);
+            } as CheckedEntityActionPayload;
+            removeFromCheckedList(entityToRemove);
+            removeSelectorManipulatorObjectFromList(entityToRemove);
         });
     }, [newlyDeletedChunks]);
 

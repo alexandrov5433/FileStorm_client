@@ -26,8 +26,8 @@ export default function CheckedEntitiesOptions() {
         const chunks = extractEntitiesIds('chunk');
         const directories = extractEntitiesIds('directory');
         const hrefValue = renderOptions.currentView === 'SharedWithMe'
-            ?  `/api/file-sharing/file/bulk?chunkIdsStr=${chunks.join('_')}`
-            : `/api/file/bulk?chunkIdsStr=${chunks.join('_')}&directoryIdsStr=${directories.join('_')}`
+            ? `/api/file-sharing/file/bulk?chunkIdsStr=${chunks.join('_')}`
+            : `/api/file/bulk?chunkIdsStr=${chunks.join('_')}&directoryIdsStr=${directories.join('_')}`;
         const a = document.createElement('a');
         a.download = 'FileStorm.tar';
         a.href = hrefValue;

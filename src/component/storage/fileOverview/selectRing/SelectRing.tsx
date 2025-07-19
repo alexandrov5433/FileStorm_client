@@ -81,11 +81,11 @@ export default function SelectRing({
 
     return (
         <div
-        title={
-            selectAllInDirectory && unselectAllInDirectory && addMasterSelectorManipulationObject ?
-            'Select all element in this directory' : `Select this ${entityType == 'chunk' ? 'file' : 'directory'}`
-        }
-        className="select-ring-main-container">
+            title={
+                selectAllInDirectory && unselectAllInDirectory && addMasterSelectorManipulationObject ?
+                    'Select all element in this directory' : `Select this ${entityType == 'chunk' ? 'file' : 'directory'}`
+            }
+            className="select-ring-main-container">
             <input ref={checkboxRef} type="checkbox" name={HTMLInputElementId} id={HTMLInputElementId} />
             <label htmlFor={HTMLInputElementId}></label>
             <i className="bi bi-check"></i>

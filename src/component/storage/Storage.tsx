@@ -25,7 +25,7 @@ export default function Storage() {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.user);
     const { dirPath } = useAppSelector(state => state.directory);
-    const { checkedList } = useAppSelector(state => state.checkedEntities);
+    const { checkedTypedEntities } = useAppSelector(state => state.checkedEntities);
 
     const [sideOptionsDisplay, setSideOptionsDisplay] = useState(false);
 
@@ -139,8 +139,8 @@ export default function Storage() {
     // checked entities options display
     const [displayCheckedEntitiesOptions, setDisplayCheckedEntitiesOptions] = useState(false);
     useEffect(() => {
-        setDisplayCheckedEntitiesOptions(checkedList.length > 0);
-    }, [checkedList]);
+        setDisplayCheckedEntitiesOptions(checkedTypedEntities.length > 0);
+    }, [checkedTypedEntities]);
 
 
     return (
