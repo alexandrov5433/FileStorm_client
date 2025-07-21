@@ -5,7 +5,7 @@ import fetcher from '../../../lib/action/fetcher';
 import { getPublicFileDataRequest } from '../../../lib/action/fileSystem/fileRequest';
 import { useEffect, useState } from 'react';
 import type { Chunk } from '../../../lib/definition/chunk';
-import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/redux/reduxTypedHooks';
 import { setMessage } from '../../../lib/redux/slice/messenger';
 import RainingClouldLoader from '../../loader/rainingClouldLoader/RainingClouldLoader';
 import { bytesToMegabytes } from '../../../lib/util/convert';
@@ -14,6 +14,7 @@ import { extractFileExtentionWithoutDot } from '../../../lib/util/file';
 export default function DownloadPublicFile() {
     const { chunkIdToDownload } = useParams();
     const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user);
 
     const [chunk, setChunk] = useState<Chunk | null>(null);
     const [fileFound, setFileFound] = useState(true);
@@ -99,13 +100,22 @@ export default function DownloadPublicFile() {
                 <div className="custom-horizontal-divider"></div>
                 <section id="account-section">
                     <p>Want to share files?</p>
-                    <NavLink to={'/account/register'} className="custom-btn secondary-btn w-fit-cont">
-                        Create Account
-                    </NavLink>
-                    <p>or</p>
-                    <NavLink to={'/account/login'} className="custom-btn secondary-btn w-fit-cont">
-                        Log In
-                    </NavLink>
+                    {
+                        user && user?.id ?
+                            <NavLink to={'/my-storage'} className="custom-btn secondary-btn w-fit-cont">
+                                My Storage
+                            </NavLink>
+                            :
+                            <>
+                                <NavLink to={'/account/register'} className="custom-btn secondary-btn w-fit-cont">
+                                    Create Account
+                                </NavLink>
+                                <p>or</p>
+                                <NavLink to={'/account/login'} className="custom-btn secondary-btn w-fit-cont">
+                                    Log In
+                                </NavLink>
+                            </>
+                    }
                 </section>
                 <div className="custom-horizontal-divider"></div>
                 <section id="share-section">

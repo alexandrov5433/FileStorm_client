@@ -1,5 +1,5 @@
 import './App.sass'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router'
 import accountRequest from '../../../lib/action/accountRequest';
 import { setGuest, setUser } from '../../../lib/redux/slice/user';
@@ -15,20 +15,21 @@ function App() {
   const location = useLocation();
 
   const componentFirstMount = useRef(true);
-  const [landingNeeded, setLandingNeeded] = useState(true);
 
   useEffect(() => {
     dispatch(setWindowHistoryLengthOnAppEntry(window.history.length));
     const targetPath = location.pathname;
 
     const isPublic = new RegExp(/\/public\/download_shared_file\/\d+/).test(targetPath);
+    navigate('/');
     if (isPublic) {
-      setLandingNeeded(false);
-    } else {
-      navigate('/');
-
       (async () => {
-        await checkCookieAndSessionData(targetPath);
+        await checkSessionForPublicDownloadPage(targetPath);
+        componentFirstMount.current = false;
+      })();
+    } else {
+      (async () => {
+        await checkSession(targetPath);
         componentFirstMount.current = false;
       })();
     }
@@ -41,7 +42,7 @@ function App() {
     }
   }, [location.pathname]);
 
-  async function checkCookieAndSessionData(targetPath: string) {
+  async function checkSession(targetPath: string) {
     const res = await accountRequest('/api/auth/validate-session', 'GET');
     if (res.status === 200) {
       dispatch(setUser(res.payload as User));
@@ -52,8 +53,18 @@ function App() {
     }
   }
 
+  async function checkSessionForPublicDownloadPage(targetPath: string) {
+    const res = await accountRequest('/api/auth/validate-session', 'GET');
+    if (res.status === 200) {
+      dispatch(setUser(res.payload as User));
+    } else {
+      dispatch(setGuest());
+    }
+    navigate(targetPath);
+  }
+
   return (
-    <div id="app-main-container" className={landingNeeded ? (landing.isMounted ? '' : 'hide-all-content') : ''}>
+    <div id="app-main-container" className={landing.isMounted ? '' : 'hide-all-content'}>
       <Outlet />
       <Messenger />
     </div>
