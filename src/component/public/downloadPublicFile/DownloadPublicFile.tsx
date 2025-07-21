@@ -3,7 +3,7 @@ import './downloadPublicFile.sass';
 import { NavLink, useParams } from 'react-router';
 import fetcher from '../../../lib/action/fetcher';
 import { getPublicFileDataRequest } from '../../../lib/action/fileSystem/fileRequest';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Chunk } from '../../../lib/definition/chunk';
 import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setMessage } from '../../../lib/redux/slice/messenger';
@@ -17,9 +17,6 @@ export default function DownloadPublicFile() {
 
     const [chunk, setChunk] = useState<Chunk | null>(null);
     const [fileFound, setFileFound] = useState(true);
-
-    // const downloadAnchorRef = useRef<HTMLAnchorElement>(null);
-    // const firstClickDone = useRef<boolean>(false);
 
     const shareLink = encodeURI('TODO: add actual link with the real domain');
     const shareMessage = 'Hey, check out this file sharing service called FileStorm.';
@@ -44,11 +41,6 @@ export default function DownloadPublicFile() {
             }));
         }
     }
-
-    // function clickDownloadFile() {
-    //     if (!downloadAnchorRef.current) return;
-    //     firstClickDone.current = true;
-    // }
 
     return (
         <div id="dpf-main-container" className="wrapper anime-fade-in">
