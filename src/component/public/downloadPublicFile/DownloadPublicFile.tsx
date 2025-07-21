@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../lib/redux/reduxTypedHooks';
 import { setMessage } from '../../../lib/redux/slice/messenger';
 import RainingClouldLoader from '../../loader/rainingClouldLoader/RainingClouldLoader';
 import { bytesToMegabytes } from '../../../lib/util/convert';
+import { extractFileExtentionWithoutDot } from '../../../lib/util/file';
 
 export default function DownloadPublicFile() {
     const { chunkIdToDownload } = useParams();
@@ -67,7 +68,7 @@ export default function DownloadPublicFile() {
                         </div>
                         <div>
                             <span>Type:&nbsp;</span>
-                            <span>{chunk?.mimeType || ''}</span>
+                            <span>{extractFileExtentionWithoutDot(chunk?.originalFileName || '')}</span>
                         </div>
                     </div>
 

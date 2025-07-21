@@ -129,10 +129,17 @@ function extractFileExtention(fileName: string) {
     return fileName.slice(fileName.lastIndexOf('.'));
 }
 
+function extractFileExtentionWithoutDot(fileName: string) {
+    const index = fileName.lastIndexOf('.');
+    if (index === -1) return 'File';
+    return fileName.slice(index + 1);
+}
+
 export {
     getIconElement,
     getFormatedFileSize,
     getFormatedDate,
     extractFileNameUntilExtention,
-    extractFileExtention
+    extractFileExtention,
+    extractFileExtentionWithoutDot
 };
