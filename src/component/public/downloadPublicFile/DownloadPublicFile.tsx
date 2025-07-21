@@ -16,9 +16,10 @@ export default function DownloadPublicFile() {
     const dispatch = useAppDispatch();
 
     const [chunk, setChunk] = useState<Chunk | null>(null);
+    const [fileFound, setFileFound] = useState(true);
 
-    const downloadAnchorRef = useRef<HTMLAnchorElement>(null);
-    const firstClickDone = useRef<boolean>(false);
+    // const downloadAnchorRef = useRef<HTMLAnchorElement>(null);
+    // const firstClickDone = useRef<boolean>(false);
 
     const shareLink = encodeURI('TODO: add actual link with the real domain');
     const shareMessage = 'Hey, check out this file sharing service called FileStorm.';
@@ -26,16 +27,15 @@ export default function DownloadPublicFile() {
 
     useEffect(() => {
         getDataOfChunk();
-        if (!firstClickDone.current) {
-            clickDownloadFile();
-        }
     }, []);
 
     async function getDataOfChunk() {
         const res = await fetcher(getPublicFileDataRequest(Number(chunkIdToDownload || 0) || 0));
         if (res.status === 200) {
             setChunk(res.payload as Chunk);
+            setFileFound(true);
         } else {
+            setFileFound(false);
             dispatch(setMessage({
                 title: 'Ooops...',
                 text: res.msg || 'A problem occurred. Please try again.',
@@ -45,42 +45,64 @@ export default function DownloadPublicFile() {
         }
     }
 
-    function clickDownloadFile() {
-        if (!downloadAnchorRef.current) return;
-        firstClickDone.current = true;
-    }
+    // function clickDownloadFile() {
+    //     if (!downloadAnchorRef.current) return;
+    //     firstClickDone.current = true;
+    // }
 
     return (
         <div id="dpf-main-container" className="wrapper anime-fade-in">
             <section id="main-section">
                 <section id="file-section">
                     <h1 className="noto-sans-font">FileStorm</h1>
-                    <h5>Download Public File:</h5>
+                    {
+                        fileFound ?
+                            <>
+                                <h5>Download Public File</h5>
 
-                    <div id="file-info">
-                        <div className="info-row">
-                            <span>Name:&nbsp;</span>
-                            <span id="file-name">{chunk?.originalFileName || ''}</span>
-                        </div>
-                        <div>
-                            <span>Size:&nbsp;</span>
-                            <span>{bytesToMegabytes(chunk?.sizeBytes || 0, 2)} MB</span>
-                        </div>
-                        <div>
-                            <span>Type:&nbsp;</span>
-                            <span>{extractFileExtentionWithoutDot(chunk?.originalFileName || '')}</span>
-                        </div>
-                    </div>
-
-                    <a id="download-link"
-                        className="custom-btn main-btn"
-                        download
-                        target="_self"
-                        ref={downloadAnchorRef}
-                        href={`/api/public/file/${chunkIdToDownload || 0}/download`}
-                    >
-                        Download
-                    </a>
+                                <div id="file-info">
+                                    <div className="info-row">
+                                        <span>Name:&nbsp;</span>
+                                        <span id="file-name">{chunk?.originalFileName || ''}</span>
+                                    </div>
+                                    <div className="info-row">
+                                        <span>Size:&nbsp;</span>
+                                        <span>{bytesToMegabytes(chunk?.sizeBytes || 0, 2)} MB</span>
+                                    </div>
+                                    <div className="info-row">
+                                        <span>Type:&nbsp;</span>
+                                        <span>{extractFileExtentionWithoutDot(chunk?.originalFileName || '')}</span>
+                                    </div>
+                                </div>
+                            </>
+                            :
+                            <>
+                                <h5>File not found! Possible reasons:</h5>
+                                <ol id="file-not-found-reasons">
+                                    <li>
+                                        <span><i>Wrong ID</i> at the end of the URL.</span>
+                                    </li>
+                                    <li>
+                                        <span>The owner has stopped sharing this file and it is therefore <i>not publicly available</i>.</span>
+                                    </li>
+                                    <li>
+                                        <span>The file was <i>deleted</i> by the owner.</span>
+                                    </li>
+                                </ol>
+                            </>
+                    }
+                    {
+                        fileFound ?
+                            <a id="download-link"
+                                className="custom-btn main-btn"
+                                download
+                                target="_self"
+                                href={`/api/public/file/${chunkIdToDownload || 0}/download`}
+                            >
+                                Download
+                            </a>
+                            : ''
+                    }
                 </section>
                 <div className="custom-horizontal-divider"></div>
                 <section id="account-section">
