@@ -88,7 +88,7 @@ export default function Account() {
                     <path className="wave-3" fill="#a0e5d0" d="M0,720 C440,840 1000,600 1440,720 L1440,800 L0,800 Z"></path>
                 </svg>
                 <div id="accound-side-message">
-                    <h1>Files made:</h1>
+                    <h1 id="accound-files-made">Files made:</h1>
                     <h1 ref={emphasysWordRef} className="account-emphasys-word-animation" id="accound-emphasys-word">{emphasysWord}</h1>
                 </div>
             </div>
