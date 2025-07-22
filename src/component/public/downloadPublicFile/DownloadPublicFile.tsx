@@ -19,7 +19,7 @@ export default function DownloadPublicFile() {
     const [chunk, setChunk] = useState<Chunk | null>(null);
     const [fileFound, setFileFound] = useState(true);
 
-    const shareLink = encodeURI('TODO: add actual link with the real domain');
+    const shareLink = encodeURI('https://filestorm.pro');
     const shareMessage = 'Hey, check out this file sharing service called FileStorm.';
     const shareTitle = 'FileStorm - file sharing and storage.';
 
